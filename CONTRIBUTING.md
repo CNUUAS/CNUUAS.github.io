@@ -1,5 +1,7 @@
 # Contributing Guidelines
 
+Have branch per future, not branch per person
+
 ### Branch Strategy
 
 **Always create a new branch for significant changes.** This keeps the main branch stable and allows for proper code review.

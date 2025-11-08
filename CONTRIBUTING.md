@@ -117,9 +117,9 @@ A branch is an independent line of development in Git. It allows you to work on 
 ## Getting Started with Web Design
 
 ### Interactive Tutorials
-- I used W3Schools for a foundation on [HTML](https://www.w3schools.com/html/default.asp) and [CSS](https://www.w3schools.com/css/default.asp)
-- KhanAcademy also has a good [HTML/CSS Introdction](https://www.khanacademy.org/computing/computer-programming/html-css) course
-- [Super Simple Dev](https://supersimple.dev/courses): Has a variety of webdesign courses. Assignments are hosted on github.
+- I used W3Schools as an introduction to [HTML](https://www.w3schools.com/html/default.asp) and [CSS](https://www.w3schools.com/css/default.asp)
+- KhanAcademy also has a good [HTML/CSS Introduction](https://www.khanacademy.org/computing/computer-programming/html-css) course
+- [Super Simple Dev](https://supersimple.dev/courses) Has a variety of webdesign courses. Assignments are hosted on github.
 
 **Cheat Sheets**
 - [HTML Cheat Sheet](https://htmlcheatsheet.com/)

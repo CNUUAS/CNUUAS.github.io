@@ -1,6 +1,4 @@
 # CNUUAS.github.io
-website
-
 
 # Todo List 
 1)  Implement website structure in HTML

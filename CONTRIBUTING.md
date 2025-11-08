@@ -71,26 +71,34 @@ git commit -m "Brief description of your changes"
 
 ### 4. Push Your Changes
 
-Push your commits to the remote repository:
+**For the first push on a new branch:**
+
+When you push a new branch for the first time, you need to create it on the remote repository and set up tracking:
+
+```bash
+git push -u origin [your_branch_name]
+```
+
+The `-u` flag (short for `--set-upstream`) creates the branch on GitHub and links your local branch to it.
+
+**For all subsequent pushes:**
+
+Once tracking is established, simply use:
 
 ```bash
 git push
 ```
 
-If this is your first push on a new branch, you may need to set the upstream:
-
-```bash
-git push -u origin [your_branch_name]
-```
+**Note:** Local branches only exist on your machine until you push them to the remote repository.
 
 ---
 
 ## Best Practices
 
 - **Pull before you start:** Always run `git pull` before making changes
-- **Commit often:** Make small, logical commits rather than large, monolithic ones
+- **Commit often:** It's harder to narrow down errors when lots of changes are made. 
 - **Write clear commit messages:** Describe what you changed and why
-- **One branch per feature:** Create a separate branch for each feature or bug fix
+- **Branch for feature not User:** Create a separate branch for each feature or bug fix
 - **Keep branches up to date:** Regularly pull changes from the main branch into your feature branch
 
 ---

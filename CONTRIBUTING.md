@@ -29,7 +29,7 @@ Create a new branch for each feature or fix you're working on. **Do not work dir
 
 **Branch Naming Convention:**
 ```
-[first_name][last_initial]/[description_of_change]
+[first_name][last_initial]/[description_of_fix]
 ```
 
 **Example:**
@@ -37,14 +37,14 @@ Create a new branch for each feature or fix you're working on. **Do not work dir
 evag/update_contributing_docs
 ```
 
-**Creating a branch (Option 1 - GitHub Web):**
+**Creating a branch (GitHub Web):**
 1. Go to the repository on GitHub
 2. Click the **Code** tab
 3. Click **Branches** (below the repository title)
 4. Click **New Branch** on the right
 5. Enter your branch name following the format above
 
-**Creating a branch (Option 2 - Command Line):**
+**Creating a branch (Command Line/GitBash):**
 ```bash
 git checkout -b [your_branch_name]
 ```

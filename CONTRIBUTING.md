@@ -2,7 +2,7 @@
 
 ---
 
-## Getting Started
+## Getting Started with Git
 
 ### Cloning the Repository
 
@@ -29,7 +29,7 @@ Create a new branch for each feature or fix you're working on. **Do not work dir
 
 **Branch Naming Convention:**
 ```
-[first_name][last_initial]/[description_of_fix]
+[first_name][last_initial]/[description_of_change]
 ```
 
 **Example:**
@@ -37,14 +37,14 @@ Create a new branch for each feature or fix you're working on. **Do not work dir
 evag/update_contributing_docs
 ```
 
-**Creating a branch (GitHub Web):**
+**Creating a branch (Option 1 - GitHub Web):**
 1. Go to the repository on GitHub
 2. Click the **Code** tab
 3. Click **Branches** (below the repository title)
 4. Click **New Branch** on the right
 5. Enter your branch name following the format above
 
-**Creating a branch (Command Line/GitBash):**
+**Creating a branch (Option 2 - Command Line):**
 ```bash
 git checkout -b [your_branch_name]
 ```
@@ -112,3 +112,16 @@ A branch is an independent line of development in Git. It allows you to work on 
 - Experiment safely without breaking the main code
 - Organize development by feature or task
 - Enable parallel development across the team
+
+--- 
+## Getting Started with Web Design
+
+### Interactive Tutorials
+- I used W3Schools for a foundation on [HTML](https://www.w3schools.com/html/default.asp) and [CSS](https://www.w3schools.com/css/default.asp)
+- KhanAcademy also has a good [HTML/CSS Introdction](https://www.khanacademy.org/computing/computer-programming/html-css) course
+- [Super Simple Dev](https://supersimple.dev/courses): Has a variety of webdesign courses. Assignments are hosted on github.
+
+**Cheat Sheets**
+- [HTML Cheat Sheet](https://htmlcheatsheet.com/)
+- [CSS Cheat Sheet](https://htmlcheatsheet.com/css/)
+- [JS Cheat Sheet](https://htmlcheatsheet.com/js/)

@@ -1,8 +1,8 @@
 # Contributing Guidelines
 ## Table of Contents
 - [Getting Started with Git](#getting-started-with-git)
-  - [Pulling from Repo](#pulling-latest-changes)
-  - [Making Changes](#making-changes) 
+  - [How to Pull from Repo](#pulling-latest-changes)
+  - [How to Make Changes](#making-changes) 
     - [What is a Branch?](#what-is-a-branch)
   - [Best Practices](#best-practices)
 - [Getting Started with HTML/CSS/JS](#getting-started-with-web-design)

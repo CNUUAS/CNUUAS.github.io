@@ -11,8 +11,10 @@
 >     - [1.3.4 Pushing Changes](134-push-your-changes)
 >     - [1.3.5 What is a Branch?](#135-what-is-a-branch)
 >   - [1.4 Best Practices](#14-best-practices)
-> - [2. Getting Started with HTML/CSS/JS](#2-getting-started-with-web-design)
->   - [2.1 Interactive Tutorials](#21-interactive-tutorials) 
+> - [2. Getting Installing Packages](#2-getting-installing-packages)
+>   - [2.1 Node.js and NPM](#21-nodejs-and-npm)
+> - [3. Getting Started with HTML/CSS/JS](#3-getting-started-with-web-design)
+>   - [3.1 Interactive Tutorials](#31-interactive-tutorials) 
 
 ---
 <br>
@@ -138,9 +140,13 @@ A branch is an independent line of development in Git. It allows you to work on 
 ---
 <br>
 
-## 2. Getting Started with Web Design
+## 2. Getting Installing Packages
+### 2.1 Node.js and NPM
+- [NPM Explanation and Tutorial](https://www.youtube.com/watch?v=P3aKRdUyr0s)
 
-### 2.1 Interactive Tutorials
+## 3. Getting Started with Web Design
+
+### 3.1 Interactive Tutorials
 - I used W3Schools as an introduction to [HTML](https://www.w3schools.com/html/default.asp) and [CSS](https://www.w3schools.com/css/default.asp)
 - KhanAcademy also has a good [HTML/CSS Introduction](https://www.khanacademy.org/computing/computer-programming/html-css) course
 - [Super Simple Dev](https://supersimple.dev/courses) Has a variety of webdesign courses. Assignments are hosted on github.

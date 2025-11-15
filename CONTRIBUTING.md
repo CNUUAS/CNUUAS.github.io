@@ -143,6 +143,7 @@ A branch is an independent line of development in Git. It allows you to work on 
 ## 2. Getting Installing Packages
 ### 2.1 Node.js and NPM
 - [NPM Explanation and Tutorial](https://www.youtube.com/watch?v=P3aKRdUyr0s)
+- [View360 Documentation](https://naver.github.io/egjs-view360/)
 
 ## 3. Getting Started with Web Design
 

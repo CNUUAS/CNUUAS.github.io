@@ -13,6 +13,7 @@
 >   - [1.4 Best Practices](#14-best-practices)
 > - [2. Getting Installing Packages](#2-getting-installing-packages)
 >   - [2.1 Node.js and NPM](#21-nodejs-and-npm)
+>   - [2.2 Helpful VSCode Extensions](@22-helpful-vscode-extenstions)
 > - [3. Getting Started with HTML/CSS/JS](#3-getting-started-with-web-design)
 >   - [3.1 Interactive Tutorials](#31-interactive-tutorials) 
 
@@ -144,6 +145,10 @@ A branch is an independent line of development in Git. It allows you to work on 
 ### 2.1 Node.js and NPM
 - [NPM Explanation and Tutorial](https://www.youtube.com/watch?v=P3aKRdUyr0s)
 - [View360 Documentation](https://naver.github.io/egjs-view360/)
+
+### 2.2 Helpful VSCode Extensions
+- Live Preview
+- Live Server
 
 ## 3. Getting Started with Web Design
 

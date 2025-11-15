@@ -14,40 +14,36 @@
      NAVIGATION BAR
         Author: Eva Grimes
         TODO:   Make the buttons redirect to the correct pages
+
+        NOTES: 
+        (11/13 EG) I cannot get the dropdown navigation to go back up -- later problem
      ======================================== -->
      
-    <nav class="navbar fixed-bottom justify-content-center navbar-expand navbar-dark">
-        <div class="container-fluid">
-            <!-- <a href="#" class="navbar-brand">Brand</a> -->
-            <ul class="navbar nav">
-                <li class="nav-item">
-                    <a href="#" class="nav-link active" aria-current="page">HOME</a>
-                </li>
-                <div class="navbar-text">|</div>
-                <li class="nav-item">
-                    <a href="#" class="nav-link active" aria-current="page">DRONE</a>
-            </li>
-            <div class="navbar-text">|</div>
-            <li class="nav-item">
-                <a href="#" class="nav-link active" aria-current="page">SPONSORS</a>
-            </li>
-            </ul>
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+        <div class="container">
+            <a href="#" class="navbar-brand">CNU UAS</a>
+            <!-- Navbar Collapse Button -->
+            <button class="navbar-toggler" data-bs-toggle="collapse" 
+            data-bs-target="#nav1" aria-controls="nav" aria-label="Expand Navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+           
+            <!-- Navbar Links -->
+            <div class="collapse navbar-collapse" id="nav1">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link active" aria-current="page">HOME</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link active" aria-current="page">DRONE</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" class="nav-link active" aria-current="page">SPONSORS</a>
+                    </li>
+                </ul>
+            </div>
         </div>
     </nav>
-
-
-    <!-- <div class="container-fluid">
-        <div class="row">
-            <div class="col-2 col-md-4">
-            </div>
-            <div class="col-2 col-md-4">
-            </div>
-            <div class="col-2 col-md-4">
-            </div>
-            <div style="background-image: url('https://cnu.edu/_assets/img/cam/greatlawn/night_pano/christopher-newport-university-campus-1200x675.jpg'); height: 675px;">
-            <h1>CNU UAS</h1>
-        </div>  
-    </div> -->
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 

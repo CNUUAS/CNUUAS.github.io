@@ -6,46 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Home Page</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- <link rel="stylesheet" href="https://unpkg.com/@egjs/view360@latest/dist/view360.min.css"> -->
-    
-    <style>
-        .navbar {
-            position: relative;
-            z-index: 1000;
-        }
-
-        #viewer {
-            width: 100%;
-            background-color: #ffffff;
-            overflow: hidden;
-            position: relative;
-        }
-
-        /* Mobile: Vertical display */
-        @media (max-width: 767px) {
-            #viewer {
-                height: 100vh; /* Taller for mobile devices */
-            }
-        }
-
-        /* Tablet and Desktop: Horizontal display */
-        @media (min-width: 768px) {
-            #viewer {
-                height: 55vh; /* Shorter for wider screens */
-            }
-        }
-    </style>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
   
     <!-- ========================================
      NAVIGATION BAR
         Author: Eva Grimes
-        TODO:   
-            - Make the buttons redirect to the correct pages
-            - Replace 360 image with UAS footage
+        TODO:   Make the buttons redirect to the correct pages
 
         NOTES: 
+        EG 11/13 - The viewer isn't actively using the node_modules folder yet.. oops, I'll 
+                   figure out how to get that working
      ======================================== -->
      
     <nav class="navbar navbar-expand-md navbar-dark bg-dark">
@@ -53,65 +25,28 @@
             <a href="#" class="navbar-brand">CNU UAS</a>
             <!-- Navbar Collapse Button -->
             <button class="navbar-toggler" data-bs-toggle="collapse" 
-            data-bs-target="#nav" aria-controls="nav" aria-label="Expand Navigation">
+            data-bs-target="#nav1" aria-controls="nav" aria-label="Expand Navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
            
             <!-- Navbar Links -->
-            <div class="collapse navbar-collapse" id="nav">
+            <div class="collapse navbar-collapse" id="nav1">
                 <ul class="navbar-nav">
                     <li class="nav-item">
                         <a href="#" class="nav-link active" aria-current="page">HOME</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link" aria-current="page">DRONE</a>
+                        <a href="#" class="nav-link active" aria-current="page">DRONE</a>
                     </li>
                     <li class="nav-item">
-                        <a href="#" class="nav-link" aria-current="page">SPONSORS</a>
+                        <a href="#" class="nav-link active" aria-current="page">SPONSORS</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <!-- ==========================================================
-        360 VIEW - https://naver.github.io/egjs-view360/docs/events
-     ===========================================================-->
-    <div class="container-">
-        <div id="viewer" class="view360-container">
-            <canvas class="view360-canvas"></canvas>
-        </div>
-    </div>
-
-    <!-- ===============================================
-         SCRIPTS (Subject to move into it's own js file)
-    ==================================================== -->
-    
-    <script src="https://unpkg.com/@egjs/view360@latest/dist/view360.pkgd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-    <!-- <script src="https://cdn.jsdelivr.net/npm/@egjs/view360@3.7.0/dist/view360.pkgd.min.js"></script> -->
-
-    <!-- View360 Initialization Script -->
-     <script>
-        setTimeout(function() {
-            console.log("Initializing 360 viewer...");
-            
-            try {
-                // The correct way for version 3.x
-                const viewer = new eg.view360.PanoViewer(document.getElementById("viewer"), {
-                    image: "assets/view360.jpg",
-                    projectionType: eg.view360.PanoViewer.PROJECTION_TYPE.EQUIRECTANGULAR,
-                    pitch: 0,
-                    yaw: 0,
-                    // @TODO: Mess around with FOV later
-                    // fov: 65
-                });
-                console.log("Viewer created successfully!", viewer);
-            } catch (error) {
-                console.error("Error:", error);
-            }
-        }, 500);
-    </script>
 
 </body>
 </html>

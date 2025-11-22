@@ -34,6 +34,49 @@
                 height: 55vh; /* Shorter for wider screens */
             }
         }
+
+    </style>
+    <style>
+        /*  carousel styling 
+            @todo: make it work for all screen sizes*/
+        .carousel {
+            width: 600px;
+            height: 350px;
+            margin: auto;
+            overflow: hidden;
+            position: relative;
+            border-radius: 12px;
+        }
+
+        .slides {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .slides img {
+            width: 600px;
+            height: 350px;
+            object-fit: cover;
+        }
+
+        /* Buttons */
+        .btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0,0,0,0.4);
+            color: white;
+            border: none;
+            padding: 12px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .prev { left: 10px; }
+        .next { right: 10px; }
+
     </style>
 </head>
 <body>
@@ -89,6 +132,26 @@
         </div>
     </div>
 
+
+
+
+    <!-- ========================================
+          Image carousel stuff with buttons
+             Uses random images for now
+    ======================================== -->
+    <div class="carousel">
+        <div class="slides" id="slides">
+            <img src="https://picsum.photos/600/350?random=1">
+            <img src="https://picsum.photos/600/350?random=2">
+            <img src="https://picsum.photos/600/350?random=3">
+        </div>
+
+        <button class="btn prev" onclick="moveSlide(-1)">❮</button>
+        <button class="btn next" onclick="moveSlide(1)">❯</button>
+    </div>
+
+
+
     <!-- ===============================================
          SCRIPTS (Subject to move into it's own js file)
     ==================================================== -->
@@ -99,6 +162,7 @@
 
     <!-- View360 Initialization Script -->
      <script>
+
         setTimeout(function() {
             console.log("Initializing 360 viewer...");
             
@@ -117,6 +181,43 @@
                 console.error("Error:", error);
             }
         }, 500);
+
+
+    </script>
+    <script>
+
+        // Image carousel javascript functionality
+        // @todo make it work for all screen sizes
+
+        let index = 0;
+        const slides = document.getElementById("slides");
+        const total = slides.children.length;
+        let autoSlide;   // holds the time interval
+
+        //starts the carousel auto interval
+        startAutoSlide();
+
+        // cycles through the images every three seconds
+        function startAutoSlide() {
+            autoSlide = setInterval(() => moveSlide(1), 3000);
+        }
+
+        //update image to be current index
+        function updateSlide() {
+            slides.style.transform = `translateX(-${index * 600}px)`;
+        }
+
+        //move index by a step amount, 
+        //do math to make sure it is in the correct range.
+        //call to update image
+        function moveSlide(step) {
+            index = (index + step + total) % total;
+            updateSlide();
+
+            //resets automatic timer
+            clearInterval(autoSlide);
+            startAutoSlide();
+        }
     </script>
 
     This is the home page.

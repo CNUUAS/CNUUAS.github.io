@@ -24,9 +24,6 @@
         }
 
 
-
-
-
         /* ---------------- Team card container ---------------- */
         .cards-container {
             display: flex;
@@ -45,7 +42,6 @@
             border: 3px solid white;
             border-radius: 10px;
             overflow: hidden;
-            background-color: blue;
             cursor: pointer;
             padding: 0;
             margin: 2vw;
@@ -76,6 +72,7 @@
             font-weight: bold;
             text-align: center;
             white-space: pre-line;
+            text-shadow: 1px 1px 2px black;
 
             background: none;
         }
@@ -89,7 +86,7 @@
             width: 100%;
             height: 100%;
             border-radius: 10px;
-            background-color: rgba(255, 255, 255, 0.95); /* slightly transparent so image shows */
+            background-color: white;
             z-index: 10; /* above the card */
             padding: 10px;
             text-align: center;
@@ -153,26 +150,32 @@
     </nav>
 
 
+    <div class = "teamCarouselWrapper">
 
 
+        <!-- ---------------- Container for team cards ---------------- -->
+        <div id="teamCarousel" class="carousel slide" data-bs-ride="false">
+            <div class="carousel-inner" id="team-cards"></div>
 
-    <!-- ---------------- Container for team cards ---------------- -->
-    <div id="teamCarousel" class="carousel slide" data-bs-ride="false">
-        <div class="carousel-inner" id="team-cards"></div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#teamCarousel" data-bs-slide="prev">
+                <img src="images\left_arrow.png" class="carousel-arrow" alt="Previous">
+            </button>
 
-        <button class="carousel-control-prev" type="button" data-bs-target="#teamCarousel" data-bs-slide="prev">
-            <img src="images\left_arrow.png" class="carousel-arrow" alt="Previous">
-        </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#teamCarousel" data-bs-slide="next">
+                <img src="images\right_arrow.png" class="carousel-arrow" alt="Next">
+            </button>
+        </div>
 
-        <button class="carousel-control-next" type="button" data-bs-target="#teamCarousel" data-bs-slide="next">
-            <img src="images\right_arrow.png" class="carousel-arrow" alt="Next">
-        </button>
+        <!-- ---------------- Container for pop-ups ---------------- -->
+        <div id="popups-container">
+            <!-- Pop-ups will be generated dynamically by JavaScript -->
+        </div>
+
     </div>
 
-    <!-- ---------------- Container for pop-ups ---------------- -->
-    <div id="popups-container">
-        <!-- Pop-ups will be generated dynamically by JavaScript -->
-    </div>
+
+
+
 
    <script>
         const teamMembers = [

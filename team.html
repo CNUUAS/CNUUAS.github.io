@@ -1,6 +1,3 @@
-<!--@Todo: make it so that clicking outside the pop-ups closes them
-    (added bonus of not having them layer on top of each other)-->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,14 +6,37 @@
     <title>Team Page</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
+
+    <!--TODO: get the images of the buttons, logo, and team members-->
+    <!--      add pop-up information formatting-->
+    <!--      add "View All" page-->
+
+
     <style>
-        /* ---------------- Navbar styling ---------------- */
+
+
+        /* ---------------- Body ---------------- */
+        body {
+            background-color: rgb(18, 18, 126);
+        }
+
+        /* ---------------- Navbar ---------------- */
         .navbar {
             position: relative;
             z-index: 1000;
         }
 
-        /* ---------------- Team card container ---------------- */
+        /* ---------------- Team Carousel Wrapper ---------------- */
+        .teamCarouselWrapper {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 80vh;
+            margin: 0 auto;
+        }
+
+        /* ---------------- Team Cards Container ---------------- */
         .cards-container {
             display: flex;
             flex-wrap: wrap;
@@ -24,68 +44,112 @@
             justify-content: flex-start;
         }
 
-        /* ---------------- Individual team card ---------------- */
+        /* ---------------- Individual Team Card ---------------- */
         .team-card {
-            width: 10vw;
-            height: 26vh;
+            width: 40vw;
+            height: 30vh;
             display: flex;
             flex-direction: column;
-            border: 3px solid black;
+            position: relative;
+            border: 3px solid white;
             border-radius: 10px;
             overflow: hidden;
-            background-color: lightgray;
             cursor: pointer;
-            padding: 0;
             margin: 2vw;
+            padding: 0;
         }
 
-        /* Image section inside card */
-        .img-section {
-            flex: 7;
-        }
+        /* Image inside card */
+        .img-section,
         .img-section img {
             width: 100%;
             height: 100%;
+        }
+
+        .img-section img {
             object-fit: cover;
+            display: block;
         }
 
-        /* Text section inside card */
+        /* Text overlay inside card */
         .text-section {
-            flex: 3;
-            display: flex; 
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2vw;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 0.75rem;
+            color: white;
+            font-size: 1rem;
             font-weight: bold;
-            padding: 1vw;
+            text-align: center;
+            white-space: pre-line;
+            text-shadow: 1px 1px 2px black;
+            background: none;
         }
 
-        /* ---------------- Pop-up styling ---------------- */
+        /* ---------------- Pop-up ---------------- */
         .pop-up {
             display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 300px;
-            height: 300px;
-            background-color: white;
-            border: 3px solid black;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            z-index: 2000;
-            padding: 20px;
+            background-color: white;
+            z-index: 10;
+            padding: 10px;
             text-align: center;
+            box-shadow: 0 0 8px rgba(0,0,0,0.3);
         }
 
-        /* Close button in pop-up */
-        .close-btn {
+        .pop-up .close-btn {
             position: absolute;
-            top: 10px;
-            right: 15px;
-            font-size: 24px;
-            cursor: pointer;
+            top: 5px;
+            right: 5px;
+            font-size: 20px;
+            color: black;
         }
+
+        /* ---------------- Carousel ---------------- */
+        .carousel-item {
+            padding: 20px;
+        }
+
+        .carousel-item .cards-row {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .carousel-control-prev-icon,
+        .carousel-control-next-icon {
+            filter: invert(1);
+        }
+
+        /* Fix carousel arrows distance from carousel */
+        #teamCarousel .carousel-control-prev,
+        #teamCarousel .carousel-control-next {
+            top: 50%;
+            transform: translateY(-50%);
+            width: auto;
+            height: auto;
+        }
+
+        #teamCarousel .carousel-control-prev {
+            left: -50px;
+        }
+
+        #teamCarousel .carousel-control-next {
+            right: -50px;
+        }
+
+        #teamCarousel .carousel-arrow {
+            width: 30px;
+            height: 40px;
+        }
+
+
     </style>
 </head>
 <body>
@@ -120,63 +184,102 @@
         </div>
     </nav>
 
-    <!-- ---------------- Container for team cards ---------------- -->
-    <div class="cards-container" id="team-cards">
-        <!-- Cards will be generated dynamically by JavaScript -->
+
+    <div class = "teamCarouselWrapper">
+
+
+        <!-- ---------------- Container for team cards ---------------- -->
+        <div id="teamCarousel" class="carousel slide" data-bs-ride="false">
+            <div class="carousel-inner" id="team-cards"></div>
+
+            <button class="carousel-control-prev" type="button" data-bs-target="#teamCarousel" data-bs-slide="prev">
+                <img src="images\left_arrow.png" class="carousel-arrow" alt="Previous">
+            </button>
+
+            <button class="carousel-control-next" type="button" data-bs-target="#teamCarousel" data-bs-slide="next">
+                <img src="images\right_arrow.png" class="carousel-arrow" alt="Next">
+            </button>
+        </div>
+
+        <!-- ---------------- Container for pop-ups ---------------- -->
+        <div id="popups-container">
+            <!-- Pop-ups will be generated dynamically by JavaScript -->
+        </div>
+
     </div>
 
-    <!-- ---------------- Container for pop-ups ---------------- -->
-    <div id="popups-container">
-        <!-- Pop-ups will be generated dynamically by JavaScript -->
-    </div>
 
-    <script>
-        // ---------------- Team data ----------------
-        // Array of team members with name, image URL, and popup text
+
+
+
+   <script>
         const teamMembers = [
-            {name: 'Test Team Card 1', img: 'https://picsum.photos/600/350?random=1', popup: 'Popup for Team Member 1'},
-            {name: 'Test Team Card 2', img: 'https://picsum.photos/600/350?random=2', popup: 'Popup for Team Member 2'},
-            {name: 'Test Team Card 3', img: 'https://picsum.photos/600/350?random=3', popup: 'Popup for Team Member 3'},
-            {name: 'Test Team Card 4', img: 'https://picsum.photos/600/350?random=4', popup: 'Popup for Team Member 4'},
-            {name: 'Test Team Card 5', img: 'https://picsum.photos/600/350?random=5', popup: 'Popup for Team Member 5'},
+            {name: 'Test Team\nCard 1', img: 'https://picsum.photos/600/350?random=1', popup: 'Popup for Team Member 1'},
+            {name: 'Test Team\nCard 2', img: 'https://picsum.photos/600/350?random=2', popup: 'Popup for Team Member 2'},
+            {name: 'Test Team\nCard 3', img: 'https://picsum.photos/600/350?random=3', popup: 'Popup for Team Member 3'},
+            {name: 'Test Team\nCard 4', img: 'https://picsum.photos/600/350?random=4', popup: 'Popup for Team Member 4'},
+            {name: 'Test Team\nCard 5', img: 'https://picsum.photos/600/350?random=5', popup: 'Popup for Team Member 5'},
         ];
 
-        // References to containers
+        const CARDS_PER_SLIDE = 1;
+
         const cardsContainer = document.getElementById('team-cards');
         const popupsContainer = document.getElementById('popups-container');
 
-        // Loop through each team member and create card + popup
-        teamMembers.forEach((member, index) => {
-            // ---------- Create card ----------
-            const card = document.createElement('button');
-            card.className = 'team-card';
-            card.dataset.panel = `popup-${index}`; // associate card with popup
-            card.innerHTML = `
-                <div class="img-section"><img src="${member.img}" alt="${member.name}"></div>
-                <div class="text-section">${member.name}</div>
-            `;
-            cardsContainer.appendChild(card); // add card to container
+        // Split team members into chunks (slides)
+        for (let i = 0; i < teamMembers.length; i += CARDS_PER_SLIDE) {
+            const slideMembers = teamMembers.slice(i, i + CARDS_PER_SLIDE);
 
-            // ---------- Create popup ----------
-            const popup = document.createElement('div');
-            popup.className = 'pop-up';
-            popup.id = `popup-${index}`;
-            popup.innerHTML = `
-                <span class="close-btn">&times;</span>
-                <p>${member.popup}</p>
-            `;
-            popupsContainer.appendChild(popup); // add popup to container
+            // Create carousel slide
+            const slide = document.createElement('div');
+            slide.className = `carousel-item ${i === 0 ? 'active' : ''}`;
 
-            // ---------- Event listeners ----------
-            const closeBtn = popup.querySelector('.close-btn');
+            const row = document.createElement('div');
+            row.className = 'cards-row';
 
-            // Open popup when card is clicked
-            card.addEventListener('click', () => popup.style.display = 'block');
+            slideMembers.forEach((member, index) => {
+                const memberIndex = i + index;
 
-            // Close popup when close button is clicked
-            closeBtn.addEventListener('click', () => popup.style.display = 'none');
-        });
-    </script>
+                // ---------- Create card ----------
+                const card = document.createElement('button');
+                card.className = 'team-card';
+                card.innerHTML = `
+                    <div class="img-section"><img src="${member.img}" alt="${member.name}"></div>
+                    <div class="text-section">${member.name}</div>
+                `;
+
+                // ---------- Create popup ----------
+                const popup = document.createElement('div');
+                popup.className = 'pop-up';
+                popup.id = `popup-${memberIndex}`;
+                popup.innerHTML = `
+                    <span class="close-btn">&times;</span>
+                    <p>${member.popup}</p>
+                `;
+
+                card.appendChild(popup);
+
+                // ---------- Events ----------
+                // Open popup when card is clicked
+                card.addEventListener('click', () => {
+                    popup.style.display = 'block';
+                });
+
+                // Close popup when close button is clicked
+                popup.querySelector('.close-btn').addEventListener('click', (e) => {
+                    e.stopPropagation();      // Prevent click from reaching the card
+                    popup.style.display = 'none';
+                });
+
+                row.appendChild(card);
+            });
+
+            slide.appendChild(row);
+            cardsContainer.appendChild(slide);
+        }
+        </script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>

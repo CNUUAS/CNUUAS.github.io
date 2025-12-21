@@ -122,7 +122,7 @@
         }
         
         .scroll-down-btn {
-            bottom: 20px;
+            bottom: 80px;
         }
 
         .section {
@@ -140,6 +140,9 @@
         
         .lead {
             font-size: 1.1rem;
+        }
+        .hero-overlay .tagline {
+            display: none;  /* Hide subtitle on mobile */
         }
 
         .btn-lg {
@@ -247,9 +250,9 @@
             <!-- Centered overlay text -->
             <div class="container">
                 <div class="hero-overlay text-center">
-                    <h1 class="display-4">Welcome to... CNU UAS</h1>
+                    <h1 class="display-4">CNU UAS</h1>
                      <!-- <h1 class="display-4">Christopher Newport University</h1> -->
-                     <!-- <p1 class="lead"> Unmanned Ariel Systems</p1> -->
+                     <p1 class="lead"> Click and drag for 360° experience </p1>
                 </div>
             </div>
             
@@ -266,16 +269,22 @@
                     <div class="col-lg-10 mx-auto"> 
                         <h2 class="display-5 mb-4 text-center">About UAS At CNU</h2>
                         <p class="lead text-center">
-                            The CNU Unmanned Aircraft Systems (UAS) club at Christopher Newport University that
+                            The Unmanned Aircraft Systems (UAS) club at Christopher Newport University
                             is dedicated in learning and developement around drone technology and aerial innovation. 
                         </p>
                         <p>
-                            Our team of students and faculty work together to push the boundaries of 
-                            what's possible with unmanned aerial vehicles.
+                            <b>TODO: UPDATE DESCRIPTION...</b> Our team of students and faculty work together to push the boundaries of 
+                            what's possible with unmanned aerial vehicles 
                         </p>
                         
                         <!-- Cards will stack automatically on mobile -->
                         <div class="row mt-4">
+                            <div class="col-lg-6 order-1 order-lg-2">
+                                <img src="assets/drone-placeholder2.png" 
+                                    alt="Meet-the-team" 
+                                    class="img-fluid rounded shadow" 
+                                    onerror="this.src='https://via.placeholder.com/600x400?text=Drone+Image'">
+                            </div>
                             <div class="col-md-4 mb-3">
                                 <div class="card h-100">
                                     <div class="card-body text-center">
@@ -300,6 +309,7 @@
                                     </div>
                                 </div>
                             </div>
+                            
                         </div>
                     </div>
                 </div>
@@ -326,6 +336,14 @@
                              onerror="this.src='https://via.placeholder.com/600x400?text=Drone+Image'">
                     </div>
                 </div>
+            </div>
+        </section>
+
+        <!-- Image Carousel Section - Mobile Friendly -->
+        <section id="image-carousel" class="section bg-white">
+            <div class="container">
+                <h2 class="display-5 mb-4">[Insert Image Carousel]</h2>
+
             </div>
         </section>
 
@@ -362,6 +380,8 @@
 
     <!-- View360 Initialization Script -->
     <script>
+        // @TODO: Make sure any image or video does not exceed the size 
+        // of a standard monitor OR store alternate versions (for mobile/tablet/desktop)
         setTimeout(function() {
             console.log("Initializing 360 viewer...");
             

@@ -1,5 +1,4 @@
-<!--TODO: get the images of the buttons, logo, and team members-->
-<!--      add desktop and ipad view-->
+<!--TODO: get the images of the buttons, logo, and team members + team member info-->
 <!--      add "View All" page-->
 
 <!DOCTYPE html>
@@ -15,11 +14,14 @@
             rel="stylesheet"
         />
 
+        <!-- Default Styling -->
+        <link href="css/teamDefault.css" rel="stylesheet" />
+
         <!-- Specific Device Styling -->
         <link
             href="css/teamMobile.css"
             rel="stylesheet"
-            media="screen and (max-width: 500px)"
+            media="screen and (max-width: 499px)"
         />
     </head>
 
@@ -27,9 +29,7 @@
         <!-- ---------------- Navbar ---------------- -->
         <nav class="navbar navbar-expand-md navbar-dark bg-dark">
             <div class="container">
-                <!-- Brand -->
                 <a href="#" class="navbar-brand">CNU UAS</a>
-                <!-- Hamburger menu for small screens -->
                 <button
                     class="navbar-toggler"
                     data-bs-toggle="collapse"
@@ -39,7 +39,6 @@
                 >
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <!-- Navbar links -->
                 <div class="collapse navbar-collapse" id="nav">
                     <ul class="navbar-nav">
                         <li class="nav-item">
@@ -73,18 +72,14 @@
                 />
             </div>
 
-            <!-- ---------------- Carousel Wrapper ---------------- -->
+            <!-- ---------------- Team Display ---------------- -->
             <div class="teamCarouselWrapper">
-                <!-- ---------------- Carousel ---------------- -->
                 <div
                     id="teamCarousel"
                     class="carousel slide"
                     data-bs-ride="false"
                 >
-                    <!-- Container for carousel slides (dynamically added) -->
                     <div class="carousel-inner" id="team-cards"></div>
-
-                    <!-- Previous and next arrow buttons -->
                     <button
                         class="carousel-control-prev"
                         type="button"
@@ -111,10 +106,10 @@
                     </button>
                 </div>
 
-                <!-- Container for pop-ups (dynamically added) -->
+                <div id="desktop-team-grid" class="desktop-grid"></div>
+
                 <div id="popups-container"></div>
 
-                <!--View All Button-->
                 <div class="viewButtonWrapper">
                     <button class="viewButton" type="button" id="viewButton">
                         View All
@@ -123,8 +118,14 @@
             </div>
         </div>
 
+        <!-- Footer -->
+        <footer class="bg-dark text-white text-center py-4">
+            <div class="container">
+                <p class="mb-0">&copy; 2025 CNU UAS. All rights reserved.</p>
+            </div>
+        </footer>
+
         <script>
-            // Team members data
             const teamMembers = [
                 {
                     name: "Guy M.\nElectrical Engineer",
@@ -143,41 +144,27 @@
                 },
             ];
 
-            // Reference to the carousel inner container
-            const cardsContainer = document.getElementById("team-cards");
+            const isDesktop = window.matchMedia("(min-width: 500px)").matches;
 
-            // Generate one slide per team member
-            teamMembers.forEach((member, index) => {
-                // Create slide
-                const slide = document.createElement("div");
-                slide.className = `carousel-item ${
-                    index === 0 ? "active" : ""
-                }`;
-
-                // Create single team card
+            function createCard(member, index) {
                 const card = document.createElement("button");
                 card.className = "team-card";
                 card.innerHTML = `
-            <img src="${member.img}" alt="${member.name}">
-            <div class="text-section">${member.name}</div>
-        `;
+                <img src="${member.img}" alt="${member.name}">
+                <div class="text-section">${member.name}</div>
+            `;
 
-                // Create popup overlay
                 const popup = document.createElement("div");
                 popup.className = "pop-up";
                 popup.id = `popup-${index}`;
                 popup.innerHTML = `<span class="close-btn">&times;</span><p>${member.popup}</p>`;
 
-                // Append popup to card
                 card.appendChild(popup);
 
-                // Show popup when card is clicked
                 card.addEventListener(
                     "click",
                     () => (popup.style.display = "block")
                 );
-
-                // Close popup when close button is clicked
                 popup
                     .querySelector(".close-btn")
                     .addEventListener("click", (e) => {
@@ -185,17 +172,32 @@
                         popup.style.display = "none";
                     });
 
-                // Add card to slide
-                slide.appendChild(card);
+                return { card, popup };
+            }
 
-                // Add slide to carousel
-                cardsContainer.appendChild(slide);
-            });
+            if (isDesktop) {
+                const desktopGrid =
+                    document.getElementById("desktop-team-grid");
+                teamMembers.forEach((member, index) => {
+                    const { card } = createCard(member, index);
+                    desktopGrid.appendChild(card);
+                });
+            } else {
+                const cardsContainer = document.getElementById("team-cards");
+                teamMembers.forEach((member, index) => {
+                    const slide = document.createElement("div");
+                    slide.className = `carousel-item ${
+                        index === 0 ? "active" : ""
+                    }`;
+                    const { card } = createCard(member, index);
+                    slide.appendChild(card);
+                    cardsContainer.appendChild(slide);
+                });
+            }
 
-            // Make the View All Button work
             document
                 .getElementById("viewButton")
-                .addEventListener("click", function () {
+                .addEventListener("click", () => {
                     window.location.href = "fullTeam.html";
                 });
         </script>

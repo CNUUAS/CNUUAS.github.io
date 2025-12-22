@@ -15,11 +15,181 @@
             rel="stylesheet"
         />
 
+        <style>
+            /* ---------------- Body ---------------- */
+            body {
+                background-color: #0e2670;
+                margin: 0;
+                font-family: Arial, sans-serif;
+                height: 100vh;
+            }
+
+            .mainContent {
+                box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.8);
+                padding-top: 1vh;
+                padding-bottom: 32vh;
+            }
+
+            /* ---------------- Navbar ---------------- */
+            .navbar {
+                position: relative;
+                z-index: 1000;
+            }
+
+            /* ---------------- Team Logo ---------------- */
+            .teamLogoWrapper {
+                margin-top: 5vh;
+                display: flex;
+                justify-content: center;
+            }
+            .teamLogoImage {
+                width: 30vw;
+            }
+
+            /* ---------------- Desktop Team Grid ---------------- */
+            .desktop-grid {
+                display: flex;
+                justify-content: center;
+                gap: 30px;
+                flex-wrap: wrap;
+                margin-top: 40px;
+                margin: 40px auto 0 auto;
+                max-width: 1200px;
+                padding: 0 20px;
+            }
+
+            /* ---------------- Carousel Wrapper ---------------- */
+            .teamCarouselWrapper {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                margin: 3vh auto 0 auto;
+            }
+
+            /* ---------------- Carousel ---------------- */
+            #teamCarousel {
+                width: 90%;
+                max-width: 700px;
+                margin: 0 auto;
+                position: relative;
+                overflow: visible;
+            }
+            .carousel-item {
+                padding: 20px 0;
+            }
+            .cards-row {
+                display: flex;
+                justify-content: center;
+                gap: 20px;
+                flex-wrap: wrap;
+            }
+            /* Previous and next arrow buttons */
+            .carousel-control-prev,
+            .carousel-control-next {
+                display: none;
+            }
+            .carousel-control-prev {
+                left: 20px;
+            }
+            .carousel-control-next {
+                right: 20px;
+            }
+            /* Arrow image styling */
+            .carousel-arrow {
+                width: 30px;
+                height: 40px;
+                display: block;
+            }
+
+            /* ---------------- Team Cards ---------------- */
+            /* Individual team member card styling */
+            .team-card {
+                display: flex;
+                border: 4px solid white;
+                border-radius: 30px;
+                overflow: hidden;
+                cursor: pointer;
+                padding: 0;
+                margin: 0 auto;
+                width: 15vw;
+                height: 40vh;
+                position: relative;
+                min-width: 220px;
+                min-height: 300px;
+                max-height: 400px;
+            }
+            .team-card img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                display: block;
+            }
+
+            /* Text overlay at bottom of card */
+            .text-section {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                padding: 0.75rem 0;
+                color: white;
+                font-size: 1.2rem;
+                font-weight: bold;
+                text-align: center;
+                white-space: pre-line;
+                text-shadow: 1px 1px 2px black;
+            }
+
+            /* ---------------- Pop-ups ---------------- */
+            /* Hidden by default, shown when card is clicked */
+            .pop-up {
+                display: none;
+                position: absolute;
+                top: -4px;
+                left: -4px;
+                width: calc(100% + 8px);
+                height: calc(100% + 8px);
+                background-color: white;
+                z-index: 20;
+                border-radius: 30px;
+                padding: 2.5rem 0.5rem 0 0.5rem;
+                text-align: center;
+                box-shadow: 0 0 8px rgba(0, 0, 0, 0.35);
+                font-size: 1.5rem;
+            }
+            /* Close button for pop-ups */
+            .pop-up .close-btn {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                font-size: 35px;
+                color: black;
+                cursor: pointer;
+            }
+            /* Button to view all team members */
+            .viewButtonWrapper {
+                margin-top: 30px;
+            }
+
+            .viewButton {
+                background-color: rgb(108, 120, 150);
+                border-radius: 20px;
+                color: white;
+                padding-left: 20px;
+                padding-right: 20px;
+                border: none;
+                box-shadow: none;
+                outline: none;
+                appearance: none;
+                -webkit-appearance: none;
+            }
+        </style>
+
         <!-- Specific Device Styling -->
         <link
             href="css/teamMobile.css"
             rel="stylesheet"
-            media="screen and (max-width: 500px)"
+            media="screen and (max-width: 499px)"
         />
     </head>
 
@@ -111,6 +281,8 @@
                     </button>
                 </div>
 
+                <div id="desktop-team-grid" class="desktop-grid"></div>
+
                 <!-- Container for pop-ups (dynamically added) -->
                 <div id="popups-container"></div>
 
@@ -141,56 +313,128 @@
                     img: "https://picsum.photos/600/350?random=3",
                     popup: "Lass G. is a major in computer engineering and enjoys neither existing nor not existing on the planet earth.",
                 },
+                {
+                    name: "Lass G.\nComputer Engineer",
+                    img: "https://picsum.photos/600/350?random=3",
+                    popup: "Lass G. is a major in computer engineering and enjoys neither existing nor not existing on the planet earth.",
+                },
+                {
+                    name: "Lass G.\nComputer Engineer",
+                    img: "https://picsum.photos/600/350?random=3",
+                    popup: "Lass G. is a major in computer engineering and enjoys neither existing nor not existing on the planet earth.",
+                },
+                {
+                    name: "Lass G.\nComputer Engineer",
+                    img: "https://picsum.photos/600/350?random=3",
+                    popup: "Lass G. is a major in computer engineering and enjoys neither existing nor not existing on the planet earth.",
+                },
+                {
+                    name: "Lass G.\nComputer Engineer",
+                    img: "https://picsum.photos/600/350?random=3",
+                    popup: "Lass G. is a major in computer engineering and enjoys neither existing nor not existing on the planet earth.",
+                },
+                {
+                    name: "Lass G.\nComputer Engineer",
+                    img: "https://picsum.photos/600/350?random=3",
+                    popup: "Lass G. is a major in computer engineering and enjoys neither existing nor not existing on the planet earth.",
+                },
+                {
+                    name: "Lass G.\nComputer Engineer",
+                    img: "https://picsum.photos/600/350?random=3",
+                    popup: "Lass G. is a major in computer engineering and enjoys neither existing nor not existing on the planet earth.",
+                },
             ];
 
-            // Reference to the carousel inner container
-            const cardsContainer = document.getElementById("team-cards");
+            const isDesktop = window.matchMedia("(min-width: 500px)").matches;
 
-            // Generate one slide per team member
-            teamMembers.forEach((member, index) => {
-                // Create slide
-                const slide = document.createElement("div");
-                slide.className = `carousel-item ${
-                    index === 0 ? "active" : ""
-                }`;
+            if (isDesktop) {
+                // Reference to desktop grid
+                const desktopGrid =
+                    document.getElementById("desktop-team-grid");
 
-                // Create single team card
-                const card = document.createElement("button");
-                card.className = "team-card";
-                card.innerHTML = `
+                // Create cards for desktop grid
+                teamMembers.forEach((member, index) => {
+                    const card = document.createElement("button");
+                    card.className = "team-card";
+                    card.innerHTML = `
+        <img src="${member.img}" alt="${member.name}">
+        <div class="text-section">${member.name}</div>
+    `;
+
+                    // Create popup
+                    const popup = document.createElement("div");
+                    popup.className = "pop-up";
+                    popup.innerHTML = `
+        <span class="close-btn">&times;</span>
+        <p>${member.popup}</p>
+    `;
+
+                    card.appendChild(popup);
+
+                    card.addEventListener("click", () => {
+                        popup.style.display = "block";
+                    });
+
+                    popup
+                        .querySelector(".close-btn")
+                        .addEventListener("click", (e) => {
+                            e.stopPropagation();
+                            popup.style.display = "none";
+                        });
+
+                    desktopGrid.appendChild(card);
+                });
+            } else {
+                console.log("Worked");
+                // Reference to the carousel inner container
+                const cardsContainer = document.getElementById("team-cards");
+
+                // Generate one slide per team member
+                teamMembers.forEach((member, index) => {
+                    // Create slide
+                    const slide = document.createElement("div");
+                    slide.className = `carousel-item ${
+                        index === 0 ? "active" : ""
+                    }`;
+
+                    // Create single team card
+                    const card = document.createElement("button");
+                    card.className = "team-card";
+                    card.innerHTML = `
             <img src="${member.img}" alt="${member.name}">
             <div class="text-section">${member.name}</div>
         `;
 
-                // Create popup overlay
-                const popup = document.createElement("div");
-                popup.className = "pop-up";
-                popup.id = `popup-${index}`;
-                popup.innerHTML = `<span class="close-btn">&times;</span><p>${member.popup}</p>`;
+                    // Create popup overlay
+                    const popup = document.createElement("div");
+                    popup.className = "pop-up";
+                    popup.id = `popup-${index}`;
+                    popup.innerHTML = `<span class="close-btn">&times;</span><p>${member.popup}</p>`;
 
-                // Append popup to card
-                card.appendChild(popup);
+                    // Append popup to card
+                    card.appendChild(popup);
 
-                // Show popup when card is clicked
-                card.addEventListener(
-                    "click",
-                    () => (popup.style.display = "block")
-                );
+                    // Show popup when card is clicked
+                    card.addEventListener(
+                        "click",
+                        () => (popup.style.display = "block")
+                    );
 
-                // Close popup when close button is clicked
-                popup
-                    .querySelector(".close-btn")
-                    .addEventListener("click", (e) => {
-                        e.stopPropagation();
-                        popup.style.display = "none";
-                    });
+                    // Close popup when close button is clicked
+                    popup
+                        .querySelector(".close-btn")
+                        .addEventListener("click", (e) => {
+                            e.stopPropagation();
+                            popup.style.display = "none";
+                        });
 
-                // Add card to slide
-                slide.appendChild(card);
+                    // Add card to slide
+                    slide.appendChild(card);
 
-                // Add slide to carousel
-                cardsContainer.appendChild(slide);
-            });
+                    // Add slide to carousel
+                    cardsContainer.appendChild(slide);
+                });
+            }
 
             // Make the View All Button work
             document

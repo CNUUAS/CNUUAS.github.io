@@ -15,7 +15,7 @@
             /* ---------------- Body ---------------- */
             /* Set background color, remove default margin, and set font */
             body {
-                background-color: rgb(18, 18, 126);
+                background-color: #0e2670;
                 margin: 0;
                 font-family: Arial, sans-serif;
             }
@@ -151,6 +151,29 @@
                 color: black;
                 cursor: pointer;
             }
+
+            .viewButtonWrapper {
+                margin-top: 30px;
+            }
+
+            .viewButton{
+                background-color: rgb(108, 120, 150);
+                border-radius: 20px;
+                color: white;
+                padding-left: 20px;
+                padding-right: 20px;
+
+                /* Remove 3D / shadow look */
+                border: none;
+                box-shadow: none;
+                outline: none;
+                appearance: none;
+                -webkit-appearance: none;
+            }
+
+
+
+
         </style>
     </head>
 
@@ -239,6 +262,34 @@
 
             <!-- Container for pop-ups (dynamically added) -->
             <div id="popups-container"></div>
+
+
+
+
+
+
+
+
+
+
+
+
+            <!--View All Button-->
+            <div class="viewButtonWrapper">
+                <button class="viewButton" type="button" id = "viewButton">View All</button>
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+
         </div>
 
         <script>
@@ -309,6 +360,13 @@
                 // Add slide to carousel
                 cardsContainer.appendChild(slide);
             });
+
+        document.getElementById("viewButton").addEventListener("click", function () {
+            window.location.href = "fullTeam.html";
+        });
+
+
+
         </script>
 
         <!-- Bootstrap JS bundle (includes Popper) -->

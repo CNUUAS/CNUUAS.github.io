@@ -1,0 +1,167 @@
+            /* ---------------- Body ---------------- */
+            body {
+                background-color: #0e2670;
+                margin: 0;
+                font-family: Arial, sans-serif;
+                height: 100vh;
+            }
+
+            .mainContent {
+                box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.8);
+                padding-top: 1vh;
+                padding-bottom: 32vh;
+            }
+
+            /* ---------------- Navbar ---------------- */
+            .navbar {
+                position: relative;
+                z-index: 1000;
+            }
+
+            /* ---------------- Team Logo ---------------- */
+            .teamLogoWrapper {
+                margin-top: 5vh;
+                display: flex;
+                justify-content: center;
+            }
+            .teamLogoImage {
+                width: 30vw;
+            }
+
+            /* ---------------- Desktop Team Grid ---------------- */
+            .desktop-grid {
+                display: flex;
+                justify-content: center;
+                gap: 30px;
+                flex-wrap: wrap;
+                margin-top: 40px;
+                margin: 40px auto 0 auto;
+                max-width: 1200px;
+                padding: 0 20px;
+            }
+
+            /* ---------------- Carousel Wrapper ---------------- */
+            .teamCarouselWrapper {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                margin: 3vh auto 0 auto;
+            }
+
+            /* ---------------- Carousel ---------------- */
+            #teamCarousel {
+                width: 90%;
+                max-width: 700px;
+                margin: 0 auto;
+                position: relative;
+                overflow: visible;
+            }
+            .carousel-item {
+                padding: 20px 0;
+            }
+            .cards-row {
+                display: flex;
+                justify-content: center;
+                gap: 20px;
+                flex-wrap: wrap;
+            }
+            /* Previous and next arrow buttons */
+            .carousel-control-prev,
+            .carousel-control-next {
+                display: none;
+            }
+            .carousel-control-prev {
+                left: 20px;
+            }
+            .carousel-control-next {
+                right: 20px;
+            }
+            /* Arrow image styling */
+            .carousel-arrow {
+                width: 30px;
+                height: 40px;
+                display: block;
+            }
+
+            /* ---------------- Team Cards ---------------- */
+            /* Individual team member card styling */
+            .team-card {
+                display: flex;
+                border: 4px solid white;
+                border-radius: 30px;
+                overflow: hidden;
+                cursor: pointer;
+                padding: 0;
+                margin: 0 auto;
+                width: 15vw;
+                height: 40vh;
+                position: relative;
+                min-width: 220px;
+                min-height: 300px;
+                max-height: 400px;
+            }
+            .team-card img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                display: block;
+            }
+
+            /* Text overlay at bottom of card */
+            .text-section {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                padding: 0.75rem 0;
+                color: white;
+                font-size: 1.2rem;
+                font-weight: bold;
+                text-align: center;
+                white-space: pre-line;
+                text-shadow: 1px 1px 2px black;
+            }
+
+            /* ---------------- Pop-ups ---------------- */
+            /* Hidden by default, shown when card is clicked */
+            .pop-up {
+                display: none;
+                position: absolute;
+                top: -4px;
+                left: -4px;
+                width: calc(100% + 8px);
+                height: calc(100% + 8px);
+                background-color: white;
+                z-index: 20;
+                border-radius: 30px;
+                padding: 2.5rem 0.5rem 0 0.5rem;
+                text-align: center;
+                box-shadow: 0 0 8px rgba(0, 0, 0, 0.35);
+                font-size: 1.5rem;
+            }
+            /* Close button for pop-ups */
+            .pop-up .close-btn {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                font-size: 35px;
+                color: black;
+                cursor: pointer;
+            }
+            /* Button to view all team members */
+            .viewButtonWrapper {
+                margin-top: 30px;
+            }
+
+            .viewButton {
+                background-color: rgb(108, 120, 150);
+                border-radius: 20px;
+                color: white;
+                padding-left: 20px;
+                padding-right: 20px;
+                border: none;
+                box-shadow: none;
+                outline: none;
+                appearance: none;
+                -webkit-appearance: none;
+            }

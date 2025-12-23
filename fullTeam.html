@@ -1,1 +1,183 @@
-Full Team Page
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Full Team Page</title>
+
+        <!-- Bootstrap CSS -->
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+        />
+
+        <style>
+            body {
+                background-color: #0e2670;
+            }
+            .mainContent {
+                box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.8);
+                padding-top: 1vh;
+                padding-bottom: 32vh;
+            }
+            .teamLogoWrapper {
+                margin-top: 5vh;
+                display: flex;
+                justify-content: center;
+            }
+            .teamLogoImage {
+                width: 30vw;
+                min-width: 300px;
+                max-width: 350px;
+            }
+            .team-card {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+
+                width: 35vw;
+                margin: 1.5rem auto;
+
+                background-color: #ffffff;
+                border: none;
+                border-radius: 10px;
+                cursor: pointer;
+                text-align: left;
+                min-width: 300px;
+
+                appearance: none;
+                -webkit-appearance: none;
+            }
+
+            /* Image on the left */
+            .team-card img {
+                width: 12vw;
+                height: 25vh;
+                margin: 0;
+                border-radius: 8px;
+                min-width: 130px;
+                min-height: 130px;
+                margin-right: 5vw;
+                margin-top: 0.5vh;
+                margin-bottom: 0.5vh;
+            }
+
+            /* Right-side text container */
+            .team-card .text-wrapper {
+                display: flex;
+                flex-direction: column;
+                gap: 0.3rem;
+            }
+
+            .text-section,
+            .text-section2,
+            .text-section3 {
+                color: #000;
+                font-size: clamp(3px,3vw,1rem);
+                
+            }
+        </style>
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+            <div class="container">
+                <a href="#" class="navbar-brand">CNU UAS</a>
+                <button
+                    class="navbar-toggler"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#nav"
+                    aria-controls="nav"
+                    aria-label="Expand Navigation"
+                >
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="nav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a href="index.html" class="nav-link active"
+                                >HOME</a
+                            >
+                        </li>
+                        <li class="nav-item">
+                            <a href="drone.html" class="nav-link">DRONE</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="team.html" class="nav-link">TEAM</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="sponsers.html" class="nav-link"
+                                >SPONSORS</a
+                            >
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="mainContent">
+            <div class="teamLogoWrapper">
+                <img
+                    src="assets/team_logo.png"
+                    class="teamLogoImage"
+                    alt="Team Logo"
+                />
+            </div>
+
+            <div class="membersWrapper" id="membersWrapper"></div>
+        </div>
+
+        <footer class="bg-dark text-white text-center py-4">
+            <div class="container">
+                <p class="mb-0">&copy; 2025 CNU UAS. All rights reserved.</p>
+            </div>
+        </footer>
+
+        <script>
+            const teamMembers = [
+                {
+                    name: "Guy M.",
+                    major: "Electrical Engineering",
+                    img: "https://picsum.photos/600/350?random=1",
+                    popup: "Guy M. is a major in electrical engineering and enjoys existing on the planet earth.",
+                    email: "Guy.man@gmail.com",
+                },
+                {
+                    name: "Lad T.",
+                    major: "Computer Science",
+                    img: "https://picsum.photos/600/350?random=2",
+                    popup: "Lad T. is a major in computer science and enjoys not existing on the planet earth.",
+                    email: "lad.tom@gmail.com",
+                },
+                {
+                    name: "Lass G.",
+                    major: "Computer Engineering",
+                    img: "https://picsum.photos/600/350?random=3",
+                    popup: "Lass G. is a major in computer engineering and enjoys neither existing nor not existing on the planet earth.",
+                    email: "lass.guy@gmail.com",
+                },
+            ];
+
+            function createCard(member) {
+                const card = document.createElement("button");
+                card.className = "team-card";
+                card.innerHTML = `
+                <img src="${member.img}" alt="${member.name}">
+                <div class = "text-wrapper">
+                    <div class = "text-section">Name: ${member.name}</div>
+                    <div class = "text-section2">Major: ${member.major}</div>
+                    <div class = "text-section3">E-Mail: ${member.email}</div>
+                </div>
+            `;
+                return { card };
+            }
+
+            const membersWrapper = document.getElementById("membersWrapper");
+
+            teamMembers.forEach((member) => {
+                const { card } = createCard(member);
+                membersWrapper.appendChild(card);
+            });
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
+</html>

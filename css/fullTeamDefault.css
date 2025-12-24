@@ -1,0 +1,67 @@
+body {
+                background-color: #0e2670;
+            }
+
+            .mainContent {
+                box-shadow: inset 0 0 3vw rgba(0, 0, 0, 0.8);
+                padding-top: 2vh;
+                padding-bottom: 18vh;
+            }
+
+            .teamLogoWrapper {
+                margin-top: 5vh;
+                display: flex;
+                justify-content: center;
+            }
+
+            .teamLogoImage {
+                width: clamp(200px, 25vw, 450px);
+                height: auto;
+            }
+
+            .membersWrapper {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 2vw;
+                max-width: 70vw;
+                margin: 5vh auto;
+            }
+
+            .team-card {
+                display: flex;
+                align-items: center;
+                gap: 1.2vw;
+                width: clamp(150px, 30vw, 500px);
+                height: clamp(100px, 12vw, 500px);
+                margin: 2vh auto;
+                background-color: #ffffff;
+                border: none;
+                border-radius: 1rem;
+                cursor: pointer;
+                text-align: left;
+                padding: 1.2rem;
+            }
+
+            /* Image on the left */
+            .team-card img {
+                width: clamp(80px, 10vw, 180px);
+                height: clamp(80px, 10vw, 180px);
+                object-fit: cover;
+                border-radius: 0.6rem;
+                margin: 0.5rem 1rem 0.5rem 0.5rem;
+                border: 3px solid black;
+            }
+
+            /* Right side text */
+            .team-card .text-wrapper {
+                display: flex;
+                flex-direction: column;
+                gap: 0.4rem;
+            }
+
+            .text-section,
+            .text-section2,
+            .text-section3 {
+                color: #000;
+                font-size: clamp(0.5rem, 1vw, 1.1rem);
+            }

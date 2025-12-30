@@ -1,0 +1,203 @@
+/* ==========================================
+   CSS VARIABLES - Easy theming across site
+   ========================================== */
+:root {
+    --navbar-height: 56px;
+    --section-padding: 40px;
+    --hero-gradient-start: rgba(0, 0, 0, 0.8);
+    --hero-gradient-mid: rgba(0, 0, 0, 0.5);
+    --hero-gradient-end: rgba(0, 0, 0, 0);
+}
+
+/* ==========================================
+   GLOBAL STYLES
+   ========================================== */
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    padding-top: var(--navbar-height);
+    overflow-x: hidden;
+}
+
+/* Account for fixed navbar */
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+/* ==========================================
+   HERO SECTION WITH 360 VIEWER
+   ========================================== */
+.hero-section {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60vh;
+    background: linear-gradient(to bottom, 
+        var(--hero-gradient-start) 0%,
+        var(--hero-gradient-mid) 30%,
+        var(--hero-gradient-end) 60%
+    );
+    z-index: 5;
+    pointer-events: none; 
+}
+
+#viewer {
+    width: 100%;
+    background-color: #ffffff;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    touch-action: pan-y pinch-zoom;
+}
+
+/* Hero overlay text */
+.hero-overlay {
+    position: relative;
+    z-index: 10;
+    padding: 40px 20px;
+    margin: auto auto 0;
+    border-radius: 10px;
+    max-width: 800px;
+    color: white;
+}
+
+.hero-overlay h1,
+.hero-overlay p {
+    color: white;
+}
+
+/* Scroll down button */
+.scroll-down-btn {
+    position: absolute;
+    bottom: 100px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateX(-50%) translateY(0);
+    }
+    40% {
+        transform: translateX(-50%) translateY(-10px);
+    }
+    60% {
+        transform: translateX(-50%) translateY(-5px);
+    }
+}
+
+/* ==========================================
+   SECTIONS
+   ========================================== */
+.section {
+    min-height: 100vh;
+    padding: var(--section-padding) 0;
+}
+
+/* ==========================================
+   MOBILE OPTIMIZATIONS
+   ========================================== */
+@media (max-width: 767px) {
+    body {
+        padding-top: 50px;
+    }
+
+    #viewer {
+        height: 100vh;
+    }
+    
+    .hero-overlay {
+        padding: 20px 15px;
+        margin: auto 15px 80px;
+    }
+    
+    .scroll-down-btn {
+        bottom: 80px;
+    }
+
+    .section {
+        min-height: auto;
+        padding: 30px 0;
+    }
+
+    .display-4 {
+        font-size: 2rem;
+    }
+    
+    .display-5 {
+        font-size: 1.75rem;
+    }
+    
+    .lead {
+        font-size: 1.1rem;
+    }
+
+    .hero-overlay .tagline {
+        display: none;
+    }
+
+    .btn-lg {
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+    }
+    
+    /* Stack buttons vertically on mobile */
+    .d-flex.gap-3 {
+        flex-direction: column !important;
+        gap: 1rem !important;
+    }
+    
+    .d-flex.gap-3 .btn {
+        width: 100%;
+    }
+
+    .nav-link {
+        padding: 0.75rem 1rem;
+    }
+    
+    .card {
+        margin-bottom: 1.5rem;
+    }
+
+    .img-fluid {
+        margin-bottom: 20px;
+    }
+}
+
+/* Tablet and Desktop */
+@media (min-width: 768px) {
+    #viewer {
+        height: 100vh;
+    }
+}
+
+/* ==========================================
+   UTILITY CLASSES
+   ========================================== */
+.container, .container-fluid {
+    overflow-x: hidden;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}

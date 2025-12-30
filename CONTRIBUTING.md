@@ -1,0 +1,164 @@
+# Contributing Guidelines
+
+## Table of Contents
+> - [1. Getting Started with Git](#1-getting-started-with-git)
+>   - [1.1 How to Clone the Repo](#11-cloning-the-repository) 
+>   - [1.2 How to Pull from Repo](#12-pulling-latest-changes)
+>   - [1.3 How to Make Changes](#13-making-changes)
+>     - [1.3.1 Creating Branches](#131-create-a-branch)
+>     - [1.3.2 Staging Changes](#132-stage-your-changes)
+>     - [1.3.3 Commiting Changes](#133-commit-your-changes)
+>     - [1.3.4 Pushing Changes](134-push-your-changes)
+>     - [1.3.5 What is a Branch?](#135-what-is-a-branch)
+>   - [1.4 Best Practices](#14-best-practices)
+> - [2. Getting Installing Packages](#2-getting-installing-packages)
+>   - [2.1 Node.js and NPM](#21-nodejs-and-npm)
+>   - [2.2 Helpful VSCode Extensions](@22-helpful-vscode-extenstions)
+> - [3. Getting Started with HTML/CSS/JS](#3-getting-started-with-web-design)
+>   - [3.1 Interactive Tutorials](#31-interactive-tutorials) 
+
+---
+<br>
+
+## 1. Getting Started with Git
+
+### 1.1 Cloning the Repository
+
+If you haven't cloned the repository yet, follow the official guide:
+> - [How to Clone a Repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository)
+
+<br>
+
+### 1.2 Pulling Latest Changes
+
+**Always pull the latest changes before starting work** to avoid merge conflicts.
+
+```bash
+git pull
+```
+
+Run this command from the branch you're working on to sync remote changes to your local machine.
+
+---
+<br>
+
+## 1.3 Making Changes
+
+### 1.3.1 Create a Branch
+---
+Create a new branch for each feature or fix you're working on. **Do not work directly on the main branch.**
+
+**Branch Naming Convention:**
+```
+[first_name][last_initial]/[description_of_change]
+```
+
+**Example:**
+```
+evag/update_contributing_docs
+```
+
+**Creating a branch (GitHub Web):**
+1. Go to the repository on GitHub
+2. Click the **Code** tab
+3. Click **Branches** (below the repository title)
+4. Click **New Branch** on the right
+5. Enter your branch name following the format above
+
+**Creating a branch (Command Line):**
+```bash
+git checkout -b [your_branch_name]
+```
+---
+### 1.3.2 Stage Your Changes
+---
+Add your changes to the staging area:
+
+```bash
+git add .
+```
+
+This stages all modified and new files. To stage specific files, use `git add [filename]`.
+
+---
+### 1.3.3 Commit Your Changes
+---
+Commit your staged changes with a descriptive message:
+
+```bash
+git commit -m "Brief description of your changes"
+```
+
+**Tip:** Commit frequently with clear, concise messages that explain *what* changed and *why*.
+
+---
+### 1.3.4 Push Your Changes
+---
+<br>
+
+**For the first push on a new branch:**
+
+When you push a new branch for the first time, you need to create it on the remote repository and set up tracking:
+
+```bash
+git push -u origin [your_branch_name]
+```
+
+The `-u` flag (short for `--set-upstream`) creates the branch on GitHub and links your local branch to it.
+
+**For all subsequent pushes:**
+
+Once tracking is established, simply use:
+
+```bash
+git push
+```
+
+**Note:** Local branches only exist on your machine until you push them to the remote repository.
+
+---
+## 1.3.5 What is a Branch?
+---
+A branch is an independent line of development in Git. It allows you to work on features, fixes, or experiments without affecting the main codebase. Once your work is complete and tested, your branch can be merged back into the main branch through a pull request.
+
+**Benefits of using branches:**
+- Isolate your work from others
+- Experiment safely without breaking the main code
+- Organize development by feature or task
+- Enable parallel development across the team
+
+---
+<br>
+
+## 1.4 Best Practices
+
+- **Pull before you start:** Always run `git pull` before making changes
+- **Commit often:** It's harder to narrow down errors when lots of changes are made. 
+- **Write clear commit messages:** Describe what you changed and why
+- **Branch for feature not User:** Create a separate branch for each feature or bug fix
+- **Keep branches up to date:** Regularly pull changes from the main branch into your feature branch
+
+---
+<br>
+
+## 2. Getting Installing Packages
+### 2.1 Node.js and NPM
+- [NPM Explanation and Tutorial](https://www.youtube.com/watch?v=P3aKRdUyr0s)
+- [View360 Documentation](https://naver.github.io/egjs-view360/)
+
+### 2.2 Helpful VSCode Extensions
+- Live Preview
+- Live Server
+
+## 3. Getting Started with Web Design
+
+### 3.1 Interactive Tutorials
+- I used W3Schools as an introduction to [HTML](https://www.w3schools.com/html/default.asp) and [CSS](https://www.w3schools.com/css/default.asp)
+- KhanAcademy also has a good [HTML/CSS Introduction](https://www.khanacademy.org/computing/computer-programming/html-css) course
+- [Super Simple Dev](https://supersimple.dev/courses) Has a variety of webdesign courses. Assignments are hosted on github.
+- [Bootstrap tutorial](https://www.w3schools.com/bootstrap5/)
+
+**Cheat Sheets**
+- [HTML Cheat Sheet](https://htmlcheatsheet.com/)
+- [CSS Cheat Sheet](https://htmlcheatsheet.com/css/)
+- [JS Cheat Sheet](https://htmlcheatsheet.com/js/)

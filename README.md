@@ -2,7 +2,7 @@
 
 Official website for the Christopher Newport University Unmanned Aircraft Systems (UAS) club.
 
-View the website here: https://cnuuas.github.io/index.html 
+View the website here: https://cnuuas.github.io/
 
 ## 📁 Project Structure
 

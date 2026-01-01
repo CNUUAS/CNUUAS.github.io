@@ -191,6 +191,29 @@ body {
 }
 
 /* ==========================================
+   IMAGE CAROUSEL
+   ========================================== */
+.carousel-item img {
+    height: 500px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+/* Mobile optimization */
+@media (max-width: 767px) {
+    .carousel-item img {
+        height: 300px;
+    }
+}
+
+/* Make carousel captions more readable */
+.carousel-caption {
+    background: rgba(0, 0, 0, 0.6);
+    padding: 20px;
+    border-radius: 10px;
+}
+
+/* ==========================================
    UTILITY CLASSES
    ========================================== */
 .container, .container-fluid {

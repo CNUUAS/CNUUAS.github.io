@@ -28,7 +28,11 @@ CNUUAS.GITHUB.IO/
 │   ├── navbar.html         # Shared navigation bar
 │   └── footer.html         # Shared footer
 └── assets/
-    ├── view360.jpg         # 360° panoramic image
+    ├── homepage/
+    │   ├── carousel_images/
+    │   │    │ ... (carousel images)
+    │   ├── navbar.html
+    │   ├── view360.jpg         # 360° panoramic image
     └── (other images)
 ```
 

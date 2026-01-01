@@ -29,6 +29,11 @@ body {
     z-index: 1000;
 }
 
+/* fix Jeremys LI for drone components page */
+li {
+    display: block;
+}
+
 /* ==========================================
    HERO SECTION WITH 360 VIEWER
    ========================================== */

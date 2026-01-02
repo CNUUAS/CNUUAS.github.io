@@ -72,7 +72,7 @@ const teamMembers = [
 ];
 
 function createCard(member) {
-    const card = document.createElement("button");
+    const card = document.createElement("div");
     card.className = "team-card";
     card.innerHTML = `
                 <img src="${member.img}" alt="${member.name}">

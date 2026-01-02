@@ -42,10 +42,6 @@ body {
     padding: 1.2rem;
 }
 
-button.team-card {
-    cursor: default !important;
-}
-
 /* Image on the left */
 .team-card img {
     width: clamp(80px, 10vw, 180px);

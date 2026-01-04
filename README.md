@@ -80,7 +80,7 @@ CNUUAS.GITHUB.IO/
 ### To add new Team Members to Team Pages
  - Edit the list found in the file `js\teamMembers.js`
  - Follow the formula of the other Team Members
- - The Team Mebers will be exported and created dynamically
+ - The Team Members will be exported and created dynamically
 
 ### To Update Navigation Menu
 **File:** `components/navbar.html`

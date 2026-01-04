@@ -77,6 +77,11 @@ CNUUAS.GITHUB.IO/
 - Changes apply to all pages automatically
 - Test on mobile (F12 → Toggle device toolbar)
 
+### To add new Team Members to Team Pages
+ - Edit the list found in the file `js\teamMembers.js`
+ - Follow the formula of the other Team Members
+ - The Team Members will be exported and created dynamically
+
 ### To Update Navigation Menu
 **File:** `components/navbar.html`
 

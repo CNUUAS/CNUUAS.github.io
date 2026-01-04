@@ -77,6 +77,11 @@ CNUUAS.GITHUB.IO/
 - Changes apply to all pages automatically
 - Test on mobile (F12 → Toggle device toolbar)
 
+### To add new Team Members to Team Pages
+ - Edit the list found in the file `js\teamMembers.js`
+ - Follow the formula of the other Team Members
+ - The Team Mebers will be exported and created dynamically
+
 ### To Update Navigation Menu
 **File:** `components/navbar.html`
 
@@ -130,11 +135,6 @@ CNUUAS.GITHUB.IO/
 2. **Add link to navbar** in `components/navbar.html`
 
 3. **Test locally** before pushing to GitHub
-
-### To add new Team Members to Team Pages
- - Edit the list found in the file `js\teamMembers.js`
- - Follow the formula of the other Team Members
- - The Team Mebers will be exported and created dynamically
 
 ### To Update 360° Viewer Image
 **File:** `js/viewer.js` (or inline script in `index.html`)

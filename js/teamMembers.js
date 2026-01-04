@@ -1,4 +1,4 @@
-// Array of team members
+// Array of team members. Edit this to change the Members in the team and fullTeam pages.
 
 export const teamMembers = [
     {

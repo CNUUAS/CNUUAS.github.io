@@ -17,7 +17,7 @@ function initialize360Viewer() {
         
         try {
             const viewer = new eg.view360.PanoViewer(viewerElement, {
-                image: "assets/view360.jpg",
+                image: "assets/homepage/view360.jpg",
                 projectionType: eg.view360.PanoViewer.PROJECTION_TYPE.EQUIRECTANGULAR,
                 pitch: 0,
                 yaw: 0,

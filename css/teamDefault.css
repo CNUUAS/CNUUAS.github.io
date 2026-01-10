@@ -1,6 +1,5 @@
 /* ---------------- Body ---------------- */
 body {
-    background-color: #0e2670;
     margin: 0;
     font-family: Arial, sans-serif;
     height: 100vh;
@@ -9,7 +8,9 @@ body {
 .mainContent {
     box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.8);
     padding-top: 1vh;
-    padding-bottom: 32vh;
+    padding-bottom: 10vh;
+    background-color: #0e2670;
+
 }
 
 /* ---------------- Navbar ---------------- */

@@ -13,7 +13,10 @@ function createCard(member, index) {
 
     // Card inner HTML including image, name, and major
     card.innerHTML = `
-        <img src="${member.img}" alt="${member.name}">
+        <div class="image-wrapper">
+            <img src="${member.img}" alt="${member.name}">
+        </div>
+        <div class="gradient-divider"></div>
         <div class="text-section">${member.name}</div>
         <div class="text-section2">${member.role}</div>
     `;

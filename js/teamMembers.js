@@ -4,6 +4,7 @@ export const teamMembers = [
     {
         name: "Guy M.",
         major: "Electrical Engineering",
+        role: "Hardware Lead",
         img: "https://picsum.photos/600/350?random=1",
         popup: "Guy M. is a major in electrical engineering and enjoys existing on the planet earth.",
         email: "Guy.man@gmail.com",
@@ -11,6 +12,7 @@ export const teamMembers = [
     {
         name: "Lad T.",
         major: "Computer Science",
+        role: "Software Lead",
         img: "https://picsum.photos/600/350?random=2",
         popup: "Lad T. is a major in computer science and enjoys not existing on the planet earth.",
         email: "lad.tom@gmail.com",
@@ -18,57 +20,90 @@ export const teamMembers = [
     {
         name: "Lass G.",
         major: "Computer Engineering",
+        role: "Flight Lead",
         img: "https://picsum.photos/600/350?random=3",
         popup: "Lass G. is a major in computer engineering and enjoys neither existing nor not existing on the planet earth.",
         email: "lass.guy@gmail.com",
     },
-    {
+        {
         name: "Lass G.",
         major: "Computer Engineering",
+        role: "Flight Lead",
         img: "https://picsum.photos/600/350?random=3",
         popup: "Lass G. is a major in computer engineering and enjoys neither existing nor not existing on the planet earth.",
         email: "lass.guy@gmail.com",
     },
-    {
+        {
         name: "Lass G.",
         major: "Computer Engineering",
+        role: "Flight Lead",
         img: "https://picsum.photos/600/350?random=3",
         popup: "Lass G. is a major in computer engineering and enjoys neither existing nor not existing on the planet earth.",
         email: "lass.guy@gmail.com",
     },
-    {
+        {
         name: "Lass G.",
         major: "Computer Engineering",
+        role: "Flight Lead",
         img: "https://picsum.photos/600/350?random=3",
         popup: "Lass G. is a major in computer engineering and enjoys neither existing nor not existing on the planet earth.",
         email: "lass.guy@gmail.com",
     },
-    {
+        {
         name: "Lass G.",
         major: "Computer Engineering",
+        role: "Flight Lead",
         img: "https://picsum.photos/600/350?random=3",
         popup: "Lass G. is a major in computer engineering and enjoys neither existing nor not existing on the planet earth.",
         email: "lass.guy@gmail.com",
     },
-    {
+        {
         name: "Lass G.",
         major: "Computer Engineering",
+        role: "Flight Lead",
         img: "https://picsum.photos/600/350?random=3",
         popup: "Lass G. is a major in computer engineering and enjoys neither existing nor not existing on the planet earth.",
         email: "lass.guy@gmail.com",
     },
-    {
+        {
         name: "Lass G.",
         major: "Computer Engineering",
+        role: "Flight Lead",
         img: "https://picsum.photos/600/350?random=3",
         popup: "Lass G. is a major in computer engineering and enjoys neither existing nor not existing on the planet earth.",
         email: "lass.guy@gmail.com",
     },
-    {
+        {
         name: "Lass G.",
         major: "Computer Engineering",
+        role: "Flight Lead",
         img: "https://picsum.photos/600/350?random=3",
         popup: "Lass G. is a major in computer engineering and enjoys neither existing nor not existing on the planet earth.",
         email: "lass.guy@gmail.com",
     },
+        {
+        name: "Lass G.",
+        major: "Computer Engineering",
+        role: "Flight Lead",
+        img: "https://picsum.photos/600/350?random=3",
+        popup: "Lass G. is a major in computer engineering and enjoys neither existing nor not existing on the planet earth.",
+        email: "lass.guy@gmail.com",
+    },
+        {
+        name: "Lass G.",
+        major: "Computer Engineering",
+        role: "Flight Lead",
+        img: "https://picsum.photos/600/350?random=3",
+        popup: "Lass G. is a major in computer engineering and enjoys neither existing nor not existing on the planet earth.",
+        email: "lass.guy@gmail.com",
+    },
+        {
+        name: "Lass G.",
+        major: "Computer Engineering",
+        role: "Flight Lead",
+        img: "https://picsum.photos/600/350?random=3",
+        popup: "Lass G. is a major in computer engineering and enjoys neither existing nor not existing on the planet earth.",
+        email: "lass.guy@gmail.com",
+    },
+    
 ];

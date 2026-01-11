@@ -15,7 +15,7 @@ function createCard(member, index) {
     card.innerHTML = `
         <img src="${member.img}" alt="${member.name}">
         <div class="text-section">${member.name}</div>
-        <div class="text-section2">${member.major}</div>
+        <div class="text-section2">${member.role}</div>
     `;
 
     // Create popup element that appears when the card is clicked

@@ -12,6 +12,8 @@ body {
     padding-bottom: 18vh;
 }
 
+/*------------- Team Logo ---------------*/
+
 .teamLogoWrapper {
     margin-top: 5vh;
     display: flex;
@@ -23,6 +25,8 @@ body {
     height: auto;
 }
 
+/*------- Container for Members -------*/
+
 .membersWrapper {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -30,6 +34,8 @@ body {
     max-width: 70vw;
     margin: 5vh auto;
 }
+
+/*----------- Individual Card --------------*/
 
 .team-card {
     display: flex;

@@ -44,17 +44,17 @@
 
 /* Text overlay at bottom of card */
 .text-section {
-    font-size: 0.8rem;
+    font-size: 1.2rem;
     padding: 2rem 0;
 }
 .text-section2 {
-    font-size: 0.8rem;
+    font-size: 1rem;
 }
 
 /* ---------------- Pop-ups ---------------- */
 /* Hidden by default, shown when card is clicked */
 .pop-up {
-    font-size: 1rem;
+    font-size: 1.2rem;
 }
 /* Close button for pop-ups */
 .pop-up .close-btn {

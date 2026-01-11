@@ -13,9 +13,11 @@
             z-index: 1000;
         }
         </style>
+            
+    <!-- EXTERNAL CSS - Move styles to external file for consistency -->
+    <link rel="stylesheet" href="css/styles.css">
 
 
-</head>
 <body>
     <!-- ========================================
     NAVBAR - Loaded from component
@@ -24,26 +26,35 @@
     <div id="navbar-placeholder"></div>
 
     <main class="container mt-4">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <h1 class="mb-4 text-center">Our Drone</h1>
 
-        <p>
+                <div class="text-center mb-4">
+                    <img src="assets/homepage/MeetTheTeam_GroupPhotoThinned.jpg"
+                        alt="Drone in flight"
+                        class="img-fluid rounded shadow"
+                        style="max-width: 500px;">
+                </div>
 
-    <ul>
-        <li><b>Frame:</b> high tech frame from xyz company</li>
-        <li><b>Motors:</b> 4x goobsersmack motors</li>
-        <li><b>Propellers:</b> 4x ultra lightweight foodbar Propellers</li>
-        <li><b>Flight Controller</b></li>
-        <li><b>Speed Controllers</b></li>
-        <li><b>GPS</b></li>
-        <li><b>Flight Radio</b></li>
-        <li><b>Telemetry Radio</b></li>
-        <li><b>Remote ID Module</b></li>
-        <li><b>Battery</b></li>
-        <li><b>Companion Computer</b></li>
-        <li><b>Modem</b></li>
-        <li><b>Drop Mechanism</b></li>
-    </ul>
-    
-    </p>
+                <ul class="mx-auto" style="max-width: 500px;">
+                    <!-- To-do Jeremy - get details from Ethan-->
+                    <li><b>Frame:</b> high tech frame from xyz company</li>
+                    <li><b>Motors:</b> 4x goobsersmack motors</li>
+                    <li><b>Propellers:</b> 4x ultra lightweight foodbar Propellers</li>
+                    <li><b>Flight Controller</b></li>
+                    <li><b>Speed Controllers</b></li>
+                    <li><b>GPS</b></li>
+                    <li><b>Flight Radio</b></li>
+                    <li><b>Telemetry Radio</b></li>
+                    <li><b>Remote ID Module</b></li>
+                    <li><b>Battery</b></li>
+                    <li><b>Companion Computer</b></li>
+                    <li><b>Modem</b></li>
+                    <li><b>Drop Mechanism</b></li>
+                </ul>
+            </div>
+        </div>
     </main>
 
     <!-- ========================================
@@ -55,5 +66,6 @@
     <!-- navbar/footer scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="js/main.js"></script>
+
 </body>
 </html>

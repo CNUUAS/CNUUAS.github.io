@@ -1,5 +1,3 @@
-
-
 .mainContent {
     box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.8);
     padding-top: 1vh;
@@ -7,31 +5,12 @@
 }
 
 /* ---------------- Team Logo ---------------- */
-.teamLogoWrapper {
-    display: flex;
-    margin-top: 5vh;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 0;
-}
-
-/* Style for "The" */
-#the {
-    margin: 0;
-    color: black;
-    position: relative;
-    left: -2vw;
-    top: 2vh;
-    font-size: 3.6rem;
-
-}
 
 /* Style for "Team" */
 #team {
     margin: 0;
     color: black;
-    font-size: 7rem;
+    font-size: clamp(50px, 5vw, 500px);
 }
 
 /* ---------------- Desktop Team Grid ---------------- */
@@ -110,12 +89,16 @@
 }
 .gradient-divider {
     position: absolute;
-    bottom: 0;             /* gradient starts from bottom */
+    bottom: 0; /* gradient starts from bottom */
     left: 0;
     width: 100%;
-    height: 35%;           /* controls how much of image is covered */
-    background: linear-gradient(to top, rgba(0,0,0,0.75) 50%, transparent 100%); /* gradient overlay */
-    pointer-events: none;  /* lets clicks pass through */
+    height: 35%; /* controls how much of image is covered */
+    background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.75) 50%,
+        transparent 100%
+    ); /* gradient overlay */
+    pointer-events: none; /* lets clicks pass through */
 }
 .team-card img {
     width: 100%;

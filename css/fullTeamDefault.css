@@ -1,12 +1,7 @@
 /* ---------------- Body ---------------- */
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    height: 100vh;
-}
+
 
 .mainContent {
-    background-color: #0e2670;
     box-shadow: inset 0 0 3vw rgba(0, 0, 0, 0.8);
     padding-top: 2vh;
     padding-bottom: 18vh;
@@ -14,16 +9,26 @@ body {
 
 /*------------- Team Logo ---------------*/
 
-.teamLogoWrapper {
-    margin-top: 5vh;
-    display: flex;
-    justify-content: center;
+
+
+/* Style for "The" */
+#the {
+    margin: 0;
+    color: black;
+    position: relative;
+    left: -2vw;
+    top: 2vh;
+    font-size: 3.6rem;
+
 }
 
-.teamLogoImage {
-    width: clamp(200px, 25vw, 450px);
-    height: auto;
+/* Style for "Team" */
+#team {
+    margin: 0;
+    color: black;
+    font-size: 7rem;
 }
+
 
 /*------- Container for Members -------*/
 
@@ -45,7 +50,7 @@ body {
     height: clamp(100px, 12vw, 500px);
     margin: 2vh auto;
     background-color: #ffffff;
-    border: none;
+    border: 2px solid black;
     border-radius: 1rem;
     cursor: default;
     text-align: left;

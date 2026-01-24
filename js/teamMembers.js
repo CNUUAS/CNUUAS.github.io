@@ -118,4 +118,40 @@ export const alumni = [
         email: "member@cnu.edu",
 
     },
+            {
+        name: "John Doe",
+        title: "Financial Advisor",
+        img: "https://picsum.photos/600/350?random=33",
+        email: "member@cnu.edu",
+
+    },
+            {
+        name: "John Doe",
+        title: "Financial Advisor",
+        img: "https://picsum.photos/600/350?random=33",
+        email: "member@cnu.edu",
+
+    },
+            {
+        name: "John Doe",
+        title: "Financial Advisor",
+        img: "https://picsum.photos/600/350?random=33",
+        email: "member@cnu.edu",
+
+    },
+            {
+        name: "John Doe",
+        title: "Financial Advisor",
+        img: "https://picsum.photos/600/350?random=33",
+        email: "member@cnu.edu",
+
+    },
+            {
+        name: "John Doe",
+        title: "Financial Advisor",
+        img: "https://picsum.photos/600/350?random=33",
+        email: "member@cnu.edu",
+
+    },
+    
 ]

@@ -107,3 +107,14 @@ export const teamMembers = [
     },
     
 ];
+
+
+export const alumni = [
+        {
+        name: "Member",
+        
+        img: "https://picsum.photos/600/350?random=33",
+        email: "member@cnu.edu",
+
+    },
+]

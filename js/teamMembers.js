@@ -1,4 +1,4 @@
-// Array of team members. Edit this to change the Members in the team and fullTeam pages.
+// Array of team members. Edit this to change the members in the team and fullTeam pages.
 
 export const teamMembers = [
     {
@@ -108,11 +108,12 @@ export const teamMembers = [
     
 ];
 
+// Array of alumni. Edit this to change the members in the alumni page.
 
 export const alumni = [
         {
-        name: "Member",
-        
+        name: "John Doe",
+        title: "Financial Advisor",
         img: "https://picsum.photos/600/350?random=33",
         email: "member@cnu.edu",
 

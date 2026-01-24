@@ -8,7 +8,7 @@ const isDesktop = window.matchMedia("(min-width: 500px)").matches;
 // Creates a team member card element and its popup
 function createCard(member, index) {
     // Create the clickable card container (styled as a button)
-    const card = document.createElement("button");
+    const card = document.createElement("div");
     card.className = "team-card";
 
     // Card inner HTML including image, name, and major
@@ -18,31 +18,10 @@ function createCard(member, index) {
         </div>
         <div class="gradient-divider"></div>
         <div class="text-section">${member.name}</div>
-        <div class="text-section2">${member.role}</div>
+        <div class="text-section2">${member.title}</div>
     `;
 
-    // Create popup element that appears when the card is clicked
-    const popup = document.createElement("div");
-    popup.className = "pop-up";
-    popup.id = `popup-${index}`;
-    popup.innerHTML = `
-        <span class="close-btn">&times;</span>
-        <p>${member.popup}</p>
-    `;
-
-    // Attach popup to the card
-    card.appendChild(popup);
-
-    // When card is clicked, show the popup
-    card.addEventListener("click", () => (popup.style.display = "block"));
-
-    // Close button inside popup — prevents card click from firing again
-    popup.querySelector(".close-btn").addEventListener("click", (e) => {
-        e.stopPropagation(); // Stop event from bubbling back to card
-        popup.style.display = "none"; // Hide popup
-    });
-
-    return { card, popup };
+    return { card };
 }
 
 // -------- Desktop layout --------

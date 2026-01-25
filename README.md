@@ -82,6 +82,10 @@ CNUUAS.GITHUB.IO/
  - Follow the formula of the other Team Members
  - The Team Members will be exported and created dynamically
 
+ ### To add new Alumni to alumni Page
+ - Same as above, but for alumni variable
+
+
 ### To Update Navigation Menu
 **File:** `components/navbar.html`
 

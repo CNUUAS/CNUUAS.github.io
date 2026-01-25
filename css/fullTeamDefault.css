@@ -34,7 +34,7 @@
     width: clamp(150px, 30vw, 500px);
     height: clamp(100px, 12vw, 500px);
     margin: 2vh auto;
-    background-color: #ffffff;
+    background-color: #eaeaea;
     border: 2px solid black;
     border-radius: 1rem;
     cursor: default;

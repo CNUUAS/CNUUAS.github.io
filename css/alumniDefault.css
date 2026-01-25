@@ -112,7 +112,7 @@
     bottom: 0;
     left: 0;
     width: 100%;
-    padding: 2.4rem 0;
+    padding: 2.6rem 0;
     color: white;
     font-size: 1.3rem;
     font-weight: bold;
@@ -125,9 +125,22 @@
     bottom: 0;
     left: 0;
     width: 100%;
-    padding: 0.75rem 0;
+    padding: 1.2rem 0;
     color: white;
-    font-size: 1.3rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: center;
+    white-space: pre-line;
+    text-shadow: 1px 1px 2px black;
+}
+.text-section3 {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 0.001rem 0;
+    color: white;
+    font-size: 0.9rem;
     font-weight: bold;
     text-align: center;
     white-space: pre-line;

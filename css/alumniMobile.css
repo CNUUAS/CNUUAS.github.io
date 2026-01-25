@@ -46,6 +46,10 @@
 }
 .text-section2 {
     font-size: 1rem;
+    padding: 0.9rem 0;
+}
+.text-section3 {
+    font-size: 0.7rem;
 }
 
 /* ---------------- Pop-ups ---------------- */

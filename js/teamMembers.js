@@ -25,7 +25,7 @@ export const teamMembers = [
         popup: "Lass G. is a major in computer engineering and enjoys neither existing nor not existing on the planet earth.",
         email: "lass.guy@gmail.com",
     },
-        {
+    {
         name: "Lass G.",
         major: "Computer Engineering",
         role: "Flight Lead",
@@ -33,7 +33,7 @@ export const teamMembers = [
         popup: "Lass G. is a major in computer engineering and enjoys neither existing nor not existing on the planet earth.",
         email: "lass.guy@gmail.com",
     },
-        {
+    {
         name: "Lass G.",
         major: "Computer Engineering",
         role: "Flight Lead",
@@ -41,7 +41,7 @@ export const teamMembers = [
         popup: "Lass G. is a major in computer engineering and enjoys neither existing nor not existing on the planet earth.",
         email: "lass.guy@gmail.com",
     },
-        {
+    {
         name: "Lass G.",
         major: "Computer Engineering",
         role: "Flight Lead",
@@ -49,7 +49,7 @@ export const teamMembers = [
         popup: "Lass G. is a major in computer engineering and enjoys neither existing nor not existing on the planet earth.",
         email: "lass.guy@gmail.com",
     },
-        {
+    {
         name: "Lass G.",
         major: "Computer Engineering",
         role: "Flight Lead",
@@ -57,7 +57,7 @@ export const teamMembers = [
         popup: "Lass G. is a major in computer engineering and enjoys neither existing nor not existing on the planet earth.",
         email: "lass.guy@gmail.com",
     },
-        {
+    {
         name: "Lass G.",
         major: "Computer Engineering",
         role: "Flight Lead",
@@ -65,7 +65,7 @@ export const teamMembers = [
         popup: "Lass G. is a major in computer engineering and enjoys neither existing nor not existing on the planet earth.",
         email: "lass.guy@gmail.com",
     },
-        {
+    {
         name: "Lass G.",
         major: "Computer Engineering",
         role: "Flight Lead",
@@ -73,7 +73,7 @@ export const teamMembers = [
         popup: "Lass G. is a major in computer engineering and enjoys neither existing nor not existing on the planet earth.",
         email: "lass.guy@gmail.com",
     },
-        {
+    {
         name: "Lass G.",
         major: "Computer Engineering",
         role: "Flight Lead",
@@ -81,7 +81,7 @@ export const teamMembers = [
         popup: "Lass G. is a major in computer engineering and enjoys neither existing nor not existing on the planet earth.",
         email: "lass.guy@gmail.com",
     },
-        {
+    {
         name: "Lass G.",
         major: "Computer Engineering",
         role: "Flight Lead",
@@ -89,7 +89,7 @@ export const teamMembers = [
         popup: "Lass G. is a major in computer engineering and enjoys neither existing nor not existing on the planet earth.",
         email: "lass.guy@gmail.com",
     },
-        {
+    {
         name: "Lass G.",
         major: "Computer Engineering",
         role: "Flight Lead",
@@ -97,7 +97,7 @@ export const teamMembers = [
         popup: "Lass G. is a major in computer engineering and enjoys neither existing nor not existing on the planet earth.",
         email: "lass.guy@gmail.com",
     },
-        {
+    {
         name: "Lass G.",
         major: "Computer Engineering",
         role: "Flight Lead",
@@ -105,53 +105,75 @@ export const teamMembers = [
         popup: "Lass G. is a major in computer engineering and enjoys neither existing nor not existing on the planet earth.",
         email: "lass.guy@gmail.com",
     },
-    
 ];
 
 // Array of alumni. Edit this to change the members in the alumni page.
 
 export const alumni = [
-        {
+    {
         name: "John Doe",
         title: "Financial Advisor",
         img: "https://picsum.photos/600/350?random=33",
-        email: "member@cnu.edu",
-
+        email: "john.doe@cnu.edu",
     },
-            {
-        name: "John Doe",
-        title: "Financial Advisor",
-        img: "https://picsum.photos/600/350?random=33",
-        email: "member@cnu.edu",
-
+    {
+        name: "Jane Doe",
+        title: "Civil Agent",
+        img: "https://picsum.photos/600/350?random=34",
+        email: "jane.doe@cnu.edu",
     },
-            {
-        name: "John Doe",
-        title: "Financial Advisor",
-        img: "https://picsum.photos/600/350?random=33",
-        email: "member@cnu.edu",
-
+    {
+        name: "Jerry Doe",
+        title: "Pest Control",
+        img: "https://picsum.photos/600/350?random=35",
+        email: "jerry.doe@cnu.edu",
     },
-            {
-        name: "John Doe",
-        title: "Financial Advisor",
-        img: "https://picsum.photos/600/350?random=33",
-        email: "member@cnu.edu",
-
+    {
+        name: "Jerry Doe",
+        title: "Pest Control",
+        img: "https://picsum.photos/600/350?random=35",
+        email: "jerry.doe@cnu.edu",
     },
-            {
-        name: "John Doe",
-        title: "Financial Advisor",
-        img: "https://picsum.photos/600/350?random=33",
-        email: "member@cnu.edu",
-
+    {
+        name: "Jerry Doe",
+        title: "Pest Control",
+        img: "https://picsum.photos/600/350?random=35",
+        email: "jerry.doe@cnu.edu",
     },
-            {
-        name: "John Doe",
-        title: "Financial Advisor",
-        img: "https://picsum.photos/600/350?random=33",
-        email: "member@cnu.edu",
-
+    {
+        name: "Jerry Doe",
+        title: "Pest Control",
+        img: "https://picsum.photos/600/350?random=35",
+        email: "jerry.doe@cnu.edu",
     },
-    
-]
+    {
+        name: "Jerry Doe",
+        title: "Pest Control",
+        img: "https://picsum.photos/600/350?random=35",
+        email: "jerry.doe@cnu.edu",
+    },
+    {
+        name: "Jerry Doe",
+        title: "Pest Control",
+        img: "https://picsum.photos/600/350?random=35",
+        email: "jerry.doe@cnu.edu",
+    },
+    {
+        name: "Jerry Doe",
+        title: "Pest Control",
+        img: "https://picsum.photos/600/350?random=35",
+        email: "jerry.doe@cnu.edu",
+    },
+    {
+        name: "Jerry Doe",
+        title: "Pest Control",
+        img: "https://picsum.photos/600/350?random=35",
+        email: "jerry.doe@cnu.edu",
+    },
+    {
+        name: "Jerry Doe",
+        title: "Pest Control",
+        img: "https://picsum.photos/600/350?random=35",
+        email: "jerry.doe@cnu.edu",
+    },
+];

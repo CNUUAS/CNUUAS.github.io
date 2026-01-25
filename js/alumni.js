@@ -19,6 +19,7 @@ function createCard(member, index) {
         <div class="gradient-divider"></div>
         <div class="text-section">${member.name}</div>
         <div class="text-section2">${member.title}</div>
+        <div class="text-section3">${member.email}</div>
     `;
 
     return { card };

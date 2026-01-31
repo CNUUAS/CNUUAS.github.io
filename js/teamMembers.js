@@ -111,69 +111,45 @@ export const teamMembers = [
 
 export const alumni = [
     {
-        name: "John Doe",
-        title: "Financial Advisor",
-        img: "https://picsum.photos/600/350?random=33",
-        email: "john.doe@cnu.edu",
+        year: 2020,
+        name: "Sarah Mitchell",
+        title: "Aerospace Engineer",
+        description:
+            "Currently working at NASA Langley Research Center, specializing in autonomous flight systems.",
     },
     {
-        name: "Jane Doe",
-        title: "Civil Agent",
-        img: "https://picsum.photos/600/350?random=34",
-        email: "jane.doe@cnu.edu",
+        year: 2019,
+        name: "James Rodriguez",
+        title: "Drone Technology Consultant",
+        description:
+            "Founder of AeroConsult, providing UAS solutions to commercial and agricultural sectors.",
     },
     {
-        name: "Jerry Doe",
-        title: "Pest Control",
-        img: "https://picsum.photos/600/350?random=35",
-        email: "jerry.doe@cnu.edu",
+        year: 2021,
+        name: "Emily Chen",
+        title: "Software Developer",
+        description:
+            "Developing autonomous navigation systems at Skydio, advancing drone AI capabilities.",
     },
     {
-        name: "Jerry Doe",
-        title: "Pest Control",
-        img: "https://picsum.photos/600/350?random=35",
-        email: "jerry.doe@cnu.edu",
+        year: 2018,
+        name: "Michael Thompson",
+        title: "Mechanical Engineer",
+        description:
+            "Senior engineer at Boeing, working on next-generation unmanned aerial vehicle designs.",
     },
     {
-        name: "Jerry Doe",
-        title: "Pest Control",
-        img: "https://picsum.photos/600/350?random=35",
-        email: "jerry.doe@cnu.edu",
+        year: 2022,
+        name: "Amanda Foster",
+        title: "Research Scientist",
+        description:
+            "PhD candidate at Virginia Tech, researching swarm robotics and multi-agent systems.",
     },
     {
-        name: "Jerry Doe",
-        title: "Pest Control",
-        img: "https://picsum.photos/600/350?random=35",
-        email: "jerry.doe@cnu.edu",
-    },
-    {
-        name: "Jerry Doe",
-        title: "Pest Control",
-        img: "https://picsum.photos/600/350?random=35",
-        email: "jerry.doe@cnu.edu",
-    },
-    {
-        name: "Jerry Doe",
-        title: "Pest Control",
-        img: "https://picsum.photos/600/350?random=35",
-        email: "jerry.doe@cnu.edu",
-    },
-    {
-        name: "Jerry Doe",
-        title: "Pest Control",
-        img: "https://picsum.photos/600/350?random=35",
-        email: "jerry.doe@cnu.edu",
-    },
-    {
-        name: "Jerry Doe",
-        title: "Pest Control",
-        img: "https://picsum.photos/600/350?random=35",
-        email: "jerry.doe@cnu.edu",
-    },
-    {
-        name: "Jerry Doe",
-        title: "Pest Control",
-        img: "https://picsum.photos/600/350?random=35",
-        email: "jerry.doe@cnu.edu",
+        year: 2017,
+        name: "David Park",
+        title: "Flight Test Engineer",
+        description:
+            "Leading flight test operations at Northrop Grumman, focusing on unmanned combat systems.",
     },
 ];

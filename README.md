@@ -14,16 +14,18 @@ CNUUAS.GITHUB.IO/
 ├── fullTeam.html           # Full team page
 ├── sponsers.html           # Sponsors page
 ├── css/
-│   └── fullTeamDefault.css
-│   └── fullTeamMobile.css
-│   └── styles.css          # All CSS styles (mobile-responsive)
-│   └── teamDefault.css
-│   └── teamMobile.css
+│   ├── fullTeamDefault.css
+│   ├── fullTeamMobile.css
+│   ├── styles.css          # All CSS styles (mobile-responsive)
+│   ├── teamDefault.css
+│   ├── teamMobile.css
+│   └── alumniDefault.css
 ├── js/
 │   ├── fullTeam.js         
 │   ├── main.js             # Loads navbar/footer components
 │   ├── team.js             
-│   └── viewer.js           # 360° viewer initialization (optional)
+│   ├── viewer.js           # 360° viewer initialization (optional)
+│   └── alumni.js
 ├── components/
 │   ├── navbar.html         # Shared navigation bar
 │   └── footer.html         # Shared footer

@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Alumni - CNU UAS</title>
+
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+        />
+
+        <!-- Default Styling -->
+        <link href="css/alumniDefault.css" rel="stylesheet" />
+    </head>
+    <body>
+        <!-- ========================================
+        NAVBAR - Loaded from component
+        To edit navbar: go to components/navbar.html
+        ======================================== -->
+        <div id="navbar-placeholder"></div>
+
+        <main>
+            <div class="container py-4 text-center" style="margin-top: 60px">
+                <h1 id="team" class="display-4 fw-light">CNU UAS Alumni</h1>
+            </div>
+
+            <!-- Featured Alumni Section -->
+            <div class="container my-5">
+                <div class="row" id="alumni-container">
+                    <!-- Alumni cards will be dynamically generated here -->
+                </div>
+            </div>
+        </main>
+
+        <!-- ========================================
+        FOOTER - Loaded from component
+        To edit footer: go to components/footer.html
+        ======================================== -->
+        <div id="footer-placeholder"></div>
+
+        <!-- navbar/footer scripts -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="js/main.js"></script>
+
+        <!-- Alumni generation script -->
+        <script type="module" src="js/alumni.js"></script>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    </body>
+</html>

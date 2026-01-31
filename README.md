@@ -14,6 +14,12 @@ CNUUAS.GITHUB.IO/
 ├── fullTeam.html           # Full team page
 ├── sponsers.html           # Sponsors page
 ├── css/
+│   ├── fullTeamDefault.css
+│   ├── fullTeamMobile.css
+│   ├── styles.css          # All CSS styles (mobile-responsive)
+│   ├── teamDefault.css
+│   ├── teamMobile.css
+│   └── alumniDefault.css
 │   └── fullTeamDefault.css
 │   └── styles.css          # All CSS styles (mobile-responsive)
 │   └── teamDefault.css
@@ -22,7 +28,8 @@ CNUUAS.GITHUB.IO/
 |   ├── teamMembers.js      # Holds member information
 │   ├── main.js             # Loads navbar/footer components
 │   ├── team.js             
-│   └── viewer.js           # 360° viewer initialization (optional)
+│   ├── viewer.js           # 360° viewer initialization (optional)
+│   └── alumni.js
 ├── components/
 │   ├── navbar.html         # Shared navigation bar
 │   └── footer.html         # Shared footer
@@ -84,6 +91,10 @@ CNUUAS.GITHUB.IO/
  - Edit the list found in the file `js\teamMembers.js`
  - Follow the formula of the other Team Members
  - The Team Members will be exported and created dynamically
+
+ ### To add new Alumni to alumni Page
+ - Same as above, but for alumni variable
+
 
 ### To Update Navigation Menu
 **File:** `components/navbar.html`

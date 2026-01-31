@@ -179,61 +179,22 @@
     -webkit-appearance: none;
 }
 
-/* ---------------- Mobile Styles (max-width: 499px) ---------------- */
-@media screen and (max-width: 499px) {
-    .mainContent {
-        padding-bottom: 32vh;
-    }
 
-    /* Desktop grid hidden on mobile */
-    .desktop-grid {
-        display: none;
-    }
+/* ---------------- No Team Message ---------------- */
+.no-team-message {
+    text-align: center;
+    padding: 60px 20px;
+    color: #666;
+    font-size: 1.5rem;
+}
 
-    /* Show carousel navigation on mobile */
-    .carousel-control-prev,
-    .carousel-control-next {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 50px;
-        height: 50px;
-        background: none;
-        border: none;
-        z-index: 50;
-        display: flex;
-    }
-    .carousel-control-prev {
-        left: 20px;
-    }
-    .carousel-control-next {
-        right: 20px;
-    }
+.no-team-message p {
+    margin: 10px 0;
+    padding-bottom: 5vh;
+}
 
-    /* Adjust team card sizing for mobile */
-    .team-card {
-        width: 55vw;
-        height: 40vh;
-        min-width: 0;
-        min-height: 0;
-        max-height: none;
-        max-width: none;
-    }
-
-    /* Adjust text sizing for mobile */
-    .text-section {
-        font-size: 1.2rem;
-        padding: 2rem 0;
-    }
-    .text-section2 {
-        font-size: 1rem;
-    }
-
-    /* Adjust pop-up sizing for mobile */
-    .pop-up {
-        font-size: 1.2rem;
-    }
-    .pop-up .close-btn {
-        font-size: 25px;
-    }
+.no-team-message p:first-child {
+    font-weight: bold;
+    font-size: 1.8rem;
+    color: #333;
 }

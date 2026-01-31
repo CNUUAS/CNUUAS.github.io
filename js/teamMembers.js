@@ -1,4 +1,19 @@
-// Array of team members. Edit this to change the Members in the team and fullTeam pages.
+// Array of team members. Edit this to change the members in the team and fullTeam pages.
+
+/*Format: 
+
+    {
+        name: "Jacob Blankenship",
+        major: "Computer Science",
+        role: "Software Developer",
+        img: "assets/team + fullTeam pages/Members Photos/Jacob.png",
+        popup: "Jacob is a major in Computer Science and enjoys Unknown.",
+        email: "jackobblankenship095@gmail.com",
+        year: 2028,
+    },
+
+*/
+
 
 export const teamMembers = [
     {
@@ -8,6 +23,7 @@ export const teamMembers = [
         img: "assets/team + fullTeam pages/Members Photos/Chris.png",
         popup: "Chris is a major in Unknown and enjoys Unknown.",
         email: "Unkown",
+        year: 0,
     },
     {
         name: "Eva Grimes",
@@ -16,6 +32,7 @@ export const teamMembers = [
         img: "assets/team + fullTeam pages/Members Photos/Eva.jpg",
         popup: "Eva is a major in Unknown and enjoys Unknown.",
         email: "Unkown",
+        year: 0,
     },
     {
         name: "Jacob Blankenship",
@@ -24,6 +41,7 @@ export const teamMembers = [
         img: "assets/team + fullTeam pages/Members Photos/Jacob.png",
         popup: "Jacob is a major in Computer Science and enjoys Unknown.",
         email: "jackobblankenship095@gmail.com",
+        year: 0,
     },
     {
         name: "Ka'Veon Redd",
@@ -32,6 +50,7 @@ export const teamMembers = [
         img: "assets/team + fullTeam pages/Members Photos/KaVeon.png",
         popup: "Ka'Veon is a major in Computer Science and enjoys blending creativity with technology to explore and create innovative ideas.",
         email: "kaveon.redd.25@cnu.edu",
+        year: 0,
     },
     {
         name: "Logan _",
@@ -40,6 +59,7 @@ export const teamMembers = [
         img: "assets/team + fullTeam pages/Members Photos/Logan.png",
         popup: "Logan is a major in Unknown and enjoys Unknown.",
         email: "Unknown",
+        year: 0,
     },
     {
         name: "Marie _",
@@ -48,6 +68,7 @@ export const teamMembers = [
         img: "assets/team + fullTeam pages/Members Photos/Marie.png",
         popup: "Marie is a major in Unknown and enjoys Unknown.",
         email: "Unknown",
+        year: 0,
     },
     {
         name: "Maverick _",
@@ -56,6 +77,7 @@ export const teamMembers = [
         img: "assets/team + fullTeam pages/Members Photos/Maverick.png",
         popup: "Maverick is a major in Unknown and enjoys Unknown.",
         email: "Unknown",
+        year: 0,
     },
     {
         name: "Moxxie Schrader",
@@ -64,6 +86,7 @@ export const teamMembers = [
         img: "assets/team + fullTeam pages/Members Photos/Moxxie.jpg",
         popup: "Moxxie is a major in Electrical Engineering and enjoys Unknown.",
         email: "Moxxie.schrader.24@cnu.edu",
+        year: 0,
     },
     {
         name: "Zahira _",
@@ -72,6 +95,7 @@ export const teamMembers = [
         img: "assets/team + fullTeam pages/Members Photos/Zahira.png",
         popup: "Zahira is a major in Unknown and enjoys Unknown.",
         email: "Unknown",
+        year: 0,
     },
         {
         name: "Chris Jeffrey",
@@ -80,5 +104,66 @@ export const teamMembers = [
         img: "https://picsum.photos/600/350?random=3",
         popup: "Chris is a major in History and enjoys reading .",
         email: "N/A",
+        year: 0,
+    },
+];
+
+// Array of alumni. Edit this to change the members in the alumni page.
+
+/*Format:
+
+    {
+        year: 2020,
+        name: "Sarah Mitchell",
+        title: "Aerospace Engineer",
+        description:
+            "Currently working at NASA Langley Research Center, specializing in autonomous flight systems.",
+    },
+
+*/
+
+
+export const alumni = [
+    {
+        year: 2020,
+        name: "Sarah Mitchell",
+        title: "Aerospace Engineer",
+        description:
+            "Currently working at NASA Langley Research Center, specializing in autonomous flight systems.",
+    },
+    {
+        year: 2019,
+        name: "James Rodriguez",
+        title: "Drone Technology Consultant",
+        description:
+            "Founder of AeroConsult, providing UAS solutions to commercial and agricultural sectors.",
+    },
+    {
+        year: 2021,
+        name: "Emily Chen",
+        title: "Software Developer",
+        description:
+            "Developing autonomous navigation systems at Skydio, advancing drone AI capabilities.",
+    },
+    {
+        year: 2018,
+        name: "Michael Thompson",
+        title: "Mechanical Engineer",
+        description:
+            "Senior engineer at Boeing, working on next-generation unmanned aerial vehicle designs.",
+    },
+    {
+        year: 2022,
+        name: "Amanda Foster",
+        title: "Research Scientist",
+        description:
+            "PhD candidate at Virginia Tech, researching swarm robotics and multi-agent systems.",
+    },
+    {
+        year: 2017,
+        name: "David Park",
+        title: "Flight Test Engineer",
+        description:
+            "Leading flight test operations at Northrop Grumman, focusing on unmanned combat systems.",
     },
 ];

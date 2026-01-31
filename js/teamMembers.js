@@ -1,5 +1,20 @@
 // Array of team members. Edit this to change the members in the team and fullTeam pages.
 
+/*Format: 
+
+    {
+        name: "Jacob Blankenship",
+        major: "Computer Science",
+        role: "Software Developer",
+        img: "assets/team + fullTeam pages/Members Photos/Jacob.png",
+        popup: "Jacob is a major in Computer Science and enjoys Unknown.",
+        email: "jackobblankenship095@gmail.com",
+        year: 2028,
+    },
+
+*/
+
+
 export const teamMembers = [
     {
         name: "Chris _",
@@ -94,6 +109,19 @@ export const teamMembers = [
 ];
 
 // Array of alumni. Edit this to change the members in the alumni page.
+
+/*Format:
+
+    {
+        year: 2020,
+        name: "Sarah Mitchell",
+        title: "Aerospace Engineer",
+        description:
+            "Currently working at NASA Langley Research Center, specializing in autonomous flight systems.",
+    },
+
+*/
+
 
 export const alumni = [
     {

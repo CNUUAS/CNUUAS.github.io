@@ -178,3 +178,23 @@
     appearance: none;
     -webkit-appearance: none;
 }
+
+
+/* ---------------- No Team Message ---------------- */
+.no-team-message {
+    text-align: center;
+    padding: 60px 20px;
+    color: #666;
+    font-size: 1.5rem;
+}
+
+.no-team-message p {
+    margin: 10px 0;
+    padding-bottom: 5vh;
+}
+
+.no-team-message p:first-child {
+    font-weight: bold;
+    font-size: 1.8rem;
+    color: #333;
+}

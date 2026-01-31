@@ -1,5 +1,4 @@
-// Imprt list of team members
-
+// Import list of team members
 import { teamMembers } from "./teamMembers.js";
 
 // Check if the device width meets desktop size (>= 500px)
@@ -45,37 +44,66 @@ function createCard(member, index) {
     return { card, popup };
 }
 
-// -------- Desktop layout --------
-if (isDesktop) {
-    // Grab grid container for desktop view
-    const desktopGrid = document.getElementById("desktop-team-grid");
+// Check if there are any team members
+if (!teamMembers || teamMembers.length === 0) {
+    // Display message when no team members exist
+    const message = document.createElement("div");
+    message.className = "no-team-message";
+    message.innerHTML = `
+        <p>No team members to display at this time.</p>
+        <p>Check back soon!</p>
+    `;
+    
+    if (isDesktop) {
+        document.getElementById("desktop-team-grid").appendChild(message);
+    } else {
+        const cardsContainer = document.getElementById("team-cards");
+        const slide = document.createElement("div");
+        slide.className = "carousel-item active";
+        slide.appendChild(message);
+        cardsContainer.appendChild(slide);
+    }
+    
+    // Hide the "More Info" button when there are no team members
+    document.getElementById("viewButton").style.display = "none";
+    
+    // Hide carousel control buttons
+    document.querySelector(".carousel-control-prev").style.display = "none";
+    document.querySelector(".carousel-control-next").style.display = "none";
+    
+} else {
+    // -------- Desktop layout --------
+    if (isDesktop) {
+        // Grab grid container for desktop view
+        const desktopGrid = document.getElementById("desktop-team-grid");
 
-    // Create and append all cards directly into the grid
-    teamMembers.forEach((member, index) => {
-        const { card } = createCard(member, index);
-        desktopGrid.appendChild(card);
-    });
+        // Create and append all cards directly into the grid
+        teamMembers.forEach((member, index) => {
+            const { card } = createCard(member, index);
+            desktopGrid.appendChild(card);
+        });
 
     // -------- Mobile / Carousel layout --------
-} else {
-    // Get Bootstrap carousel inner container
-    const cardsContainer = document.getElementById("team-cards");
+    } else {
+        // Get Bootstrap carousel inner container
+        const cardsContainer = document.getElementById("team-cards");
 
-    teamMembers.forEach((member, index) => {
-        // Create a carousel slide per member
-        const slide = document.createElement("div");
-        slide.className = `carousel-item ${index === 0 ? "active" : ""}`;
+        teamMembers.forEach((member, index) => {
+            // Create a carousel slide per member
+            const slide = document.createElement("div");
+            slide.className = `carousel-item ${index === 0 ? "active" : ""}`;
 
-        // Create the team card for this slide
-        const { card } = createCard(member, index);
+            // Create the team card for this slide
+            const { card } = createCard(member, index);
 
-        // Add the card to the slide, then slide to carousel
-        slide.appendChild(card);
-        cardsContainer.appendChild(slide);
+            // Add the card to the slide, then slide to carousel
+            slide.appendChild(card);
+            cardsContainer.appendChild(slide);
+        });
+    }
+
+    // "View All" button takes user to full team page
+    document.getElementById("viewButton").addEventListener("click", () => {
+        window.location.href = "fullTeam.html";
     });
 }
-
-// “View All” button takes user to full team page
-document.getElementById("viewButton").addEventListener("click", () => {
-    window.location.href = "fullTeam.html";
-});

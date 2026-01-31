@@ -53,7 +53,7 @@ if (!teamMembers || teamMembers.length === 0) {
         <p>No team members to display at this time.</p>
         <p>Check back soon!</p>
     `;
-    
+
     if (isDesktop) {
         document.getElementById("desktop-team-grid").appendChild(message);
     } else {
@@ -63,14 +63,13 @@ if (!teamMembers || teamMembers.length === 0) {
         slide.appendChild(message);
         cardsContainer.appendChild(slide);
     }
-    
+
     // Hide the "More Info" button when there are no team members
     document.getElementById("viewButton").style.display = "none";
-    
+
     // Hide carousel control buttons
     document.querySelector(".carousel-control-prev").style.display = "none";
     document.querySelector(".carousel-control-next").style.display = "none";
-    
 } else {
     // -------- Desktop layout --------
     if (isDesktop) {
@@ -83,7 +82,11 @@ if (!teamMembers || teamMembers.length === 0) {
             desktopGrid.appendChild(card);
         });
 
-    // -------- Mobile / Carousel layout --------
+        // Hide arrows on desktop since we're using grid view
+        document.querySelector(".carousel-control-prev").style.display = "none";
+        document.querySelector(".carousel-control-next").style.display = "none";
+
+        // -------- Mobile / Carousel layout --------
     } else {
         // Get Bootstrap carousel inner container
         const cardsContainer = document.getElementById("team-cards");
@@ -100,6 +103,10 @@ if (!teamMembers || teamMembers.length === 0) {
             slide.appendChild(card);
             cardsContainer.appendChild(slide);
         });
+
+        // Show arrows for mobile carousel view
+        document.querySelector(".carousel-control-prev").style.display = "flex";
+        document.querySelector(".carousel-control-next").style.display = "flex";
     }
 
     // "View All" button takes user to full team page

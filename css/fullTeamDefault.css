@@ -85,3 +85,15 @@
     appearance: none;
     -webkit-appearance: none;
 }
+
+/* ---------------- Mobile Styles ---------------- */
+
+@media screen and (max-width: 540px) {
+    .membersWrapper {
+        grid-template-columns: 1fr;
+    }
+
+    .team-card {
+        width: 90%;
+    }
+}

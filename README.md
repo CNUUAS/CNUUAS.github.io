@@ -20,8 +20,12 @@ CNUUAS.GITHUB.IO/
 │   ├── teamDefault.css
 │   ├── teamMobile.css
 │   └── alumniDefault.css
+│   └── fullTeamDefault.css
+│   └── styles.css          # All CSS styles (mobile-responsive)
+│   └── teamDefault.css
 ├── js/
-│   ├── fullTeam.js         
+│   ├── fullTeam.js  
+|   ├── teamMembers.js      # Holds member information
 │   ├── main.js             # Loads navbar/footer components
 │   ├── team.js             
 │   ├── viewer.js           # 360° viewer initialization (optional)
@@ -34,9 +38,13 @@ CNUUAS.GITHUB.IO/
     │   ├── carousel_images/
     │   │    │ ... (carousel images)
     │   ├── navbar.html
-    │   ├── view360.jpg         # 360° panoramic image
-    └── (other images)
-```
+    │   └── view360.jpg         # 360° panoramic image
+    ├── team + fullTeam images/
+    │   ├── left_arrow.png
+    │   ├── right_arrow.png
+    │   └── Members Photos
+    │       │ ... (Member Photos)
+``` └ (other images)
 
 ## Getting Started
 

@@ -15,14 +15,9 @@ CNUUAS.GITHUB.IO/
 ├── sponsers.html           # Sponsors page
 ├── css/
 │   ├── fullTeamDefault.css
-│   ├── fullTeamMobile.css
 │   ├── styles.css          # All CSS styles (mobile-responsive)
 │   ├── teamDefault.css
-│   ├── teamMobile.css
 │   └── alumniDefault.css
-│   └── fullTeamDefault.css
-│   └── styles.css          # All CSS styles (mobile-responsive)
-│   └── teamDefault.css
 ├── js/
 │   ├── fullTeam.js  
 |   ├── teamMembers.js      # Holds member information

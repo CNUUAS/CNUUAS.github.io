@@ -8,6 +8,7 @@ export const teamMembers = [
         img: "assets/team + fullTeam pages/Members Photos/Chris.png",
         popup: "Chris is a major in Unknown and enjoys Unknown.",
         email: "Unkown",
+        year: 0,
     },
     {
         name: "Eva Grimes",
@@ -16,6 +17,7 @@ export const teamMembers = [
         img: "assets/team + fullTeam pages/Members Photos/Eva.jpg",
         popup: "Eva is a major in Unknown and enjoys Unknown.",
         email: "Unkown",
+        year: 0,
     },
     {
         name: "Jacob Blankenship",
@@ -24,6 +26,7 @@ export const teamMembers = [
         img: "assets/team + fullTeam pages/Members Photos/Jacob.png",
         popup: "Jacob is a major in Computer Science and enjoys Unknown.",
         email: "jackobblankenship095@gmail.com",
+        year: 0,
     },
     {
         name: "Ka'Veon Redd",
@@ -32,6 +35,7 @@ export const teamMembers = [
         img: "assets/team + fullTeam pages/Members Photos/KaVeon.png",
         popup: "Ka'Veon is a major in Computer Science and enjoys blending creativity with technology to explore and create innovative ideas.",
         email: "kaveon.redd.25@cnu.edu",
+        year: 0,
     },
     {
         name: "Logan _",
@@ -40,6 +44,7 @@ export const teamMembers = [
         img: "assets/team + fullTeam pages/Members Photos/Logan.png",
         popup: "Logan is a major in Unknown and enjoys Unknown.",
         email: "Unknown",
+        year: 0,
     },
     {
         name: "Marie _",
@@ -48,6 +53,7 @@ export const teamMembers = [
         img: "assets/team + fullTeam pages/Members Photos/Marie.png",
         popup: "Marie is a major in Unknown and enjoys Unknown.",
         email: "Unknown",
+        year: 0,
     },
     {
         name: "Maverick _",
@@ -56,6 +62,7 @@ export const teamMembers = [
         img: "assets/team + fullTeam pages/Members Photos/Maverick.png",
         popup: "Maverick is a major in Unknown and enjoys Unknown.",
         email: "Unknown",
+        year: 0,
     },
     {
         name: "Moxxie Schrader",
@@ -64,6 +71,7 @@ export const teamMembers = [
         img: "assets/team + fullTeam pages/Members Photos/Moxxie.jpg",
         popup: "Moxxie is a major in Electrical Engineering and enjoys Unknown.",
         email: "Moxxie.schrader.24@cnu.edu",
+        year: 0,
     },
     {
         name: "Zahira _",
@@ -72,6 +80,7 @@ export const teamMembers = [
         img: "assets/team + fullTeam pages/Members Photos/Zahira.png",
         popup: "Zahira is a major in Unknown and enjoys Unknown.",
         email: "Unknown",
+        year: 0,
     },
         {
         name: "Chris Jeffrey",
@@ -80,6 +89,7 @@ export const teamMembers = [
         img: "https://picsum.photos/600/350?random=3",
         popup: "Chris is a major in History and enjoys reading .",
         email: "N/A",
+        year: 0,
     },
 ];
 

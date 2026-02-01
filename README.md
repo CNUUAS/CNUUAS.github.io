@@ -39,7 +39,8 @@ CNUUAS.GITHUB.IO/
     │   ├── right_arrow.png
     │   └── Members Photos
     │       │ ... (Member Photos)
-``` └ (other images)
+    └ (other images)
+```
 
 ## Getting Started
 

@@ -255,11 +255,11 @@
     border-radius: 50%;
     transition: all 0.2s ease;
     background: rgba(255, 255, 255, 0.2);
+    line-height: 0;
 }
 
 .pop-up .close-btn:hover {
     background: rgba(255, 255, 255, 0.3);
-    transform: rotate(90deg);
 }
 
 /* Button to view all team members */

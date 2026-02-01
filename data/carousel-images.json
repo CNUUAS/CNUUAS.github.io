@@ -1,0 +1,38 @@
+[
+  {
+    "image": "assets/carousel/caiden_drone.png",
+    "title": "Day in the Life",
+    "description": "TO DO AAHHH",
+    "alt": " President Caiden inspecting the drone"
+  },
+  {
+    "image": "assets/carousel/drone_fly_2.jpg",
+    "title": "UAS/Robotics Lab",
+    "description": "Testing out the new drone lab!",
+    "alt": "Flight team flying the drone - Spring 2024"
+  },
+  {
+    "image": "assets/carousel/drone_fly.jpg",
+    "title": "UAS/Robotics Lab",
+    "description": "Testing out the new drone lab!",
+    "alt": "Kaveon at work - Spring 2024 team member"
+  },
+  {
+    "image": "assets/carousel/group_photo.jpg",
+    "title": "Club Photo 2026",
+    "description": "Finally got the gang together for a team photo",
+    "alt": "Team photo 2026"
+  },
+  {
+    "image": "assets/carousel/patrick_drone.jpg",
+    "title": "Drone Down",
+    "description": "Crossed wires? No problem. Patrick is on the job.",
+    "alt": "Club member Patrick fixing drone"
+  },
+  {
+    "image": "assets/carousel/team_pic.jpg",
+    "title": "Day in the Life",
+    "description": "[insert something here]",
+    "alt": "Team member working on drone project"
+  }
+]

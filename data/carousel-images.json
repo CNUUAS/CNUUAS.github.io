@@ -1,38 +1,82 @@
 [
   {
-    "image": "assets/carousel/caiden_drone.png",
-    "title": "Day in the Life",
-    "description": "TO DO AAHHH",
-    "alt": " President Caiden inspecting the drone"
+    "imageSmall": "assets/carousel/carousel-club-meeting-2026-small-1.jpg",
+    "imageMedium": "assets/carousel/carousel-club-meeting-2026-med-1.jpg",
+    "imageLarge": "assets/carousel/carousel-club-meeting-2026-large-1.jpg",
+    "title": "Club Meeting 2026",
+    "description": "Team collaboration during weekly club meeting",
+    "alt": "CNU UAS team members collaborating during club meeting"
   },
   {
-    "image": "assets/carousel/drone_fly_2.jpg",
-    "title": "UAS/Robotics Lab",
-    "description": "Testing out the new drone lab!",
-    "alt": "Flight team flying the drone - Spring 2024"
+    "imageSmall": "assets/carousel/carousel-club-meeting-2026-small-2.jpg",
+    "imageMedium": "assets/carousel/carousel-club-meeting-2026-med-2.jpg",
+    "imageLarge": "assets/carousel/carousel-club-meeting-2026-large-2.jpg",
+    "title": "Club Meeting 2026",
+    "description": "Working on drone systems together",
+    "alt": "Team members working on drone systems during meeting"
   },
   {
-    "image": "assets/carousel/drone_fly.jpg",
-    "title": "UAS/Robotics Lab",
-    "description": "Testing out the new drone lab!",
-    "alt": "Kaveon at work - Spring 2024 team member"
+    "imageSmall": "assets/carousel/carousel-club-meeting-2026-small-3.jpg",
+    "imageMedium": "assets/carousel/carousel-club-meeting-2026-med-3.jpg",
+    "imageLarge": "assets/carousel/carousel-club-meeting-2026-large-3.jpg",
+    "title": "Club Meeting 2026",
+    "description": "Discussing technical challenges",
+    "alt": "Team discussing technical challenges during club meeting"
   },
   {
-    "image": "assets/carousel/group_photo.jpg",
-    "title": "Club Photo 2026",
-    "description": "Finally got the gang together for a team photo",
-    "alt": "Team photo 2026"
+    "imageSmall": "assets/carousel/carousel-club-meeting-2026-small-4.jpg",
+    "imageMedium": "assets/carousel/carousel-club-meeting-2026-med-4.jpg",
+    "imageLarge": "assets/carousel/carousel-club-meeting-2026-large-4.jpg",
+    "title": "Club Meeting 2026",
+    "description": "Hands-on work with equipment",
+    "alt": "Team members working hands-on with drone equipment"
   },
   {
-    "image": "assets/carousel/patrick_drone.jpg",
-    "title": "Drone Down",
-    "description": "Crossed wires? No problem. Patrick is on the job.",
-    "alt": "Club member Patrick fixing drone"
+    "imageSmall": "assets/carousel/carousel-serc-lab-2026-small-1.jpg",
+    "imageMedium": "assets/carousel/carousel-serc-lab-2026-med-1.jpg",
+    "imageLarge": "assets/carousel/carousel-serc-lab-2026-large-1.jpg",
+    "title": "SERC Lab 2026",
+    "description": "Advanced work in the SERC laboratory",
+    "alt": "Team working in SERC lab on advanced drone systems"
   },
   {
-    "image": "assets/carousel/team_pic.jpg",
-    "title": "Day in the Life",
-    "description": "[insert something here]",
-    "alt": "Team member working on drone project"
+    "imageSmall": "assets/carousel/carousel-serc-lab-2026-small-3.jpg",
+    "imageMedium": "assets/carousel/carousel-serc-lab-2026-med-3.jpg",
+    "imageLarge": "assets/carousel/carousel-serc-lab-2026-large-3.jpg",
+    "title": "SERC Lab 2026",
+    "description": "Collaborative work session",
+    "alt": "Team collaboration during SERC lab work session"
+  },
+  {
+    "imageSmall": "assets/carousel/carousel-serc-lab-2026-small-4.jpg",
+    "imageMedium": "assets/carousel/carousel-serc-lab-2026-med-4.jpg",
+    "imageLarge": "assets/carousel/carousel-serc-lab-2026-large-4.jpg",
+    "title": "SERC Lab 2026",
+    "description": "Equipment testing and refinement",
+    "alt": "Equipment testing in SERC laboratory"
+  },
+  {
+    "imageSmall": "assets/carousel/carousel-serc-lab-2026-small-5.jpg",
+    "imageMedium": "assets/carousel/carousel-serc-lab-2026-med-5.jpg",
+    "imageLarge": "assets/carousel/carousel-serc-lab-2026-large-5.jpg",
+    "title": "SERC Lab 2026",
+    "description": "Precision work with drone components",
+    "alt": "Precision work with drone components in SERC lab"
+  },
+  {
+    "imageSmall": "assets/carousel/carousel-serc-lab-2026-small-6.jpg",
+    "imageMedium": "assets/carousel/carousel-serc-lab-2026-med-6.jpg",
+    "imageLarge": "assets/carousel/carousel-serc-lab-2026-large-6.jpg",
+    "title": "SERC Lab 2026",
+    "description": "Team problem-solving session",
+    "alt": "Team working together on problem-solving in SERC lab"
+  },
+  {
+    "imageSmall": "assets/carousel/carousel-serc-lab-2026-small-7.jpg",
+    "imageMedium": "assets/carousel/carousel-serc-lab-2026-med-7.jpg",
+    "imageLarge": "assets/carousel/carousel-serc-lab-2026-large-7.jpg",
+    "title": "SERC Lab 2026",
+    "description": "Final preparations and testing",
+    "alt": "Final preparations and testing in SERC laboratory"
   }
 ]

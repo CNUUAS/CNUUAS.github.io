@@ -1,7 +1,8 @@
 .mainContent {
-    box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.8);
-    padding-top: 1vh;
+    background: white;
+    padding-top: 2vh;
     padding-bottom: 10vh;
+    min-height: 80vh;
 }
 
 /* ---------------- Team Logo ---------------- */
@@ -9,20 +10,42 @@
 /* Style for "Team" */
 #team {
     margin: 0;
-    color: black;
-    font-size: clamp(50px, 5vw, 500px);
+    color: #1a1a2e;
+    font-size: clamp(40px, 5vw, 70px);
+    letter-spacing: -1px;
+    position: relative;
+    display: inline-block;
+}
+
+#team::after {
+    content: "";
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    border-radius: 2px;
+}
+
+.lead {
+    font-size: 1.1rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 /* ---------------- Desktop Team Grid ---------------- */
 .desktop-grid {
     display: flex;
     justify-content: center;
-    gap: 30px;
+    gap: 35px;
     flex-wrap: wrap;
-    margin-top: 40px;
-    margin: 40px auto 0 auto;
-    max-width: 1200px;
-    padding: 0 20px;
+    margin-top: 50px;
+    margin: 50px auto 0 auto;
+    max-width: 1400px;
+    padding: 0 30px;
 }
 
 /* ---------------- Carousel Wrapper ---------------- */
@@ -31,8 +54,8 @@
     flex-direction: column;
     align-items: center;
     margin: 3vh auto 0 auto;
-    margin-left: -5vw;
-    width: 110%;
+    margin-left: -15vw;
+    width: 130%;
 }
 
 /* ---------------- Carousel ---------------- */
@@ -56,26 +79,44 @@
 .carousel-control-prev,
 .carousel-control-next {
     display: none;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    background: rgba(102, 126, 234, 0.1);
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    top: 50%;
+    transform: translateY(-50%);
 }
+
+.carousel-control-prev:hover,
+.carousel-control-next:hover {
+    background: rgba(102, 126, 234, 0.2);
+    transform: translateY(-50%) scale(1.1);
+}
+
 .carousel-control-prev {
-    left: 20px;
+    left: 40px;
 }
 .carousel-control-next {
-    right: 20px;
+    right: 40px;
 }
 /* Arrow image styling */
 .carousel-arrow {
     width: 30px;
     height: 40px;
     display: block;
+    filter: brightness(0) saturate(100%) invert(20%) sepia(60%) saturate(2000%)
+        hue-rotate(200deg) brightness(85%) contrast(95%);
 }
 
 /* ---------------- Team Cards ---------------- */
 /* Individual team member card styling */
 .team-card {
     display: flex;
-    border: 4px solid black;
-    border-radius: 10px;
+    border: none;
+    border-radius: 16px;
     overflow: hidden;
     cursor: pointer;
     padding: 0;
@@ -83,28 +124,53 @@
     width: 15vw;
     height: 40vh;
     position: relative;
-    min-width: 220px;
-    min-height: 300px;
-    max-height: 400px;
+    min-width: 240px;
+    min-height: 320px;
+    max-height: 420px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    background: white;
 }
+
+.team-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(102, 126, 234, 0.25);
+}
+
+.team-card:active {
+    transform: translateY(-5px);
+}
+
 .gradient-divider {
     position: absolute;
-    bottom: 0; /* gradient starts from bottom */
+    bottom: 0;
     left: 0;
     width: 100%;
-    height: 35%; /* controls how much of image is covered */
+    height: 40%;
     background: linear-gradient(
         to top,
-        rgba(0, 0, 0, 0.75) 50%,
+        rgba(26, 26, 46, 0.9) 0%,
+        rgba(26, 26, 46, 0.6) 50%,
         transparent 100%
-    ); /* gradient overlay */
-    pointer-events: none; /* lets clicks pass through */
+    );
+    pointer-events: none;
+    transition: opacity 0.3s ease;
 }
+
+.team-card:hover .gradient-divider {
+    opacity: 0.8;
+}
+
 .team-card img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
+    transition: transform 0.4s ease;
+}
+
+.team-card:hover img {
+    transform: scale(1.05);
 }
 
 /* Text overlay at bottom of card */
@@ -113,26 +179,28 @@
     bottom: 0;
     left: 0;
     width: 100%;
-    padding: 2.4rem 0;
+    padding: 2.4rem 1rem 0.5rem 1rem;
     color: white;
-    font-size: 1.3rem;
-    font-weight: bold;
+    font-size: 1.25rem;
+    font-weight: 700;
     text-align: center;
     white-space: pre-line;
-    text-shadow: 1px 1px 2px black;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+    letter-spacing: 0.3px;
 }
+
 .text-section2 {
     position: absolute;
     bottom: 0;
     left: 0;
     width: 100%;
-    padding: 0.75rem 0;
-    color: white;
-    font-size: 1.3rem;
-    font-weight: bold;
+    padding: 0.5rem 1rem 1.2rem 1rem;
+    color: rgba(255, 255, 255, 0.95);
+    font-size: 1rem;
+    font-weight: 500;
     text-align: center;
     white-space: pre-line;
-    text-shadow: 1px 1px 2px black;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
 }
 
 /* ---------------- Pop-ups ---------------- */
@@ -140,62 +208,144 @@
 .pop-up {
     display: none;
     position: absolute;
-    top: -4px;
-    left: -4px;
-    width: calc(100% + 8px);
-    height: calc(100% + 8px);
-    background-color: white;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #2d3748;
     z-index: 20;
-    border-radius: 10px;
-    padding: 2.5rem 0.5rem 0 0.5rem;
+    border-radius: 16px;
+    padding: 3rem 1.5rem 1.5rem 1.5rem;
     text-align: center;
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.35);
-    font-size: 1.5rem;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    font-size: 1.1rem;
     overflow: auto;
+    color: white;
+    animation: popupFadeIn 0.3s ease;
 }
+
+@keyframes popupFadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.pop-up p {
+    line-height: 1.6;
+    margin: 0;
+}
+
 /* Close button for pop-ups */
 .pop-up .close-btn {
     position: absolute;
-    top: 10px;
-    right: 10px;
-    font-size: 35px;
-    color: black;
+    top: 15px;
+    right: 15px;
+    font-size: 32px;
+    color: white;
     cursor: pointer;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+    background: rgba(255, 255, 255, 0.2);
 }
+
+.pop-up .close-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: rotate(90deg);
+}
+
 /* Button to view all team members */
 .viewButtonWrapper {
-    margin-top: 30px;
+    margin-top: 50px;
+    text-align: center;
 }
 
 .viewButton {
-    background-color: rgb(108, 120, 150);
-    border-radius: 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 50px;
     color: white;
-    padding-left: 20px;
-    padding-right: 20px;
+    padding: 14px 40px;
     border: none;
-    box-shadow: none;
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
     outline: none;
     appearance: none;
     -webkit-appearance: none;
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    cursor: pointer;
 }
 
+.viewButton:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px rgba(102, 126, 234, 0.4);
+}
+
+.viewButton:active {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(102, 126, 234, 0.3);
+}
 
 /* ---------------- No Team Message ---------------- */
 .no-team-message {
     text-align: center;
-    padding: 60px 20px;
+    padding: 80px 30px;
     color: #666;
-    font-size: 1.5rem;
+    font-size: 1.3rem;
+    background: #f8f9fa;
+    border-radius: 16px;
+    margin: 20px;
 }
 
 .no-team-message p {
-    margin: 10px 0;
+    margin: 15px 0;
     padding-bottom: 5vh;
 }
 
 .no-team-message p:first-child {
-    font-weight: bold;
+    font-weight: 700;
     font-size: 1.8rem;
-    color: #333;
+    color: #1a1a2e;
+    padding-bottom: 0;
+}
+
+/* ---------------- Responsive Adjustments ---------------- */
+@media (max-width: 768px) {
+    #team {
+        font-size: clamp(32px, 8vw, 50px);
+    }
+
+    .lead {
+        font-size: 1rem;
+        padding: 0 20px;
+    }
+
+    .team-card {
+        width: 85vw !important; /* Change this - controls the card width as % of screen */
+        max-width: 240px !important; /* Change this - sets absolute maximum width */
+        min-width: 240px;
+    }
+
+    .viewButton {
+        padding: 12px 32px;
+        font-size: 1rem;
+    }
+
+    #teamCarousel {
+        padding: 0 20px;
+    }
+
+    .carousel-item {
+        padding: 20px 5px;
+    }
 }

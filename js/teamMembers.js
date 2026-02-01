@@ -21,7 +21,7 @@ export const teamMembers = [
         role: "Unknown",
         img: "assets/members/headshots-2026-small-chris.jpg",
         popup: "Chris is a major in Unknown and enjoys Unknown.",
-        email: "Unkown",
+        email: "Unknown",
         year: 0,
     },
     {
@@ -29,8 +29,8 @@ export const teamMembers = [
         major: "Computer Science",
         role: "Software Developer",
         img: "assets/members/headshots-2026-small-eva.jpg",
-        popup: "Eva is a major in Unknown and enjoys Unknown.",
-        email: "Unkown",
+        popup: "Eva is a computer science major and enjoys Unknown.",
+        email: "Unknown",
         year: 0,
     },
     {
@@ -114,7 +114,7 @@ export const teamMembers = [
         email: "pwood16120@gmail.com",
         year: 0,
     },
-    {
+     {
         name: "Iretimofe Akinyoola",
         major: "Electrical Engineering",
         role: "Aerospace Engineer",

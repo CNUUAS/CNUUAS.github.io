@@ -114,6 +114,15 @@ export const teamMembers = [
         email: "pwood16120@gmail.com",
         year: 0,
     },
+    {
+        name: "Iretimofe Akinyoola",
+        major: "Electrical Engineering",
+        role: "Aerospace Engineer",
+        img: "https://picsum.photos/600/350?random=5",
+        popup: "Iretimofe is a major in Electrical Engineering and enjoys running.",
+        email: "akinyoolairetk@gmail.com",
+        year: 0,
+    },
 ];
 
 // Array of alumni. Edit this to change the members in the alumni page.

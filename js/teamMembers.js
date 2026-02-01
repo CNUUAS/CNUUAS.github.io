@@ -14,7 +14,6 @@
 
 */
 
-
 export const teamMembers = [
     {
         name: "Chris _",
@@ -39,7 +38,7 @@ export const teamMembers = [
         major: "Computer Science",
         role: "Software Developer",
         img: "assets/team + fullTeam pages/Members Photos/Jacob.png",
-        popup: "Jacob is a major in Computer Science and enjoys Unknown.",
+        popup: "Jacob is a major in Computer Science and enjoys learning about miscellaneous information.",
         email: "jackobblankenship095@gmail.com",
         year: 0,
     },
@@ -53,21 +52,21 @@ export const teamMembers = [
         year: 0,
     },
     {
-        name: "Logan _",
-        major: "Unknown",
-        role: "Unknown",
+        name: "Logan Ross",
+        major: "Computer Engineering",
+        role: "Hardware Lead",
         img: "assets/team + fullTeam pages/Members Photos/Logan.png",
-        popup: "Logan is a major in Unknown and enjoys Unknown.",
-        email: "Unknown",
+        popup: "Logan is a major in Computer Engineering and enjoys collecting medieval weapons.",
+        email: "LARoss2256@gmail.com",
         year: 0,
     },
     {
-        name: "Marie _",
-        major: "Unknown",
-        role: "Unknown",
+        name: "Marie Vang",
+        major: "Electrical Engineering",
+        role: "General Factotum",
         img: "assets/team + fullTeam pages/Members Photos/Marie.png",
-        popup: "Marie is a major in Unknown and enjoys Unknown.",
-        email: "Unknown",
+        popup: "Marie is a major in Electrical Engineering and enjoys Unknown.",
+        email: "N/A",
         year: 0,
     },
     {
@@ -97,13 +96,22 @@ export const teamMembers = [
         email: "Unknown",
         year: 0,
     },
-        {
+    {
         name: "Chris Jeffrey",
         major: "History",
         role: "Hardware",
         img: "https://picsum.photos/600/350?random=3",
         popup: "Chris is a major in History and enjoys reading .",
         email: "N/A",
+        year: 0,
+    },
+    {
+        name: "Patrick Wood",
+        major: "Computer Science (Grad Student)",
+        role: "Fixed Wing Specialist",
+        img: "https://picsum.photos/600/350?random=4",
+        popup: "Patrick is a graduate student in Computer Science and enjoys building home-built fixed wings and seeing how much he can complicate them before they won't fly anymore.",
+        email: "pwood16120@gmail.com",
         year: 0,
     },
 ];
@@ -121,7 +129,6 @@ export const teamMembers = [
     },
 
 */
-
 
 export const alumni = [
     {

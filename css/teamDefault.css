@@ -151,6 +151,7 @@
     text-align: center;
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.35);
     font-size: 1.5rem;
+    overflow: auto;
 }
 /* Close button for pop-ups */
 .pop-up .close-btn {

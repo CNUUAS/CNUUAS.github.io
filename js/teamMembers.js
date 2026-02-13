@@ -129,8 +129,8 @@ export const teamMembers = [
     {
         name: "Patrick Wood",
         major: "Computer Science (Grad Student)",
-        role: "Fixed Wing Specialist",
-        section: "flight",
+        role: "Flight Lead",
+        section: "officers",
         img: "https://picsum.photos/600/350?random=4",
         popup: "Patrick is a graduate student in Computer Science and enjoys building home-built fixed wings and seeing how much he can complicate them before they won't fly anymore.",
         email: "pwood16120@gmail.com",

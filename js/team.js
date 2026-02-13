@@ -4,6 +4,16 @@ import { teamMembers } from "./teamMembers.js";
 // Check if the device width meets desktop size (>= 500px)
 const isDesktop = window.matchMedia("(min-width: 500px)").matches;
 
+// Define section order and titles
+const sectionConfig = {
+    officers: { title: "Officers", description: "Team leadership" },
+    software: { title: "Software Team", description: "Software development" },
+    hardware: { title: "Hardware Team", description: "Hardware engineering" },
+    flight: {title: "Flight Team", description: "Flight control"},
+    members: { title: "Members", description: "General members" }
+
+};
+
 // Creates a team member card element and its popup
 function createCard(member, index) {
     // Create the clickable card container (styled as a button)
@@ -44,6 +54,32 @@ function createCard(member, index) {
     return { card, popup };
 }
 
+// Create section header
+function createSectionHeader(sectionKey) {
+    const config = sectionConfig[sectionKey];
+    const header = document.createElement("div");
+    header.className = "section-header";
+    header.innerHTML = `
+        <div class="section-line"></div>
+        <h2>${config.title}</h2>
+        <p>${config.description}</p>
+    `;
+    return header;
+}
+
+// Group members by section
+function groupBySection(members) {
+    const grouped = {};
+    members.forEach(member => {
+        const section = member.section || 'members';
+        if (!grouped[section]) {
+            grouped[section] = [];
+        }
+        grouped[section].push(member);
+    });
+    return grouped;
+}
+
 // Check if there are any team members
 if (!teamMembers || teamMembers.length === 0) {
     // Display message when no team members exist
@@ -73,20 +109,28 @@ if (!teamMembers || teamMembers.length === 0) {
 } else {
     // -------- Desktop layout --------
     if (isDesktop) {
-        // Grab grid container for desktop view
+        const groupedMembers = groupBySection(teamMembers);
         const desktopGrid = document.getElementById("desktop-team-grid");
-
-        // Create and append all cards directly into the grid
-        teamMembers.forEach((member, index) => {
-            const { card } = createCard(member, index);
-            desktopGrid.appendChild(card);
+        
+        // Render each section
+        Object.keys(sectionConfig).forEach(sectionKey => {
+            if (groupedMembers[sectionKey] && groupedMembers[sectionKey].length > 0) {
+                // Add section header
+                const sectionHeader = createSectionHeader(sectionKey);
+                desktopGrid.appendChild(sectionHeader);
+                
+                // Add all cards for this section directly to the main grid
+                groupedMembers[sectionKey].forEach((member, index) => {
+                    const { card } = createCard(member, index);
+                    desktopGrid.appendChild(card);
+                });
+            }
         });
 
-        // Hide arrows on desktop since we're using grid view
         document.querySelector(".carousel-control-prev").style.display = "none";
         document.querySelector(".carousel-control-next").style.display = "none";
 
-        // -------- Mobile / Carousel layout --------
+    // -------- Mobile / Carousel layout (NO SECTIONS) --------
     } else {
         // Get Bootstrap carousel inner container
         const cardsContainer = document.getElementById("team-cards");

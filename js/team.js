@@ -6,11 +6,11 @@ const isDesktop = window.matchMedia("(min-width: 500px)").matches;
 
 // Define section order and titles
 const sectionConfig = {
-    officers: { title: "Officers", description: "Team leadership" },
-    software: { title: "Software Team", description: "Software development" },
-    hardware: { title: "Hardware Team", description: "Hardware engineering" },
-    flight: {title: "Flight Team", description: "Flight control"},
-    members: { title: "Members", description: "General members" }
+    officers: { title: "Officers", description: "Team Leadership" },
+    software: { title: "Software Team", description: "Software Development" },
+    hardware: { title: "Hardware Team", description: "Hardware Engineering" },
+    flight: {title: "Flight Team", description: "Flight Control"},
+    members: { title: "Members", description: "General Members" }
 
 };
 

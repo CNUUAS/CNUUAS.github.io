@@ -22,7 +22,7 @@ export const teamMembers = [
         section: "officers",
         img: "assets/members/headshots-2026-small-moxxie.jpg",
         popup: "Moxxie is a major in Electrical Engineering and does not want to share enjoyments.",
-        email: "Moxxie.schrader.24@cnu.edu",
+        email: "moxxie.schrader.24@cnu.edu",
         year: 2028,
     },
     {
@@ -49,7 +49,7 @@ export const teamMembers = [
     {
         name: "Logan Ross",
         major: "Computer Engineering",
-        role: "Hardware Lead?",
+        role: "Hardware Lead",
         section: "officers",
         img: "assets/members/headshots-2026-small-logan.jpg",
         popup: "Logan is a major in Computer Engineering and enjoys collecting medieval weapons.",
@@ -59,8 +59,8 @@ export const teamMembers = [
     {
         name: "Kyle Bloom",
         major: "Computer Engineering",
-        role: "Hardware Lead?",
-        section: "officers",
+        role: "Hardware Engineer",
+        section: "hardware",
         img: "https://picsum.photos/600/350?random=8",
         popup: "Kyle is a major in Computer Engineering and enjoys Unknown.",
         email: "Unknown",

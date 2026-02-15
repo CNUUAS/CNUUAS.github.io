@@ -25,12 +25,13 @@ export const teamMembers = [
         email: "moxxie.schrader.24@cnu.edu",
         year: 2028,
     },
+    
     {
         name: "Ethan Steider",
         major: "Electrical Engineering",
         role: "Vice President",
         section: "officers",
-        img: "https://picsum.photos/600/350?random=7",
+        img: "assets/members/headshots-2026-small-ethan.jpg",
         popup: "Ethan is a major in Electrical Engineering and enjoys drones.",
         email: "ethan.steider.22@cnu.edu",
         year: 2026,
@@ -41,7 +42,7 @@ export const teamMembers = [
         major: "Computer Engineering",
         role: "Software Lead",
         section: "officers",
-        img: "https://picsum.photos/600/350?random=6",
+        img: "assets/members/headshots-2026-small-caiden.jpg",
         popup: "Caiden is a major in Computer Engineering and enjoys making electronic music and riding his bike backwards.",
         email: "caiden.pleis.23@cnu.edu",
         year: 2027,
@@ -73,7 +74,7 @@ export const teamMembers = [
         section: "software",
         img: "assets/members/headshots-2026-small-eva.jpg",
         popup: "Eva is a Computer Science major and enjoys classical music.",
-        email: "N/A",
+        email: "evangelina.grimes.22@cnu.edu",
         year: 2026,
     },
     {

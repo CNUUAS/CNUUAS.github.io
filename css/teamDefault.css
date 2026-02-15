@@ -35,6 +35,68 @@
     margin-right: auto;
 }
 
+/* ---------------- Section Headers ---------------- */
+.section-header {
+    text-align: center;
+    margin: 60px 0 40px 0;
+    padding: 0 20px;
+    width: 100%; /* Force full width */
+    flex-basis: 100%; /* In flexbox, take full row */
+}
+
+.section-header h2 {
+    font-size: clamp(28px, 4vw, 42px);
+    color: #1a1a2e;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+    margin-bottom: 15px;
+    text-transform: capitalize;
+}
+
+.section-header .section-line {
+    width: 60px;
+    height: 3px;
+    margin: 0 auto 10px auto;
+    border-radius: 2px;
+}
+
+.section-header p {
+    color: #666;
+    font-size: 1rem;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+/* First section has less top margin */
+.section-header:first-of-type {
+    margin-top: 20px;
+}
+
+/* Section header carousel slides (mobile only) */
+.carousel-item .section-header {
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: transparent;
+    padding: 40px 20px;
+}
+
+.carousel-item .section-header h2 {
+    margin-bottom: 15px;
+}
+
+.carousel-item .section-header .section-line {
+    margin-bottom: 15px;
+}
+
+/* Ensure section headers don't get card shadows in carousel */
+.carousel-item:has(.section-header) {
+    background: transparent;
+    box-shadow: none;
+}
+
 /* ---------------- Desktop Team Grid ---------------- */
 .desktop-grid {
     display: flex;
@@ -346,6 +408,14 @@
 
     .carousel-item {
         padding: 20px 5px;
+    }
+
+    .section-header {
+        margin: 40px 0 30px 0;
+    }
+    
+    .section-header h2 {
+        font-size: clamp(24px, 6vw, 36px);
     }
 }
 

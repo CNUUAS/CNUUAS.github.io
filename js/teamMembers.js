@@ -16,6 +16,24 @@
 
 export const teamMembers = [
     {
+        name: "Caiden Pleis",
+        major: "Computer Engineering",
+        role: "President",
+        img: "assets/members/headshots-2026-small-caiden.jpg",
+        popup: "Caiden is a major in Computer Engineering and enjoys Unknown.",
+        email: "Unknown",
+        year: 0,
+    },
+    {
+        name: "Ethan Steider",
+        major: "Electrical Engineering",
+        role: "Vice President",
+        img: "assets/members/headshots-2026-small-ethan.jpg",
+        popup: "Ethan is a major in Electrical Engineering and enjoys Unknown.",
+        email: "Unknown",
+        year: 0,
+    },
+    {
         name: "Chris _",
         major: "Mathematics",
         role: "Unknown",

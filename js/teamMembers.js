@@ -108,7 +108,7 @@ export const teamMembers = [
         year: 2028,
     },
     {
-        name: "Zahira _",
+        name: "Zahira Tirado",
         major: "Unknown",
         role: "Unknown",
         section: "members",

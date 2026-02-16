@@ -132,7 +132,7 @@ export const teamMembers = [
         major: "Computer Science (Grad Student)",
         role: "Flight Lead",
         section: "officers",
-        img: "https://picsum.photos/600/350?random=4",
+        img: "assets/members/patrick-headshot.jpeg",
         popup: "Patrick is a graduate student in Computer Science and enjoys building home-built fixed wings and seeing how much he can complicate them before they won't fly anymore.",
         email: "pwood16120@gmail.com",
         year: 2025,

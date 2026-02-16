@@ -187,45 +187,18 @@ export const teamMembers = [
 
 export const alumni = [
     {
-        year: 2020,
-        name: "Sarah Mitchell",
-        title: "Aerospace Engineer",
+        year: 2024,
+        name: "Sam Raymond",
+        title: "Unknown",
         description:
-            "Currently working at NASA Langley Research Center, specializing in autonomous flight systems.",
+            "Currently working at Unknown.",
     },
     {
-        year: 2019,
-        name: "James Rodriguez",
-        title: "Drone Technology Consultant",
+        year: 2023,
+        name: "Nate Mack",
+        title: "Unknown",
         description:
-            "Founder of AeroConsult, providing UAS solutions to commercial and agricultural sectors.",
+            "Currently working at Unknown.",
     },
-    {
-        year: 2021,
-        name: "Emily Chen",
-        title: "Software Developer",
-        description:
-            "Developing autonomous navigation systems at Skydio, advancing drone AI capabilities.",
-    },
-    {
-        year: 2018,
-        name: "Michael Thompson",
-        title: "Mechanical Engineer",
-        description:
-            "Senior engineer at Boeing, working on next-generation unmanned aerial vehicle designs.",
-    },
-    {
-        year: 2022,
-        name: "Amanda Foster",
-        title: "Research Scientist",
-        description:
-            "PhD candidate at Virginia Tech, researching swarm robotics and multi-agent systems.",
-    },
-    {
-        year: 2017,
-        name: "David Park",
-        title: "Flight Test Engineer",
-        description:
-            "Leading flight test operations at Northrop Grumman, focusing on unmanned combat systems.",
-    },
+
 ];

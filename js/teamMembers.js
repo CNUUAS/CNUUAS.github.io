@@ -61,7 +61,7 @@ export const teamMembers = [
         major: "Computer Engineering",
         role: "Hardware Engineer",
         section: "hardware",
-        img: "https://picsum.photos/600/350?random=8",
+        img: "assets/members/temp-kyle.jpeg",
         popup: "Kyle is a major in Computer Engineering and enjoys Unknown.",
         email: "Unknown",
         year: 2028,

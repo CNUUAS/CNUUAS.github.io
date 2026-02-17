@@ -1,3 +1,9 @@
+
+//This controls whether the list of members on the team page is grouped by sections on desktop view.
+export const groupBySectionEnabled = true;
+
+
+
 // Array of team members. Edit this to change the members in the team and fullTeam pages.
 
 /*Format: 

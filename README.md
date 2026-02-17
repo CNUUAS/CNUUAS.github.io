@@ -83,6 +83,9 @@ CNUUAS.GITHUB.IO/
 - Changes apply to all pages automatically
 - Test on mobile (F12 → Toggle device toolbar)
 
+### To toggle sections on desktop team page
+ - Go to `js\teamMembers.js` and edit the `groupBySectionEnabled` variable.
+
 ### To add new Team Members to Team Pages
  - Edit the team member list found in the file `js\teamMembers.js`
  - Follow the formula of the other Team Members

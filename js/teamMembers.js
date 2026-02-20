@@ -143,16 +143,16 @@ export const teamMembers = [
         email: "pwood16120@gmail.com",
         year: 2025,
     },
-    // {
-    //     name: "Chris _",
-    //     major: "Mathematics",
-    //     role: "Unknown",
-    //     section: "members",
-    //     img: "assets/members/headshots-2026-small-chris.jpg",
-    //     popup: "Chris is a major in Unknown and enjoys Unknown.",
-    //     email: "Unknown",
-    //     year: 0,
-    // },
+    {
+        name: "Chris Johnson",
+        major: "Mathematics",
+        role: "General Factotum",
+        section: "members",
+        img: "assets/members/headshots-2026-small-chris.jpg",
+        popup: "Chris is a major in Mathematics and enjoys playing video games.",
+        email: "chrisopher.johnson.25@cnu.edu",
+        year: 2029,
+    },
 
     // {
     //     name: "Maverick _",

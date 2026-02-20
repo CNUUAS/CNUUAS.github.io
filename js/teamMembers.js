@@ -128,7 +128,7 @@ export const teamMembers = [
         major: "History",
         role: "Hardware Engineer",
         section: "hardware",
-        img: "https://picsum.photos/600/350?random=3",
+        img: "assets/members/chris-headshot.jpg",
         popup: "Chris is a major in History and enjoys reading .",
         email: "N/A",
         year: 2029,

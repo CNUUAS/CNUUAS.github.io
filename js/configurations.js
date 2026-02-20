@@ -19,7 +19,7 @@ export const sectionConfig = {
         major: "Computer Science",
         role: "Software Developer",
         img: "assets/members/Jacob.png",
-        popup: "Jacob is a major in Computer Science and enjoys Unknown.",
+        popup: "Jacob is a major in Computer Science and enjoys doing things and stuff.",
         email: "jackobblankenship095@gmail.com",
         year: 2028,
     },

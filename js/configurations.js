@@ -85,8 +85,8 @@ export const teamMembers = [
         role: "Hardware Engineer",
         section: "hardware",
         img: "assets/members/temp-kyle.jpeg",
-        popup: "Kyle is a major in Computer Engineering and enjoys Unknown.",
-        email: "Unknown",
+        popup: "Kyle is a major in Computer Engineering and enjoys board games and hiking.",
+        email: "kyle.bloom.17@cnu.edu",
         year: 2028,
     },
     {

@@ -1,8 +1,5 @@
-
 //This controls whether the list of members on the team page is grouped by sections on desktop view.
 export const groupBySectionEnabled = true;
-
-
 
 // Array of team members. Edit this to change the members in the team and fullTeam pages.
 
@@ -31,7 +28,7 @@ export const teamMembers = [
         email: "moxxie.schrader.24@cnu.edu",
         year: 2028,
     },
-    
+
     {
         name: "Ethan Steider",
         major: "Electrical Engineering",
@@ -62,6 +59,16 @@ export const teamMembers = [
         popup: "Logan is a major in Computer Engineering and enjoys collecting medieval weapons.",
         email: "LARoss2256@gmail.com",
         year: 2027,
+    },
+    {
+        name: "Patrick Wood",
+        major: "Computer Science (Grad Student)",
+        role: "Flight Lead",
+        section: "officers",
+        img: "assets/members/patrick-headshot.jpeg",
+        popup: "Patrick is a graduate student in Computer Science and enjoys building home-built fixed wings and seeing how much he can complicate them before they won't fly anymore.",
+        email: "pwood16120@gmail.com",
+        year: 2025,
     },
     {
         name: "Kyle Bloom",
@@ -114,16 +121,6 @@ export const teamMembers = [
         year: 2028,
     },
     {
-        name: "Zahira Tirado",
-        major: "Unknown",
-        role: "Unknown",
-        section: "members",
-        img: "assets/members/headshots-2026-small-zahira.jpg",
-        popup: "Zahira is a major in Unknown and enjoys Unknown.",
-        email: "Unknown",
-        year: 2029,
-    },
-    {
         name: "Chris Jeffrey",
         major: "History",
         role: "Hardware Engineer",
@@ -132,16 +129,6 @@ export const teamMembers = [
         popup: "Chris is a major in History and enjoys reading .",
         email: "N/A",
         year: 2029,
-    },
-    {
-        name: "Patrick Wood",
-        major: "Computer Science (Grad Student)",
-        role: "Flight Lead",
-        section: "officers",
-        img: "assets/members/patrick-headshot.jpeg",
-        popup: "Patrick is a graduate student in Computer Science and enjoys building home-built fixed wings and seeing how much he can complicate them before they won't fly anymore.",
-        email: "pwood16120@gmail.com",
-        year: 2025,
     },
     {
         name: "Chris Johnson",
@@ -153,6 +140,16 @@ export const teamMembers = [
         email: "chrisopher.johnson.25@cnu.edu",
         year: 2029,
     },
+    // {
+    //     name: "Zahira Tirado",
+    //     major: "Unknown",
+    //     role: "Unknown",
+    //     section: "members",
+    //     img: "assets/members/headshots-2026-small-zahira.jpg",
+    //     popup: "Zahira is a major in Unknown and enjoys Unknown.",
+    //     email: "Unknown",
+    //     year: 2029,
+    // },
 
     // {
     //     name: "Maverick _",
@@ -196,15 +193,12 @@ export const alumni = [
         year: 2024,
         name: "Sam Raymond",
         title: "Unknown",
-        description:
-            "Currently working at Unknown.",
+        description: "Currently working at Unknown.",
     },
     {
         year: 2023,
         name: "Nate Mack",
         title: "Unknown",
-        description:
-            "Currently working at Unknown.",
+        description: "Currently working at Unknown.",
     },
-
 ];

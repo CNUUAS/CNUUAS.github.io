@@ -20,7 +20,7 @@ CNUUAS.GITHUB.IO/
 │   └── alumniDefault.css
 ├── js/
 │   ├── fullTeam.js  
-|   ├── teamMembers.js      # Holds member information
+|   ├── configurations.js   # Holds configurations for the website
 │   ├── main.js             # Loads navbar/footer components
 │   ├── team.js             
 │   ├── viewer.js           # 360° viewer initialization (optional)

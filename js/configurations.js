@@ -201,13 +201,13 @@ export const alumni = [
     {
         year: 2024,
         name: "Sam Raymond",
-        title: "Unknown",
-        description: "Currently working at Unknown.",
+        title: "Department of Defense",
+        description: "Sam is currently working at the Department of Defense doing Unknown.",
     },
     {
         year: 2023,
         name: "Nate Mack",
-        title: "Unknown",
-        description: "Currently working at Unknown.",
+        title: "Sidequest",
+        description: "Nate is currently working at Sidequest doing Unknown.",
     },
 ];

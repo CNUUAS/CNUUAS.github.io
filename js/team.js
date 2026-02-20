@@ -1,20 +1,14 @@
 // Import list of team members
-import { teamMembers } from "./teamMembers.js";
+import { teamMembers } from "./configurations.js";
 
 // Boolean flag to enable grouping by section
-import { groupBySectionEnabled } from "./teamMembers.js";
+import { groupBySectionEnabled } from "./configurations.js";
+
+// this is the info to create the sections
+import { sectionConfig } from "./configurations.js";
 
 // Check if the device width meets desktop size (>= 500px)
 const isDesktop = window.matchMedia("(min-width: 500px)").matches;
-
-// Define section order and titles
-const sectionConfig = {
-    officers: { title: "Officers", description: "Team Leadership" },
-    software: { title: "Software Team", description: "Software Development" },
-    hardware: { title: "Hardware Team", description: "Hardware Engineering" },
-    flight: { title: "Flight Team", description: "Flight Control" },
-    members: { title: "Members", description: "General Members" }
-};
 
 // Creates a team member card element and its popup
 function createCard(member, index) {
@@ -65,8 +59,8 @@ function createSectionHeader(sectionKey) {
 // Group members by section
 function groupBySection(members) {
     const grouped = {};
-    members.forEach(member => {
-        const section = member.section || 'members';
+    members.forEach((member) => {
+        const section = member.section || "members";
         if (!grouped[section]) grouped[section] = [];
         grouped[section].push(member);
     });
@@ -95,7 +89,6 @@ if (!teamMembers || teamMembers.length === 0) {
     document.getElementById("viewButton").style.display = "none";
     document.querySelector(".carousel-control-prev").style.display = "none";
     document.querySelector(".carousel-control-next").style.display = "none";
-
 } else {
     if (isDesktop) {
         const desktopGrid = document.getElementById("desktop-team-grid");
@@ -103,8 +96,11 @@ if (!teamMembers || teamMembers.length === 0) {
         if (groupBySectionEnabled) {
             const groupedMembers = groupBySection(teamMembers);
 
-            Object.keys(sectionConfig).forEach(sectionKey => {
-                if (groupedMembers[sectionKey] && groupedMembers[sectionKey].length > 0) {
+            Object.keys(sectionConfig).forEach((sectionKey) => {
+                if (
+                    groupedMembers[sectionKey] &&
+                    groupedMembers[sectionKey].length > 0
+                ) {
                     const sectionHeader = createSectionHeader(sectionKey);
                     desktopGrid.appendChild(sectionHeader);
 
@@ -124,7 +120,6 @@ if (!teamMembers || teamMembers.length === 0) {
 
         document.querySelector(".carousel-control-prev").style.display = "none";
         document.querySelector(".carousel-control-next").style.display = "none";
-
     } else {
         // Mobile / carousel layout
         const cardsContainer = document.getElementById("team-cards");

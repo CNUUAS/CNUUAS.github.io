@@ -1,4 +1,4 @@
-import { alumni } from "./teamMembers.js";
+import { alumni } from "./configurations.js";
 
 
 // Function to create an alumni card

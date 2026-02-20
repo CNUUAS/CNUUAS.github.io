@@ -1,6 +1,15 @@
 //This controls whether the list of members on the team page is grouped by sections on desktop view.
 export const groupBySectionEnabled = true;
 
+// Define section order and titles
+export const sectionConfig = {
+    officers: { title: "Officers", description: "Team Leadership" },
+    software: { title: "Software Team", description: "Software Development" },
+    hardware: { title: "Hardware Team", description: "Hardware Engineering" },
+    flight: { title: "Flight Team", description: "Flight Control" },
+    members: { title: "Members", description: "General Members" },
+};
+
 // Array of team members. Edit this to change the members in the team and fullTeam pages.
 
 /*Format: 

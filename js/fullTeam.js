@@ -1,6 +1,6 @@
 // Imprt list of team members
 
-import { teamMembers } from "./teamMembers.js";
+import { teamMembers } from "./configurations.js";
 
 // Function that creates a single team member card element
 function createCard(member) {

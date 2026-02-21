@@ -202,12 +202,25 @@ export const alumni = [
         year: 2024,
         name: "Sam Raymond",
         title: "Department of Defense",
-        description: "Sam is currently working at the Department of Defense doing Unknown.",
+        description:
+            "Sam is currently working at the Department of Defense doing advanced computer science, involving reverse engineering assembly.",
     },
     {
-        year: 2023,
+        year: 2025,
         name: "Nate Mack",
         title: "Sidequest",
-        description: "Nate is currently working at Sidequest doing Unknown.",
+        description: "Nate is currently at bootcamp doing artillery.",
+    },
+    {
+        year: 2025,
+        name: "Ethan Grimmer",
+        title: "Colonial Technology",
+        description: "Ethan is currently a technician at Colonial Technology doing repairs on various devices.",
+    },
+        {
+        year: 2025,
+        name: "Iris Denner",
+        title: "Grad School",
+        description: "Iris is currently doing grad school and wants to become a middle school librarian.",
     },
 ];

@@ -15,7 +15,7 @@ main {
         box-shadow 0.3s ease;
     border: none;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    margin-bottom: 30px;
+    height: 100%;
 }
 
 .alumni-card:hover {
@@ -60,6 +60,7 @@ main {
     color: #666;
     font-size: 1.1rem;
 }
+
 /* Make the navbar dropdown overlay on mobile (alumni page only) */
 @media (max-width: 767px) {
     .navbar-collapse {
@@ -67,15 +68,15 @@ main {
         top: 100%;
         left: 0;
         right: 0;
-        background-color: #212529; /* Match the navbar bg-dark color */
+        background-color: #212529;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
         z-index: 1029;
-        padding-left: 1rem; /* Match container padding */
+        padding-left: 1rem;
         padding-right: 1rem;
         padding-top: 0.5rem;
         padding-bottom: 0.5rem;
     }
-    
+
     .navbar-collapse.collapsing,
     .navbar-collapse.show {
         background-color: #212529;

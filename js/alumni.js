@@ -1,20 +1,19 @@
 import { alumni } from "./configurations.js";
 
-
 // Function to create an alumni card
 function createAlumniCard(alumni) {
     return `
-                    <div class="col-md-6 col-lg-4">
-                        <div class="card alumni-card">
-                            <div class="card-body">
-                                <span class="year-badge">Class of ${alumni.year}</span>
-                                <h5 class="card-title mt-2">${alumni.name}</h5>
-                                <h6 class="text-muted">${alumni.title}</h6>
-                                <p class="card-text">${alumni.description}</p>
-                            </div>
-                        </div>
-                    </div>
-                `;
+        <div class="col-md-6 col-lg-4 d-flex mb-4">
+            <div class="card alumni-card w-100">
+                <div class="card-body">
+                    <span class="year-badge">Class of ${alumni.year}</span>
+                    <h5 class="card-title mt-2">${alumni.name}</h5>
+                    <h6 class="text-muted">${alumni.title}</h6>
+                    <p class="card-text">${alumni.description}</p>
+                </div>
+            </div>
+        </div>
+    `;
 }
 
 // Function to create empty state message

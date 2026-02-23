@@ -207,12 +207,6 @@ export const alumni = [
     },
     {
         year: 2025,
-        name: "Nate Mack",
-        title: "Sidequest",
-        description: "Nate is currently at bootcamp doing artillery.",
-    },
-    {
-        year: 2025,
         name: "Ethan Grimmer",
         title: "Colonial Technology",
         description:
@@ -225,4 +219,10 @@ export const alumni = [
         description:
             "Iris is currently working with students and teachers to support information access, teach research and technology skills, and introduce young people to literature and resources that expand their knowledge.",
     },
+    // {
+    //     year: 2025,
+    //     name: "Nate Mack",
+    //     title: "Sidequest",
+    //     description: "Nate is currently at bootcamp doing artillery.",
+    // },
 ];

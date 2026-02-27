@@ -12,19 +12,20 @@ CNUUAS.GITHUB.IO/
 ├── drone.html              # Drone information page
 ├── team.html               # Team members page
 ├── fullTeam.html           # Full team page
+├── alumni.html             # Alumni page
 ├── sponsers.html           # Sponsors page
 ├── css/
-│   ├── fullTeamDefault.css
+│   ├── fullTeamDefault.css # full team styling
 │   ├── styles.css          # All CSS styles (mobile-responsive)
-│   ├── teamDefault.css
-│   └── alumniDefault.css
+│   ├── teamDefault.css     # team styling
+│   └── alumniDefault.css   # alumni styling
 ├── js/
 │   ├── fullTeam.js  
 |   ├── configurations.js   # Holds configurations for the website
 │   ├── main.js             # Loads navbar/footer components
-│   ├── team.js             
+│   ├── team.js             # team script
 │   ├── viewer.js           # 360° viewer initialization (optional)
-│   └── alumni.js
+│   └── alumni.js           3 alumni script
 ├── components/
 │   ├── navbar.html         # Shared navigation bar
 │   └── footer.html         # Shared footer

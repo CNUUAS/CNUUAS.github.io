@@ -10,6 +10,9 @@
             rel="stylesheet"
         />
 
+        <link rel="stylesheet" href="sponsor.css" />
+
+
         <style>
             .navbar {
                 position: relative;
@@ -88,9 +91,38 @@
                     </p>
 
                     <div class="mt-4">
-                        <span class="text-muted"
-                            >[ Sponsor Us Button Here ]</span
+                        <form
+                            action="https://formspree.io/f/xrbpkolb"
+                            method="POST"
                         >
+                            <input
+                                type="text"
+                                name="name"
+                                placeholder="Your Name"
+                                required
+                            />
+                            <input
+                                type="email"
+                                name="email"
+                                placeholder="Email"
+                                required
+                            />
+                            <input
+                                type="text"
+                                name="organization"
+                                placeholder="Organization"
+                            />
+                            <select name="tier">
+                                <option value="bronze">Bronze</option>
+                                <option value="silver">Silver</option>
+                                <option value="gold">Gold</option>
+                            </select>
+                            <textarea
+                                name="message"
+                                placeholder="Tell us about your interest"
+                            ></textarea>
+                            <button type="submit">Submit</button>
+                        </form>
                     </div>
                 </div>
             </main>

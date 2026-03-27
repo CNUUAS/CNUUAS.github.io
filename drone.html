@@ -55,7 +55,7 @@
         <script>
         const PARTS = {
             body:     { label: "Central Hub",                    icon: "🛸", desc: "The central carbon fiber chassis is the structural and electronic heart of the hexacopter. It houses the flight controller (FC), power distribution board (PDB), and all ESC connections. The hexagonal geometry distributes stress evenly across all six arm attachment points, making it significantly more rigid than a quad frame under load." },
-            top_plate:{ label: "Top Plate",                     icon: "📋", desc: "The upper carbon fiber plate sandwiches all electronics between itself and the bottom plate. Provides mounting points for the GPS mast, antenna, and any payload brackets. The woven carbon fiber pattern gives it an excellent strength-to-weight ratio — stronger than aluminium at a fraction of the weight." },
+            attach:   { label: "Attachment Plate",               icon: "📋", desc: "The upper carbon fiber plate sandwiches all electronics between itself and the bottom plate. Provides mounting points for the GPS mast, antenna, and any payload brackets. The woven carbon fiber pattern gives it an excellent strength-to-weight ratio — stronger than aluminium at a fraction of the weight." },
             arm:      { label: "Carbon Fiber Arm",               icon: "🔩", desc: "Hollow carbon fiber tube arms radiate out at 60° intervals from the central hub. The hollow core serves double duty: structural rigidity and a conduit for motor wires, keeping the wiring clean and protected. Arms are designed as the first point of failure in a crash — cheaper to replace than the central hub or motors." },
             motor:    { label: "Brushless Motor",                icon: "⚡", desc: "High-KV brushless DC motors generate the thrust to lift the aircraft. On a hexacopter, alternating motors spin clockwise and counter-clockwise — each pair of opposing motors cancels out torque, keeping the frame stable. A major advantage of hex over quad: the drone can continue flying even if one motor fails, providing critical redundancy." },
             prop:     { label: "Propeller",                      icon: "💨", desc: "Carbon fiber reinforced propellers convert motor torque into thrust. Alternating props have mirrored pitch — clockwise and counter-clockwise variants — so all six generate upward thrust regardless of spin direction. Carbon fiber blades are stiffer than plastic, reducing flex at high RPM and improving efficiency, but they shatter on impact rather than flexing." },
@@ -169,7 +169,7 @@
         // ═════════════════════════════════════════════════════════════════════
 
         // Attachment plate  CylinderGeometry(radiusTop, radiusBottom, height, sides)
-        const attachmentPlate = reg(new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.5, 0.06, 6), mat.cf), "body");
+        const attachmentPlate = reg(new THREE.Mesh(new THREE.CylinderGeometry(0.5, 0.5, 0.06, 6), mat.cf), "attach");
         attachmentPlate.position.set(0, -0.3, 0);
         drone.add(attachmentPlate);
 
@@ -179,55 +179,69 @@
         drone.add(bottomPlate);
 
         // Top plate
-        const topPlate = reg(new THREE.Mesh(new THREE.CylinderGeometry(1.05, 1.05, 0.06, 6), mat.cf), "top_plate");
+        const topPlate = reg(new THREE.Mesh(new THREE.CylinderGeometry(1.05, 1.05, 0.06, 6), mat.cf), "body");
         topPlate.position.set(0, 0.42, 0);
         drone.add(topPlate);
 
         // Standoff pillar 0
-        const standoff0 = new THREE.Mesh(new THREE.CylinderGeometry(0.028, 0.028, 0.22, 8), mat.motor);
+        const standoff0 = reg(new THREE.Mesh(new THREE.CylinderGeometry(0.028, 0.028, 0.22, 8), mat.motor), "body");
         standoff0.position.set(0.390, 0.3, 0.675);
         drone.add(standoff0);
 
-        // // Standoff pillar 1
-        // const standoff1 = new THREE.Mesh(new THREE.CylinderGeometry(0.028, 0.028, 0.42, 8), mat.motor);
-        // standoff1.position.set(0.780, 0.21, 0.000);
-        // drone.add(standoff1);
+        // Standoff pillar 1
+        const standoff1 = reg(new THREE.Mesh(new THREE.CylinderGeometry(0.028, 0.028, 0.22, 8), mat.motor), "body");
+        standoff1.position.set(0.780, 0.3, 0.000);
+        drone.add(standoff1);
 
-        // // Standoff pillar 2
-        // const standoff2 = new THREE.Mesh(new THREE.CylinderGeometry(0.028, 0.028, 0.42, 8), mat.motor);
-        // standoff2.position.set(0.390, 0.21, -0.675);
-        // drone.add(standoff2);
+        // Standoff pillar 2
+        const standoff2 = reg(new THREE.Mesh(new THREE.CylinderGeometry(0.028, 0.028, 0.22, 8), mat.motor), "body");
+        standoff2.position.set(0.390, 0.3, -0.675);
+        drone.add(standoff2);
 
-        // // Standoff pillar 3
-        // const standoff3 = new THREE.Mesh(new THREE.CylinderGeometry(0.028, 0.028, 0.42, 8), mat.motor);
-        // standoff3.position.set(-0.390, 0.21, -0.675);
-        // drone.add(standoff3);
+        // Standoff pillar 3
+        const standoff3 = reg(new THREE.Mesh(new THREE.CylinderGeometry(0.028, 0.028, 0.22, 8), mat.motor), "body");
+        standoff3.position.set(-0.390, 0.3, -0.675);
+        drone.add(standoff3);
 
-        // // Standoff pillar 4
-        // const standoff4 = new THREE.Mesh(new THREE.CylinderGeometry(0.028, 0.028, 0.42, 8), mat.motor);
-        // standoff4.position.set(-0.780, 0.21, 0.000);
-        // drone.add(standoff4);
+        // Standoff pillar 4
+        const standoff4 = reg(new THREE.Mesh(new THREE.CylinderGeometry(0.028, 0.028, 0.22, 8), mat.motor), "body");
+        standoff4.position.set(-0.780, 0.3, 0.000);
+        drone.add(standoff4);
 
-        // // Standoff pillar 5
-        // const standoff5 = new THREE.Mesh(new THREE.CylinderGeometry(0.028, 0.028, 0.42, 8), mat.motor);
-        // standoff5.position.set(-0.390, 0.21, 0.675);
-        // drone.add(standoff5);
+        // Standoff pillar 5
+        const standoff5 = reg(new THREE.Mesh(new THREE.CylinderGeometry(0.028, 0.028, 0.22, 8), mat.motor), "body");
+        standoff5.position.set(-0.390, 0.3, 0.675);
+        drone.add(standoff5);
 
-        // // Flight controller board  BoxGeometry(width, height, depth)
-        // const fcBoard = reg(new THREE.Mesh(new THREE.BoxGeometry(0.55, 0.04, 0.55), mat.fc), "fc");
-        // fcBoard.position.set(0, 0.24, 0);
-        // drone.add(fcBoard);
+        // Attachment pillar 0
+        const attachoff0 = reg(new THREE.Mesh(new THREE.CylinderGeometry(0.028, 0.028, 0.47, 8), mat.motor), "attach");
+        attachoff0.position.set(0.390, -0.07, 0.2);
+        drone.add(attachoff0);
 
-        // // Battery main block
-        // const battery = reg(new THREE.Mesh(new THREE.BoxGeometry(1.1, 0.22, 0.52), mat.battery), "battery");
-        // battery.position.set(0, -0.14, 0);
-        // drone.add(battery);
+        // Attachment pillar 1
+        const attachoff1 = reg(new THREE.Mesh(new THREE.CylinderGeometry(0.028, 0.028, 0.47, 8), mat.motor), "attach");
+        attachoff1.position.set(0.390, -0.07, -0.2);
+        drone.add(attachoff1);
 
-        // // Battery label stripe
-        // const batteryStripe = reg(new THREE.Mesh(new THREE.BoxGeometry(1.1, 0.04, 0.52), mat.batLabel), "battery");
-        // batteryStripe.position.set(0, -0.03, 0);
-        // drone.add(batteryStripe);
+        // Attachment pillar 2
+        const attachoff2 = reg(new THREE.Mesh(new THREE.CylinderGeometry(0.028, 0.028, 0.47, 8), mat.motor), "attach");
+        attachoff2.position.set(-0.390, -0.07, -0.2);
+        drone.add(attachoff2);
 
+        // Attachment pillar 3
+        const attachoff3 = reg(new THREE.Mesh(new THREE.CylinderGeometry(0.028, 0.028, 0.47, 8), mat.motor), "attach");
+        attachoff3.position.set(-0.390, -0.07, 0.2);
+        drone.add(attachoff3);
+
+        // Flight controller board  BoxGeometry(width, height, depth)
+        const fcBoard = reg(new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.04, 0.5), mat.fc), "fc");
+        fcBoard.position.set(0, 0.5, 0);
+        drone.add(fcBoard);
+
+        // Battery main block
+        const battery = reg(new THREE.Mesh(new THREE.BoxGeometry(0.52, 0.22, 1.1), mat.battery), "battery");
+        battery.position.set(0, -0.14, 0);
+        drone.add(battery);
 
         // ═════════════════════════════════════════════════════════════════════
         // ARM 0 — front (0°, points toward +Z)
@@ -239,7 +253,7 @@
         arm0.position.set(0.000, 0.3, 1.775);
         drone.add(arm0);
 
-        const esc0 = reg(new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.2, 0.1), mat.esc), "esc");
+        const esc0 = reg(new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.2, 0.1), mat.esc), "arm");
         esc0.rotation.y = 0.000;
         esc0.position.set(0.000, 0.3, 0.960);
         drone.add(esc0);
@@ -289,7 +303,7 @@
         arm1.position.set(1.5, 0.3, 0.95);
         drone.add(arm1);
 
-        const esc1 = reg(new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.2, 0.1), mat.esc), "esc");
+        const esc1 = reg(new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.2, 0.1), mat.esc), "arm");
         esc1.rotation.y = 1.047;
         esc1.position.set(0.831, 0.3, 0.480);
         drone.add(esc1);
@@ -338,7 +352,7 @@
         arm2.position.set(1.5, 0.3, -0.9);
         drone.add(arm2);
 
-        const esc2 = reg(new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.2, 0.1), mat.esc), "esc");
+        const esc2 = reg(new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.2, 0.1), mat.esc), "arm");
         esc2.rotation.y = 2.094;
         esc2.position.set(0.831, 0.3, -0.480);
         drone.add(esc2);
@@ -351,46 +365,31 @@
         motorBase2.position.set(2.32, 0.3, -1.41);
         drone.add(motorBase2);
 
-        // const motorBell2 = reg(new THREE.Mesh(new THREE.CylinderGeometry(0.15, 0.135, 0.12, 16), mat.motorBell), "motor");
-        // motorBell2.position.set(1.498, 0.43, -0.865);
-        // drone.add(motorBell2);
+        const motorBell2 = reg(new THREE.Mesh(new THREE.CylinderGeometry(0.15, 0.135, 0.12, 16), mat.motorBell), "motor");
+        motorBell2.position.set(2.32, 0.4, -1.41);
+        drone.add(motorBell2);
 
-        // const motorRing2 = reg(new THREE.Mesh(new THREE.TorusGeometry(0.135, 0.012, 8, 24), mat.motorAccent), "motor");
-        // motorRing2.position.set(1.498, 0.43, -0.865);
-        // motorRing2.rotation.x = 1.5708;
-        // drone.add(motorRing2);
+        const motorRing2 = reg(new THREE.Mesh(new THREE.TorusGeometry(0.135, 0.012, 8, 24), mat.motorAccent), "motor");
+        motorRing2.position.set(2.32, 0.4, -1.41);
+        motorRing2.rotation.x = 1.5708;
+        drone.add(motorRing2);
 
-        // const motorShaft2 = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.015, 0.08, 8), mat.motor);
-        // motorShaft2.position.set(1.498, 0.54, -0.865);
-        // drone.add(motorShaft2);
+        const motorShaft2 = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.015, 0.08, 8), mat.motor);
+        motorShaft2.position.set(2.32, 0.5, -1.41);
+        drone.add(motorShaft2);
 
         const propGroup2 = new THREE.Group();
-        propGroup2.position.set(1.498, 0.58, -0.865);
+        propGroup2.position.set(2.32, 0.5, -1.41);
         propGroup2.userData.spinDir = 1;
-        // drone.add(propGroup2);
+        drone.add(propGroup2);
         const propHub2 = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 0.04, 12), mat.prop);
-        // propGroup2.add(propHub2);
+        propGroup2.add(propHub2);
         const propBlade2a = reg(new THREE.Mesh(bladeGeo(), mat.prop), "prop");
         propBlade2a.rotation.x = -1.5708; propBlade2a.rotation.z = 0;
-        // propGroup2.add(propBlade2a);
+        propGroup2.add(propBlade2a);
         const propBlade2b = reg(new THREE.Mesh(bladeGeo(), mat.prop), "prop");
         propBlade2b.rotation.x = -1.5708; propBlade2b.rotation.z = 3.1416;
-        // propGroup2.add(propBlade2b);
-
-        // const leg2a = reg(new THREE.Mesh(new THREE.CylinderGeometry(0.022, 0.022, 1.1, 8), mat.landing), "landing");
-        // leg2a.position.set(0.783, -0.52, -0.993);
-        // drone.add(leg2a);
-        // const foot2a = reg(new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 0.03, 8), mat.landing), "landing");
-        // foot2a.position.set(0.783, -1.07, -0.993);
-        // drone.add(foot2a);
-
-        // const leg2b = reg(new THREE.Mesh(new THREE.CylinderGeometry(0.022, 0.022, 1.1, 8), mat.landing), "landing");
-        // leg2b.position.set(0.940, -0.52, -0.723);
-        // drone.add(leg2b);
-        // const foot2b = reg(new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 0.03, 8), mat.landing), "landing");
-        // foot2b.position.set(0.940, -1.07, -0.723);
-        // drone.add(foot2b);
-
+        propGroup2.add(propBlade2b);
 
         // ═════════════════════════════════════════════════════════════════════
         // ARM 3 — rear (180°)
@@ -402,7 +401,7 @@
         // arm3.position.set(0.000, 0.21, -0.775);
         // drone.add(arm3);
 
-        // const esc3 = reg(new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.06, 0.1), mat.esc), "esc");
+        // const esc3 = reg(new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.06, 0.1), mat.esc), "arm");
         // esc3.rotation.y = 3.1416;
         // esc3.position.set(0.000, 0.26, -0.960);
         // drone.add(esc3);
@@ -466,7 +465,7 @@
         // arm4.position.set(-0.671, 0.21, -0.388);
         // drone.add(arm4);
 
-        // const esc4 = reg(new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.06, 0.1), mat.esc), "esc");
+        // const esc4 = reg(new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.06, 0.1), mat.esc), "arm");
         // esc4.rotation.y = 4.189;
         // esc4.position.set(-0.831, 0.26, -0.480);
         // drone.add(esc4);
@@ -530,7 +529,7 @@
         // arm5.position.set(-0.671, 0.21, 0.388);
         // drone.add(arm5);
 
-        // const esc5 = reg(new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.06, 0.1), mat.esc), "esc");
+        // const esc5 = reg(new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.06, 0.1), mat.esc), "arm");
         // esc5.rotation.y = 5.236;
         // esc5.position.set(-0.831, 0.26, 0.480);
         // drone.add(esc5);

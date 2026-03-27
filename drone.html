@@ -623,20 +623,17 @@
         // drone.add(skid2b);
 
 
-        // // ═════════════════════════════════════════════════════════════════════
-        // // GPS MAST
-        // // ═════════════════════════════════════════════════════════════════════
-        // const gpsMast = new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.018, 0.5, 8), mat.gpsMast);
-        // gpsMast.position.set(0, 0.67, 0);
-        // drone.add(gpsMast);
+        // ═════════════════════════════════════════════════════════════════════
+        // GPS MAST
+        // ═════════════════════════════════════════════════════════════════════
+        const gpsMast = reg(new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.018, 0.6, 8), mat.gpsMast), "gps");
+        gpsMast.position.set(0.15, 0.7, -0.5);
+        drone.add(gpsMast);
 
-        // const gpsDisk = reg(new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.18, 0.045, 16), mat.gps), "gps");
-        // gpsDisk.position.set(0, 0.94, 0);
-        // drone.add(gpsDisk);
+        const gpsDisk = reg(new THREE.Mesh(new THREE.CylinderGeometry(0.15, 0.15, 0.03, 16), mat.gps), "gps");
+        gpsDisk.position.set(0.15, 0.94, -0.5);
+        drone.add(gpsDisk);
 
-        // const gpsAntenna = reg(new THREE.Mesh(new THREE.CylinderGeometry(0.025, 0.025, 0.09, 8), mat.gpsMast), "gps");
-        // gpsAntenna.position.set(0, 1.00, 0);
-        // drone.add(gpsAntenna);
 
 
         // ─── Prop groups list (for animation) ────────────────────────────────

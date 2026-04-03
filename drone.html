@@ -55,14 +55,17 @@
 <script>
 // ── Part definitions ──────────────────────────────────────────────────────────
 const PARTS = {
-    body:    { label:"Central Hub",                       icon:"🛸", desc:"The central carbon fiber chassis is the structural and electronic heart of the hexacopter. It houses the flight controller (FC), power distribution board (PDB), and all ESC connections. The hexagonal geometry distributes stress evenly across all six arm attachment points, making it significantly more rigid than a quad frame under load." },
-    attach:  { label:"Attachment Plate",                  icon:"📋", desc:"The upper carbon fiber plate sandwiches all electronics between itself and the bottom plate. Provides mounting points for the GPS mast, antenna, and any payload brackets. The woven carbon fiber pattern gives it an excellent strength-to-weight ratio — stronger than aluminium at a fraction of the weight." },
-    arm:     { label:"Carbon Fiber Arm",                  icon:"🔩", desc:"Hollow carbon fiber tube arms radiate out at 60° intervals from the central hub. The hollow core serves double duty: structural rigidity and a conduit for motor wires, keeping the wiring clean and protected. Arms are designed as the first point of failure in a crash — cheaper to replace than the central hub or motors." },
-    motor:   { label:"Brushless Motor",                   icon:"⚡", desc:"High-KV brushless DC motors generate the thrust to lift the aircraft. On a hexacopter, alternating motors spin clockwise and counter-clockwise — each pair of opposing motors cancels out torque, keeping the frame stable. A major advantage of hex over quad: the drone can continue flying even if one motor fails, providing critical redundancy." },
-    prop:    { label:"Propeller",                         icon:"💨", desc:"Carbon fiber reinforced propellers convert motor torque into thrust. Alternating props have mirrored pitch — clockwise and counter-clockwise variants — so all six generate upward thrust regardless of spin direction. Carbon fiber blades are stiffer than plastic, reducing flex at high RPM and improving efficiency, but they shatter on impact rather than flexing." },
-    battery: { label:"LiPo Battery Pack",                 icon:"🔋", desc:"A high-capacity Lithium Polymer (LiPo) battery pack, typically 6S (22.2V) on a hexacopter for the extra power the two additional motors require. Mounted centrally on the bottom plate to keep the centre of gravity low and stable. LiPo batteries must be stored at a storage charge (~3.8V/cell) and never fully discharged to avoid permanent damage." },
-    gps:     { label:"GPS / Compass Module",              icon:"📡", desc:"A combined GNSS and magnetometer (compass) module mounted on a raised mast to minimize electromagnetic interference from the motors and power wiring below. Enables position hold, return-to-home, waypoint navigation, and geofencing. The mast height is critical — too close to the frame and compass interference causes erratic yaw behaviour." },
-    fc:      { label:"Flight Controller",                 icon:"🧠", desc:"The brain of the drone. Contains a 32-bit processor, a 3-axis gyroscope, and a 3-axis accelerometer (together forming the IMU). Runs firmware like ArduCopter or PX4, processing sensor data thousands of times per second to make tiny throttle adjustments to each of the six motors, keeping the aircraft stable and executing flight commands." },
+    body:    { label:"Central Hub",            icon:"🛸", desc:"The central carbon fiber chassis is the structural and electronic heart of the hexacopter. It consists of two hexagonal plates sandwiching the power distribution board and all core electronics, connected by six aluminium standoffs. The hexagonal geometry distributes stress evenly across all six arm attachment points, making it significantly more rigid than a quad frame under load." },
+    attach:  { label:"Attachment Plate",       icon:"📋", desc:"A smaller inner carbon fiber plate mounted below the main hub plates via four pillars. It provides a rigid sub-frame for securing the battery and any payload beneath the drone. The woven carbon fiber construction gives it an excellent strength-to-weight ratio — stronger than aluminium at a fraction of the weight." },
+    arm:     { label:"Arm & ESC",              icon:"🔩", desc:"Each arm is a hollow carbon fiber tube that extends from the central hub to a motor mount, with an ESC (Electronic Speed Controller) mounted partway along it. The hollow core routes motor wires cleanly from the ESC to the motor. The ESC converts the flight controller's digital signals into the three-phase AC power that the brushless motor requires, and supports telemetry reporting RPM, current, and temperature in real time. Arms are designed as the first point of failure in a crash — cheaper to replace than the hub or motors." },
+    motor:   { label:"Brushless Motor",        icon:"⚡", desc:"High-KV brushless DC motors generate the thrust to lift the aircraft. Each motor consists of a fixed base stator and a rotating bell that spins the propeller shaft. On a hexacopter, alternating motors spin clockwise and counter-clockwise so each pair cancels out torque, keeping the frame stable. A major advantage over a quadcopter: the drone can continue flying even if one motor fails, providing critical redundancy." },
+    prop:    { label:"Propeller Assembly",     icon:"💨", desc:"Each propeller assembly consists of the motor shaft, a central hub, and two carbon fiber reinforced blades. The shaft transfers torque from the motor bell to the hub, which locks the blades at the correct pitch angle. Alternating props use mirrored clockwise and counter-clockwise pitch so all six generate upward thrust regardless of spin direction. Carbon fiber blades are stiffer than plastic, reducing flex at high RPM and improving efficiency, but they shatter on impact rather than flexing." },
+    battery: { label:"LiPo Battery Pack",      icon:"🔋", desc:"A high-capacity Lithium Polymer (LiPo) battery pack, typically 6S (22.2V) on a hexacopter to handle the power demands of six motors. Mounted centrally on the attachment plate to keep the centre of gravity low and stable. LiPo batteries must be stored at a storage charge (~3.8V/cell) and never fully discharged to avoid permanent cell damage." },
+    gps:     { label:"GPS / Compass Module",   icon:"📡", desc:"A combined GNSS receiver and magnetometer (compass) mounted on a raised mast to minimise electromagnetic interference from the motors and power wiring below. Enables position hold, return-to-home, waypoint navigation, and geofencing. The mast height is critical — mounting the module too close to the frame causes compass interference that leads to erratic yaw behaviour." },
+    fc:      { label:"Flight Controller",      icon:"🧠", desc:"The brain of the drone. A small board containing a 32-bit processor, a 3-axis gyroscope, and a 3-axis accelerometer (together forming the IMU). It runs firmware such as ArduCopter or PX4, processing sensor data thousands of times per second to make tiny throttle adjustments to each of the six motors, keeping the aircraft stable and executing pilot or autonomous flight commands." },
+    landing: { label:"Landing Gear",           icon:"🦵", desc:"Carbon fiber tube landing legs provide ground clearance for the battery and any downward-facing payload. The splayed geometry distributes landing impact forces across a wide base. Leg diameter and wall thickness are chosen to absorb shock elastically — they flex on landing and spring back — rather than snapping or transmitting impact forces up into the frame." },
+    esc:          { label:"ESC (Speed Controller)", icon:"🔌", desc:"One ESC per motor, mounted along the arms close to the motors to keep high-current wiring short. Each ESC converts the flight controller's digital signals into the three-phase AC power that brushless motors require. Modern BLHeli_32 ESCs support telemetry — reporting RPM, current draw, and temperature back to the flight controller in real time." },
+    mainreceiver: { label:"Main Receiver",           icon:"📻", desc:"The main RC receiver picks up control signals from the pilot's transmitter and forwards them to the flight controller. Two antennas are mounted at an angle to each other to ensure reliable signal reception regardless of the drone's orientation — if one antenna is in a null zone, the other compensates. Modern receivers use SBUS or CRSF digital protocols for low-latency, high-resolution control input." },
 };
 
 // ── Renderer / Scene / Camera ─────────────────────────────────────────────────
@@ -122,19 +125,20 @@ const cfTex = makeCarbonTexture(128);
 
 // ── Materials ─────────────────────────────────────────────────────────────────
 const mat = {
-    cf:          new THREE.MeshStandardMaterial({ map: cfTex, color: 0x1a1c24, roughness: 0.35, metalness: 0.55 }),
-    cfArm:       new THREE.MeshStandardMaterial({ map: cfTex, color: 0x14161e, roughness: 0.4,  metalness: 0.6  }),
-    motor:       new THREE.MeshStandardMaterial({ color: 0x202028, roughness: 0.25, metalness: 0.85 }),
-    motorBell:   new THREE.MeshStandardMaterial({ color: 0x2a2a35, roughness: 0.15, metalness: 0.95 }),
-    motorAccent: new THREE.MeshStandardMaterial({ color: 0x0ea5e9, roughness: 0.1,  metalness: 0.5  }),
-    prop:        new THREE.MeshStandardMaterial({ color: 0x0d0f15, roughness: 0.45, metalness: 0.3, side: THREE.DoubleSide }),
-    battery:     new THREE.MeshStandardMaterial({ color: 0x1c2a1c, roughness: 0.55, metalness: 0.25 }),
-    gps:         new THREE.MeshStandardMaterial({ color: 0xe8e8ee, roughness: 0.4,  metalness: 0.15 }),
-    gpsMast:     new THREE.MeshStandardMaterial({ color: 0x111318, roughness: 0.5,  metalness: 0.7  }),
-    fc:          new THREE.MeshStandardMaterial({ color: 0x1a2a1a, roughness: 0.5,  metalness: 0.3  }),
-    esc:         new THREE.MeshStandardMaterial({ color: 0x1a1a28, roughness: 0.4,  metalness: 0.4  }),
-    landing:     new THREE.MeshStandardMaterial({ map: cfTex, color: 0x0f1015, roughness: 0.5, metalness: 0.65 }),
-    hover:       new THREE.MeshStandardMaterial({ color: 0x38bdf8, roughness: 0.2,  metalness: 0.6, emissive: 0x0ea5e9, emissiveIntensity: 0.35 }),
+    cf:           new THREE.MeshStandardMaterial({ map: cfTex, color: 0x1a1c24, roughness: 0.35, metalness: 0.55 }),
+    cfArm:        new THREE.MeshStandardMaterial({ map: cfTex, color: 0x14161e, roughness: 0.4,  metalness: 0.6  }),
+    motor:        new THREE.MeshStandardMaterial({ color: 0x202028, roughness: 0.25, metalness: 0.85 }),
+    motorBell:    new THREE.MeshStandardMaterial({ color: 0x2a2a35, roughness: 0.15, metalness: 0.95 }),
+    motorAccent:  new THREE.MeshStandardMaterial({ color: 0x0ea5e9, roughness: 0.1,  metalness: 0.5  }),
+    prop:         new THREE.MeshStandardMaterial({ color: 0x0d0f15, roughness: 0.45, metalness: 0.3, side: THREE.DoubleSide }),
+    battery:      new THREE.MeshStandardMaterial({ color: 0x1c2a1c, roughness: 0.55, metalness: 0.25 }),
+    gps:          new THREE.MeshStandardMaterial({ color: 0xe8e8ee, roughness: 0.4,  metalness: 0.15 }),
+    gpsMast:      new THREE.MeshStandardMaterial({ color: 0x111318, roughness: 0.5,  metalness: 0.7  }),
+    fc:           new THREE.MeshStandardMaterial({ color: 0x1a2a1a, roughness: 0.5,  metalness: 0.3  }),
+    esc:          new THREE.MeshStandardMaterial({ color: 0x1a1a28, roughness: 0.4,  metalness: 0.4  }),
+    landing:      new THREE.MeshStandardMaterial({ map: cfTex, color: 0x0f1015, roughness: 0.5, metalness: 0.65 }),
+    mainreceiver: new THREE.MeshStandardMaterial({ color: 0x1a1a1a, roughness: 0.5,  metalness: 0.3  }),
+    hover:        new THREE.MeshStandardMaterial({ color: 0x38bdf8, roughness: 0.2,  metalness: 0.6, emissive: 0x0ea5e9, emissiveIntensity: 0.35 }),
 };
 
 const clickables = [];
@@ -266,7 +270,7 @@ for (let i = 0; i < 6; i++) {
     drone.add(arm);
 
     // ESC — same "arm" group so hovering/clicking either highlights both
-    const esc = reg(box(0.18, 0.2, 0.09, mat.esc), "arm");
+    const esc = reg(box(0.18, 0.12, 0.22, mat.esc), "arm");
     esc.rotation.y = ESC_ROT_Y[i];
     addAt(drone, esc, ex, Y, ez);
 
@@ -311,6 +315,13 @@ for (let i = 0; i < 6; i++) {
 // ── GPS mast ──────────────────────────────────────────────────────────────────
 reg(addAt(drone, cyl(0.018, 0.018, 0.6, 8, mat.gpsMast), 0.15, 0.7, -0.5), "gps");
 reg(addAt(drone, cyl(0.15, 0.15, 0.03, 16, mat.gps), 0.15, 0.94, -0.5), "gps");
+
+// ── Main Receiver ─────────────────────────────────────────────────────────────
+reg(addAt(drone, box(0.2, 0.1, 0.4, mat.mainreceiver), 0.15, 0.51, 0.6), "mainreceiver");
+const receiverantenna1 = reg(addAt(drone, cyl(0.025, 0.025, 0.50, 8, mat.mainreceiver), 0.2, 0.7, 0.85), "mainreceiver");
+receiverantenna1.rotation.x = -2.5;
+const receiverantenna2 = reg(addAt(drone, cyl(0.025, 0.025, 0.50, 8, mat.mainreceiver), 0.1, 0.7, 0.85), "mainreceiver");
+receiverantenna2.rotation.x = -2.5;
 
 // ── Orbit controls ────────────────────────────────────────────────────────────
 let isDragging = false, hasMoved = false;

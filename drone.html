@@ -64,6 +64,8 @@ const PARTS = {
     gps:     { label:"GPS / Compass Module",              icon:"📡", desc:"A combined GNSS and magnetometer (compass) module mounted on a raised mast to minimize electromagnetic interference from the motors and power wiring below. Enables position hold, return-to-home, waypoint navigation, and geofencing. The mast height is critical — too close to the frame and compass interference causes erratic yaw behaviour." },
     fc:      { label:"Flight Controller",                 icon:"🧠", desc:"The brain of the drone. Contains a 32-bit processor, a 3-axis gyroscope, and a 3-axis accelerometer (together forming the IMU). Runs firmware like ArduCopter or PX4, processing sensor data thousands of times per second to make tiny throttle adjustments to each of the six motors, keeping the aircraft stable and executing flight commands." },
     mainreceiver: { label:"Main Receiver",           icon:"📻", desc:"The main RC receiver picks up control signals from the pilot's transmitter and forwards them to the flight controller. Two antennas are mounted at an angle to each other to ensure reliable signal reception regardless of the drone's orientation — if one antenna is in a null zone, the other compensates. Modern receivers use SBUS or CRSF digital protocols for low-latency, high-resolution control input." },
+    motherboard:  { label:"Motherboard / PDB",      icon:"🖥️", desc:"The power distribution board (PDB) sits between the top and bottom hub plates, routing battery power to each of the six ESCs and supplying regulated 5V and 12V rails for the flight controller, receiver, and accessories. On many hexacopters the PDB is integrated with a PCB that also handles current sensing, voltage monitoring, and OSD (on-screen display) data — giving the pilot live telemetry in their video feed." },
+    remoteid:     { label:"Remote ID Module",       icon:"📶", desc:"A Remote ID module broadcasts the drone's identity, position, altitude, velocity, and operator location in real time over Wi-Fi or Bluetooth. In many countries this is now a legal requirement for all drones above a certain weight — the broadcast can be received by anyone with a smartphone app, allowing authorities and the public to identify aircraft in the area. The module is typically a small self-contained unit with its own antenna, running independently of the flight controller." },
 };
 
 // ── Renderer / Scene / Camera ─────────────────────────────────────────────────
@@ -135,6 +137,7 @@ const mat = {
     fc:          new THREE.MeshStandardMaterial({ color: 0x1a2a1a, roughness: 0.5,  metalness: 0.3  }),
     esc:         new THREE.MeshStandardMaterial({ color: 0x1a1a28, roughness: 0.4,  metalness: 0.4  }),
     mainreceiver: new THREE.MeshStandardMaterial({ color: 0x1a1a1a, roughness: 0.5,  metalness: 0.3  }),
+    motherboard:  new THREE.MeshStandardMaterial({ color: 0x0d2b1a, roughness: 0.5,  metalness: 0.3  }),
     landing:     new THREE.MeshStandardMaterial({ map: cfTex, color: 0x0f1015, roughness: 0.5, metalness: 0.65 }),
     hover:       new THREE.MeshStandardMaterial({ color: 0x38bdf8, roughness: 0.2,  metalness: 0.6, emissive: 0x0ea5e9, emissiveIntensity: 0.35 }),
 };
@@ -224,6 +227,14 @@ const receiverantenna1 = reg(addAt(drone, cyl(0.025, 0.008, 0.50, 8, mat.mainrec
 receiverantenna1.rotation.x = -2.5;
 const receiverantenna2 = reg(addAt(drone, cyl(0.025, 0.008, 0.50, 8, mat.mainreceiver), 0.1, 0.7, 0.85), "mainreceiver");
 receiverantenna2.rotation.x = -2.5;
+
+// Remote ID
+reg(addAt(drone, box(0.2, 0.05, 0.1, mat.mainreceiver), -0.25, 0.48, 0.6), "remoteid");
+const remoteIDantenna = reg(addAt(drone, cyl(0.025, 0.008, 0.25, 8, mat.mainreceiver), -0.32, 0.56, 0.6), "remoteid");
+remoteIDantenna.rotation.z = -3;
+
+// Motherboard
+reg(addAt(drone, box(0.6, 0.04, 0.6, mat.motherboard), 0, 0.25, 0), "motherboard");
 
 // ── Arms: generated procedurally at 60° intervals ─────────────────────────────
 // Motor positions derived from original hand-placed values

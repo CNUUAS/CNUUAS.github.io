@@ -63,8 +63,6 @@ const PARTS = {
     battery: { label:"LiPo Battery Pack",                 icon:"🔋", desc:"A high-capacity Lithium Polymer (LiPo) battery pack, typically 6S (22.2V) on a hexacopter for the extra power the two additional motors require. Mounted centrally on the bottom plate to keep the centre of gravity low and stable. LiPo batteries must be stored at a storage charge (~3.8V/cell) and never fully discharged to avoid permanent damage." },
     gps:     { label:"GPS / Compass Module",              icon:"📡", desc:"A combined GNSS and magnetometer (compass) module mounted on a raised mast to minimize electromagnetic interference from the motors and power wiring below. Enables position hold, return-to-home, waypoint navigation, and geofencing. The mast height is critical — too close to the frame and compass interference causes erratic yaw behaviour." },
     fc:      { label:"Flight Controller",                 icon:"🧠", desc:"The brain of the drone. Contains a 32-bit processor, a 3-axis gyroscope, and a 3-axis accelerometer (together forming the IMU). Runs firmware like ArduCopter or PX4, processing sensor data thousands of times per second to make tiny throttle adjustments to each of the six motors, keeping the aircraft stable and executing flight commands." },
-    landing: { label:"Landing Gear",                      icon:"🦵", desc:"Carbon fiber tube landing legs provide ground clearance for the battery and any downward-facing payload. The splayed geometry distributes landing impact forces across a wide base. Leg diameter and wall thickness are chosen to absorb shock elastically — they flex on landing and spring back — rather than snapping or transmitting impact forces to the frame." },
-    esc:     { label:"ESC (Electronic Speed Controller)", icon:"🔌", desc:"One ESC per motor, mounted along the arms close to the motors to keep high-current wiring short. Each ESC converts the flight controller's digital signals into the three-phase AC power that brushless motors require. Modern BLHeli_32 ESCs support telemetry — reporting RPM, current draw, and temperature back to the flight controller in real time." },
 };
 
 // ── Renderer / Scene / Camera ─────────────────────────────────────────────────
@@ -213,7 +211,7 @@ ATTACH_POSITIONS.forEach(([x, z]) =>
     reg(addAt(drone, cyl(0.028, 0.028, 0.47, 8, mat.motor), x, -0.07, z), "attach"));
 
 // Flight controller board
-reg(addAt(drone, box(0.3, 0.04, 0.5, mat.fc), 0, 0.45, 0), "fc");
+reg(addAt(drone, box(0.3, 0.04, 0.5, mat.fc), 0, 0.5, 0), "fc");
 
 // Battery
 reg(addAt(drone, box(0.52, 0.22, 1.1, mat.battery), 0, -0.14, 0), "battery");
@@ -259,7 +257,7 @@ for (let i = 0; i < 6; i++) {
     const [ex, ez] = ESC_XZ[i];
     const Y = 0.3;
 
-    // Arm tube
+    // Arm tube + ESC share the "arm" partKey
     const armGeo = new THREE.CylinderGeometry(0.055, 0.055, 1.55, 8);
     armGeo.applyMatrix4(new THREE.Matrix4().makeRotationZ(Math.PI / 2));
     const arm = reg(makeMesh(armGeo, mat.cfArm), "arm");
@@ -267,8 +265,8 @@ for (let i = 0; i < 6; i++) {
     arm.position.set(MOTOR_XZ[i][0] * 0.665, Y, MOTOR_XZ[i][1] * 0.665);
     drone.add(arm);
 
-    // ESC
-    const esc = reg(box(0.18, 0.2, 0.1, mat.esc), "esc");
+    // ESC — same "arm" group so hovering/clicking either highlights both
+    const esc = reg(box(0.18, 0.2, 0.09, mat.esc), "arm");
     esc.rotation.y = ESC_ROT_Y[i];
     addAt(drone, esc, ex, Y, ez);
 
@@ -286,18 +284,20 @@ for (let i = 0; i < 6; i++) {
     ring.position.set(mx, Y + 0.1, mz);
     drone.add(ring);
 
-    // Motor shaft (non-clickable — no partKey)
-    drone.add(addAt(drone, cyl(0.015, 0.015, 0.08, 8, mat.motor), mx, Y + 0.2, mz));
-
-    // Prop group
+    // Prop group — shaft, hub, and blades all share the "prop" partKey
     const pg = new THREE.Group();
     pg.position.set(mx, Y + 0.2, mz);
     pg.userData.spinDir = SPIN[i];
     drone.add(pg);
     propGroups.push(pg);
 
-    // Prop hub (non-clickable)
-    pg.add(cyl(0.04, 0.04, 0.04, 12, mat.prop));
+    // Motor shaft — inside prop group, clickable as "prop"
+    reg(addAt(pg, cyl(0.015, 0.015, 0.08, 8, mat.motor), 0, 0, 0), "prop");
+
+    // Prop hub — clickable as "prop"
+    const hub = cyl(0.04, 0.04, 0.04, 12, mat.prop);
+    reg(hub, "prop");
+    pg.add(hub);
 
     // Prop blades
     for (const rotZ of [0, Math.PI]) {

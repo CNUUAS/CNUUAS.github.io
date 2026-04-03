@@ -220,9 +220,9 @@ reg(addAt(drone, box(0.52, 0.22, 1.1, mat.battery), 0, -0.14, 0), "battery");
 
 // Main Receiver
 reg(addAt(drone, box(0.2, 0.1, 0.4, mat.mainreceiver), 0.15, 0.51, 0.6), "mainreceiver");
-const receiverantenna1 = reg(addAt(drone, cyl(0.025, 0.025, 0.50, 8, mat.mainreceiver), 0.2, 0.7, 0.85), "mainreceiver")
+const receiverantenna1 = reg(addAt(drone, cyl(0.025, 0.008, 0.50, 8, mat.mainreceiver), 0.2, 0.7, 0.85), "mainreceiver");
 receiverantenna1.rotation.x = -2.5;
-const receiverantenna2 = reg(addAt(drone, cyl(0.025, 0.025, 0.50, 8, mat.mainreceiver), 0.1, 0.7, 0.85), "mainreceiver")
+const receiverantenna2 = reg(addAt(drone, cyl(0.025, 0.008, 0.50, 8, mat.mainreceiver), 0.1, 0.7, 0.85), "mainreceiver");
 receiverantenna2.rotation.x = -2.5;
 
 // ── Arms: generated procedurally at 60° intervals ─────────────────────────────

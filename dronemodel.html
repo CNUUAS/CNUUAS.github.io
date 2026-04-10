@@ -1,0 +1,528 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Hexacopter Interactive Demo</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #0c0e14; font-family: system-ui, sans-serif; overflow: hidden; }
+        canvas { display: block; }
+        #hint {
+            position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
+            background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.55);
+            font-size: 13px; padding: 8px 20px; border-radius: 20px;
+            pointer-events: none; backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        #popup {
+            position: fixed; display: none; top: 50%; left: 50%;
+            transform: translate(-50%,-50%); background: #13151f;
+            border: 1px solid rgba(255,255,255,0.13); border-radius: 18px;
+            padding: 28px 32px; max-width: 360px; width: 92%; color: #fff;
+            z-index: 100; box-shadow: 0 32px 80px rgba(0,0,0,0.7);
+        }
+        #popup.show { display: block; }
+        #popup-icon  { font-size: 30px; margin-bottom: 10px; display: block; }
+        #popup-title { font-size: 19px; font-weight: 600; margin-bottom: 10px; color: #7dd3fc; }
+        #popup-desc  { font-size: 14px; line-height: 1.7; color: rgba(255,255,255,0.68); }
+        #popup-close {
+            margin-top: 20px; background: #0ea5e9; color: #fff; border: none;
+            border-radius: 8px; padding: 9px 22px; font-size: 14px; cursor: pointer; font-weight: 500;
+        }
+        #popup-close:hover { background: #38bdf8; }
+        #overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; z-index: 99; }
+        #overlay.show { display: block; }
+        #label {
+            position: fixed; pointer-events: none; background: rgba(14,165,233,0.92);
+            color: #fff; font-size: 12px; padding: 5px 11px; border-radius: 6px;
+            display: none; z-index: 50; white-space: nowrap;
+        }
+    </style>
+</head>
+<body>
+<div id="hint">🖱 Drag to rotate &nbsp;·&nbsp; Scroll to zoom &nbsp;·&nbsp; Click a part to learn more</div>
+<div id="label"></div>
+<div id="overlay"></div>
+<div id="popup">
+    <span id="popup-icon"></span>
+    <div id="popup-title"></div>
+    <div id="popup-desc"></div>
+    <button id="popup-close">Close</button>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+const PARTS = {
+    body:    { label:"Central Hub",                       icon:"🛸", desc:"The central carbon fiber chassis is the structural and electronic heart of the hexacopter. It houses the flight controller (FC), power distribution board (PDB), and all ESC connections. The hexagonal geometry distributes stress evenly across all six arm attachment points, making it significantly more rigid than a quad frame under load." },
+    attach:  { label:"Attachment Plate",                  icon:"📋", desc:"The upper carbon fiber plate sandwiches all electronics between itself and the bottom plate. Provides mounting points for the GPS mast, antenna, and any payload brackets. The woven carbon fiber pattern gives it an excellent strength-to-weight ratio — stronger than aluminium at a fraction of the weight." },
+    arm:     { label:"Carbon Fiber Arm",                  icon:"🔩", desc:"Hollow carbon fiber tube arms radiate out at 60° intervals from the central hub. The hollow core serves double duty: structural rigidity and a conduit for motor wires, keeping the wiring clean and protected. Arms are designed as the first point of failure in a crash — cheaper to replace than the central hub or motors." },
+    motor:   { label:"Brushless Motor",                   icon:"⚡", desc:"High-KV brushless DC motors generate the thrust to lift the aircraft. On a hexacopter, alternating motors spin clockwise and counter-clockwise — each pair of opposing motors cancels out torque, keeping the frame stable. A major advantage of hex over quad: the drone can continue flying even if one motor fails, providing critical redundancy." },
+    prop:    { label:"Propeller",                         icon:"💨", desc:"Carbon fiber reinforced propellers convert motor torque into thrust. Alternating props have mirrored pitch — clockwise and counter-clockwise variants — so all six generate upward thrust regardless of spin direction. Carbon fiber blades are stiffer than plastic, reducing flex at high RPM and improving efficiency, but they shatter on impact rather than flexing." },
+    battery: { label:"LiPo Battery Pack",                 icon:"🔋", desc:"A high-capacity Lithium Polymer (LiPo) battery pack, typically 6S (22.2V) on a hexacopter for the extra power the two additional motors require. Mounted centrally on the bottom plate to keep the centre of gravity low and stable. LiPo batteries must be stored at a storage charge (~3.8V/cell) and never fully discharged to avoid permanent damage." },
+    gps:     { label:"GPS / Compass Module",              icon:"📡", desc:"A combined GNSS and magnetometer (compass) module mounted on a raised mast to minimize electromagnetic interference from the motors and power wiring below. Enables position hold, return-to-home, waypoint navigation, and geofencing. The mast height is critical — too close to the frame and compass interference causes erratic yaw behaviour." },
+    fc:      { label:"Flight Controller",                 icon:"🧠", desc:"The brain of the drone. Contains a 32-bit processor, a 3-axis gyroscope, and a 3-axis accelerometer (together forming the IMU). Runs firmware like ArduCopter or PX4, processing sensor data thousands of times per second to make tiny throttle adjustments to each of the six motors, keeping the aircraft stable and executing flight commands." },
+    esc:     { label:"Electronic Speed Controller",       icon:"⚙️", desc:"Each of the six motors is driven by a dedicated ESC — a compact power converter that takes a PWM or DSHOT signal from the flight controller and switches the motor's three phase windings at thousands of times per second, precisely controlling RPM. On a hexacopter, ESCs are typically rated for the peak current draw of the motor (e.g. 40A–60A). Many modern ESCs support BLHeli_32 or AM32 firmware, enabling features like bidirectional DSHOT for real-time RPM telemetry fed back to the flight controller for tighter motor control loops." },
+    mainreceiver: { label:"Main Receiver",                icon:"📻", desc:"The main RC receiver picks up control signals from the pilot's transmitter and forwards them to the flight controller. Two antennas are mounted at an angle to each other to ensure reliable signal reception regardless of the drone's orientation — if one antenna is in a null zone, the other compensates. Modern receivers use SBUS or CRSF digital protocols for low-latency, high-resolution control input." },
+    rcreceiver:   { label:"RC Receiver Unit",             icon:"🎮", desc:"The physical RC receiver housing mounted to the drone frame, typically a compact rectangular module with two wire antennas extending outward at roughly 90° to each other. This spatial diversity is deliberate — when the drone banks or pitches, at least one antenna maintains a favorable angle toward the pilot's transmitter, preventing signal dropout. The unit connects to the flight controller via SBUS, CRSF (Crossfire), or ELRS, delivering up to 16 channels of control data with sub-millisecond latency. Common units include the ExpressLRS series and TBS Crossfire nano receivers." },
+    motherboard:  { label:"Power Distribution Board",     icon:"🖥️", desc:"The power distribution board (PDB) sits between the top and bottom hub plates, routing battery power to each of the six ESCs and supplying regulated 5V and 12V rails for the flight controller, receiver, and accessories. On many hexacopters the PDB is integrated with a PCB that also handles current sensing, voltage monitoring, and OSD (on-screen display) data — giving the pilot live telemetry in their video feed." },
+    remoteid:     { label:"Remote ID Module",             icon:"📶", desc:"A Remote ID module broadcasts the drone's identity, position, altitude, velocity, and operator location in real time over Wi-Fi or Bluetooth. In many countries this is now a legal requirement for all drones above a certain weight — the broadcast can be received by anyone with a smartphone app, allowing authorities and the public to identify aircraft in the area. The module is typically a small self-contained unit with its own antenna, running independently of the flight controller." },
+    rid:          { label:"FAA Remote ID",                icon:"🪪", desc:"Under FAA 14 CFR Part 89, all drones above 0.55 lbs (250g) operating in US airspace must broadcast Standard Remote ID — transmitting the drone's ID, position, altitude, velocity, and the operator's location via Wi-Fi NAN or Bluetooth 4.0/5.0. The RID module operates as a standalone unit independent of the flight controller, ensuring it continues broadcasting even during an FC failure. Non-compliance can result in grounding by law enforcement or ATC, and the FAA has been actively enforcing the rule since the September 2023 deadline. Drones without built-in RID must carry an add-on broadcast module." },
+    rpi:          { label:"Raspberry Pi",                 icon:"🍓", desc:"A single-board Linux computer mounted on the drone frame that acts as a companion computer alongside the flight controller. While the FC handles low-level stabilisation at high loop rates, the Raspberry Pi runs higher-level tasks that would overwhelm a microcontroller — computer vision, object detection, onboard logging, MAVLink telemetry forwarding, or autonomous mission logic via DroneKit or MAVSDK. It communicates with the flight controller over a UART or USB serial link using the MAVLink protocol. Common models used in drone builds are the Pi 4 and Pi Zero 2 W, chosen for their balance of processing power and weight penalty." },
+    dropmech:     { label:"Drop Mechanism",               icon:"📦", desc:"A servo-actuated payload release system mounted to the underside of the central hub, allowing the drone to deliver or drop a payload at a precise GPS-triggered or pilot-commanded location. The mechanism typically consists of a carbon fiber or 3D-printed cradle, a small servo motor that rotates a retaining pin or gate on command, and a dedicated output channel from the flight controller. Common applications include agricultural seed or fertiliser dispersal, search and rescue supply drops, and payload delivery missions. Weight and centre-of-gravity shift must be accounted for in the FC configuration — a sudden payload release changes the aircraft's mass distribution and can cause a brief pitch or roll disturbance if not tuned for." },
+    land:         { label:"Landing Gear",                 icon:"🦵", desc:"Carbon fiber landing legs extend below the central hub, providing ground clearance for the battery and drop mechanism and absorbing landing loads. Each leg is a simple hollow CF tube pressed into a 3D-printed or machined clamp that bolts to the underside of the frame. The leg angle is tuned to keep the centre of gravity stable on uneven terrain while staying clear of the camera or payload envelope below the aircraft." },
+};
+
+// ── Renderer / Scene / Camera ─────────────────────────────────────────────────
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+// Cap at 1.5× — negligible visual difference vs 2×, ~44% fewer fragment ops on high-DPI screens
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.outputEncoding = THREE.sRGBEncoding;
+document.body.appendChild(renderer.domElement);
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x0c0e14);
+scene.fog = new THREE.Fog(0x0c0e14, 20, 40);
+
+const camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.1, 100);
+camera.position.set(0, 4, 9);
+camera.lookAt(0, 0, 0);
+
+// ── Lighting ──────────────────────────────────────────────────────────────────
+scene.add(new THREE.AmbientLight(0xffffff, 0.3));
+const sun = new THREE.DirectionalLight(0xffffff, 1.2);
+sun.position.set(6, 10, 7); sun.castShadow = true; scene.add(sun);
+const fill = new THREE.DirectionalLight(0x4488ff, 0.4);
+fill.position.set(-6, 2, -4); scene.add(fill);
+const rim = new THREE.PointLight(0x7dd3fc, 0.7, 22);
+rim.position.set(0, 6, -4); scene.add(rim);
+const under = new THREE.PointLight(0x0ea5e9, 0.3, 10);
+under.position.set(0, -3, 0); scene.add(under);
+const grid = new THREE.GridHelper(40, 40, 0x1a2030, 0x141820);
+grid.position.y = -2.5; scene.add(grid);
+
+// ── Carbon fibre texture ──────────────────────────────────────────────────────
+function makeCarbonTexture(size) {
+    const c = document.createElement("canvas");
+    c.width = c.height = size;
+    const ctx = c.getContext("2d");
+    ctx.fillStyle = "#111318"; ctx.fillRect(0, 0, size, size);
+    const s = 8;
+    for (let row = 0; row < size / s; row++) {
+        for (let col = 0; col < size / s; col++) {
+            const x = col * s, y = row * s, offset = (row % 2) * s / 2;
+            ctx.fillStyle = "rgba(255,255,255,0.07)";
+            ctx.fillRect(x + (offset % s), y, s / 2 - 1, s - 1);
+            ctx.fillStyle = "rgba(255,255,255,0.03)";
+            ctx.fillRect(x + ((offset + s / 2) % s), y, s / 2 - 1, s - 1);
+            ctx.fillStyle = "rgba(0,0,0,0.5)";
+            ctx.fillRect(x, y + s - 1, s, 1);
+            ctx.fillRect(x + s - 1, y, 1, s);
+        }
+    }
+    const tex = new THREE.CanvasTexture(c);
+    tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+    tex.repeat.set(4, 4);
+    return tex;
+}
+const cfTex = makeCarbonTexture(128);
+
+// ── Materials ─────────────────────────────────────────────────────────────────
+const mat = {
+    cf:           new THREE.MeshStandardMaterial({ map: cfTex, color: 0x1a1c24, roughness: 0.35, metalness: 0.55 }),
+    cfArm:        new THREE.MeshStandardMaterial({ map: cfTex, color: 0x14161e, roughness: 0.4,  metalness: 0.6  }),
+    motor:        new THREE.MeshStandardMaterial({ color: 0x202028, roughness: 0.25, metalness: 0.85 }),
+    motorBell:    new THREE.MeshStandardMaterial({ color: 0x2a2a35, roughness: 0.15, metalness: 0.95 }),
+    motorAccent:  new THREE.MeshStandardMaterial({ color: 0x0ea5e9, roughness: 0.1,  metalness: 0.5  }),
+    prop:         new THREE.MeshStandardMaterial({ color: 0x0d0f15, roughness: 0.45, metalness: 0.3, side: THREE.DoubleSide }),
+    battery:      new THREE.MeshStandardMaterial({ color: 0x1c2a1c, roughness: 0.55, metalness: 0.25 }),
+    gps:          new THREE.MeshStandardMaterial({ color: 0xe8e8ee, roughness: 0.4,  metalness: 0.15 }),
+    gpsMast:      new THREE.MeshStandardMaterial({ color: 0x111318, roughness: 0.5,  metalness: 0.7  }),
+    fc:           new THREE.MeshStandardMaterial({ color: 0x1a2a1a, roughness: 0.5,  metalness: 0.3  }),
+    esc:          new THREE.MeshStandardMaterial({ color: 0x1a1a28, roughness: 0.4,  metalness: 0.4  }),
+    mainreceiver: new THREE.MeshStandardMaterial({ color: 0x1a1a1a, roughness: 0.5,  metalness: 0.3  }),
+    motherboard:  new THREE.MeshStandardMaterial({ color: 0x0d2b1a, roughness: 0.5,  metalness: 0.3  }),
+    landing:      new THREE.MeshStandardMaterial({ map: cfTex, color: 0x0f1015, roughness: 0.5, metalness: 0.65 }),
+    hover:        new THREE.MeshStandardMaterial({ color: 0x38bdf8, roughness: 0.2,  metalness: 0.6, emissive: 0x0ea5e9, emissiveIntensity: 0.35 }),
+};
+
+const clickables = [];
+const originalMats = new Map();
+
+function reg(mesh, partKey) {
+    mesh.castShadow = mesh.receiveShadow = true;
+    mesh.userData.partKey = partKey;
+    clickables.push(mesh);
+    originalMats.set(mesh, mesh.material);
+    return mesh;
+}
+
+// ── Geometry cache — share identical BufferGeometry instances ─────────────────
+const _geoCache = new Map();
+function cachedCylGeo(rT, rB, h, seg) {
+    const key = `cyl:${rT},${rB},${h},${seg}`;
+    if (!_geoCache.has(key)) _geoCache.set(key, new THREE.CylinderGeometry(rT, rB, h, seg));
+    return _geoCache.get(key);
+}
+function cachedBoxGeo(w, h, d) {
+    const key = `box:${w},${h},${d}`;
+    if (!_geoCache.has(key)) _geoCache.set(key, new THREE.BoxGeometry(w, h, d));
+    return _geoCache.get(key);
+}
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+function makeMesh(geo, material) { return new THREE.Mesh(geo, material); }
+
+function cyl(rT, rB, h, seg, material) {
+    return makeMesh(cachedCylGeo(rT, rB, h, seg), material);
+}
+
+function box(w, h, d, material) {
+    return makeMesh(cachedBoxGeo(w, h, d), material);
+}
+
+function torus(r, tube, seg, material) {
+    const key = `torus:${r},${tube},${seg}`;
+    if (!_geoCache.has(key)) {
+        const g = new THREE.TorusGeometry(r, tube, 8, seg);
+        _geoCache.set(key, g);
+    }
+    const m = makeMesh(_geoCache.get(key), material);
+    m.rotation.x = Math.PI / 2;
+    return m;
+}
+
+function addAt(parent, mesh, x, y, z) {
+    mesh.position.set(x, y, z);
+    parent.add(mesh);
+    return mesh;
+}
+
+// ── Blade shape ───────────────────────────────────────────────────────────────
+// Created once and shared across all prop groups
+const _bladeGeo = (() => {
+    const shape = new THREE.Shape();
+    shape.moveTo(0.04, 0);
+    shape.bezierCurveTo(0.08, 0.06, 0.55, 0.09, 0.78, 0.03);
+    shape.bezierCurveTo(0.55, -0.01, 0.08, -0.04, 0.04, 0);
+    return new THREE.ExtrudeGeometry(shape, { depth: 0.014, bevelEnabled: false });
+})();
+
+// ── Drone group ───────────────────────────────────────────────────────────────
+const drone = new THREE.Group();
+scene.add(drone);
+
+// ── Central hub ───────────────────────────────────────────────────────────────
+reg(addAt(drone, cyl(0.5, 0.5, 0.06, 6, mat.cf), 0, -0.3, 0), "attach");
+reg(addAt(drone, cyl(1.05, 1.05, 0.06, 6, mat.cf), 0, 0.2, 0), "body");
+reg(addAt(drone, cyl(1.05, 1.05, 0.06, 6, mat.cf), 0, 0.42, 0), "body");
+
+const STANDOFF_POSITIONS = [
+    [ 0.390, 0.675], [ 0.780, 0.000], [ 0.390,-0.675],
+    [-0.390,-0.675], [-0.780, 0.000], [-0.390, 0.675],
+];
+STANDOFF_POSITIONS.forEach(([x, z]) =>
+    reg(addAt(drone, cyl(0.028, 0.028, 0.22, 8, mat.motor), x, 0.3, z), "body"));
+
+const ATTACH_POSITIONS = [
+    [ 0.390, 0.2], [ 0.390,-0.2],
+    [-0.390,-0.2], [-0.390, 0.2],
+];
+ATTACH_POSITIONS.forEach(([x, z]) =>
+    reg(addAt(drone, cyl(0.028, 0.028, 0.47, 8, mat.motor), x, -0.07, z), "attach"));
+
+reg(addAt(drone, box(0.25, 0.04, 0.45, mat.fc), 0, 0.5, 0), "fc");
+reg(addAt(drone, box(0.2, 0.1, 0.4, mat.fc), 0.5, 0.5, 0), "rpi");
+reg(addAt(drone, box(0.52, 0.22, 1.1, mat.battery), 0, -0.14, 0), "battery");
+reg(addAt(drone, box(0.9, 0.22, 0.9, mat.mainreceiver), 0, -0.44, 0), "dropmech");
+reg(addAt(drone, box(0.2, 0.1, 0.4, mat.mainreceiver), 0.15, 0.51, 0.6), "mainreceiver");
+
+const receiverantenna1 = reg(addAt(drone, cyl(0.025, 0.008, 0.50, 8, mat.mainreceiver), 0.2, 0.7, 0.85), "mainreceiver");
+receiverantenna1.rotation.x = -2.5;
+const receiverantenna2 = reg(addAt(drone, cyl(0.025, 0.008, 0.50, 8, mat.mainreceiver), 0.1, 0.7, 0.85), "mainreceiver");
+receiverantenna2.rotation.x = -2.5;
+
+reg(addAt(drone, box(0.2, 0.05, 0.1, mat.mainreceiver), -0.25, 0.48, 0.6), "remoteid");
+const remoteIDantenna = reg(addAt(drone, cyl(0.025, 0.008, 0.25, 8, mat.mainreceiver), -0.32, 0.56, 0.6), "remoteid");
+remoteIDantenna.rotation.z = -3;
+
+reg(addAt(drone, box(0.1, 0.05, 0.1, mat.mainreceiver), -0.3, 0.48, -0.4), "rcreceiver");
+
+const wireCurve = new THREE.CatmullRomCurve3([
+    new THREE.Vector3(0, 0, 0),
+    new THREE.Vector3(-0.08, 0.04, -0.03),
+    new THREE.Vector3(-0.1, 0.09, -0.08),
+    new THREE.Vector3(0.07, 0.13, -0.04),
+    new THREE.Vector3(0.07, 0.15, 0.04)
+]);
+const wireGeometry = new THREE.TubeGeometry(wireCurve, 20, 0.008, 6, false);
+reg(addAt(drone, new THREE.Mesh(wireGeometry, mat.mainreceiver), -0.3, 0.48, -0.4), "rcreceiver");
+
+const RID = reg(addAt(drone, box(0.1, 0.05, 0.1, mat.mainreceiver), -0.65, 0.48, 0.6), "rid");
+RID.rotation.y = 1;
+
+reg(addAt(drone, box(0.6, 0.04, 0.6, mat.motherboard), 0, 0.25, 0), "motherboard");
+
+// Landing Gear
+const leg1 = reg(addAt(drone, cyl(0.055, 0.055, 1.8, 8, mat.cfArm), 0.7, -0.7, 0), "land");
+
+const leg2 = reg(addAt(drone, cyl(0.055, 0.055, 1.8, 8, mat.cfArm), -0.7, -0.7, 0), "land");
+
+const leg3 = reg(addAt(drone, cyl(0.055, 0.055, 1.8, 8, mat.cfArm), 0.85, -1.6, 0), "land");
+leg3.rotation.x = 3.14/2
+
+const leg4 = reg(addAt(drone, cyl(0.055, 0.055, 1.8, 8, mat.cfArm), -0.85, -1.6, 0), "land");
+leg4.rotation.x = 3.14/2
+
+leg1.rotation.z = 3.14/20
+leg2.rotation.z = -3.14/20
+
+
+// ── Arms ──────────────────────────────────────────────────────────────────────
+const MOTOR_XZ = [
+    [ 0.000,  2.730], [ 2.290,  1.500], [ 2.320, -1.410],
+    [ 0.000, -2.730], [-2.250, -1.380], [-2.300,  1.350],
+];
+const ESC_POS = [
+    [ 0.000,  1.200], [ 1.000,  0.650], [ 1.000, -0.650],
+    [ 0.000, -1.200], [-1.000, -0.650], [-1.000,  0.650],
+];
+const ESC_BOX_ROT_Y  = [0, 0.985, -0.985, 0, 0.985, -0.985];
+const ARM_ROT_Y      = [190.050, 2.54, 3.7, 190.050, 40.28, 0.5];
+const ESC_ROT_Y      = [0, 1.047, 2.094, Math.PI, 4.189, 5.236];
+const SPIN           = [1, -1, 1, -1, 1, -1];
+
+// Build arm geometry once, reuse across all six arms
+const _armGeo = new THREE.CylinderGeometry(0.055, 0.055, 1.55, 8);
+_armGeo.applyMatrix4(new THREE.Matrix4().makeRotationZ(Math.PI / 2));
+
+// Midpoint XZ for the arm connector blocks (reused formula)
+const propGroups = [];
+
+for (let i = 0; i < 6; i++) {
+    const [mx, mz] = MOTOR_XZ[i];
+    const Y = 0.3;
+
+    // Arm tube — each arm needs its own Mesh (distinct rotation/position), but shares geometry
+    const arm = reg(makeMesh(_armGeo, mat.cfArm), "arm");
+    arm.rotation.y = ARM_ROT_Y[i];
+    arm.position.set(mx * 0.665, Y, mz * 0.665);
+    drone.add(arm);
+
+    // Connector block
+    const midX = mx * 0.35, midZ = mz * 0.35;
+    const conn = reg(box(0.18, 0.2, 0.09, mat.cfArm), "arm");
+    conn.rotation.y = ESC_ROT_Y[i];
+    addAt(drone, conn, midX, Y, midZ);
+
+    // ESC box
+    const esc = reg(addAt(drone, box(0.15, 0.1, 0.15, mat.esc), ESC_POS[i][0], 0.2, ESC_POS[i][1]), "esc");
+    esc.rotation.y = ESC_BOX_ROT_Y[i];
+
+    // Motor mount, base, bell, accent ring
+    reg(addAt(drone, cyl(0.18, 0.18, 0.05, 16, mat.cf), mx, Y, mz), "motor");
+    reg(addAt(drone, cyl(0.135, 0.14, 0.1, 16, mat.motor), mx, Y, mz), "motor");
+    reg(addAt(drone, cyl(0.15, 0.135, 0.12, 16, mat.motorBell), mx, Y + 0.1, mz), "motor");
+    const ring = reg(torus(0.135, 0.012, 24, mat.motorAccent), "motor");
+    ring.position.set(mx, Y + 0.1, mz);
+    drone.add(ring);
+
+    // Prop group
+    const pg = new THREE.Group();
+    pg.position.set(mx, Y + 0.2, mz);
+    pg.userData.spinDir = SPIN[i];
+    drone.add(pg);
+    propGroups.push(pg);
+
+    reg(addAt(pg, cyl(0.015, 0.015, 0.08, 8, mat.motor), 0, 0, 0), "prop");
+    reg(makeMesh(cachedCylGeo(0.04, 0.04, 0.04, 12), mat.prop), "prop");
+    pg.add(makeMesh(cachedCylGeo(0.04, 0.04, 0.04, 12), mat.prop));
+
+    // Two blades share the same geometry
+    for (const rotZ of [0, Math.PI]) {
+        const blade = reg(makeMesh(_bladeGeo, mat.prop), "prop");
+        blade.rotation.x = -Math.PI / 2;
+        blade.rotation.z = rotZ;
+        pg.add(blade);
+    }
+}
+
+// ── GPS mast ──────────────────────────────────────────────────────────────────
+reg(addAt(drone, cyl(0.018, 0.018, 0.6, 8, mat.gpsMast), 0.15, 0.7, -0.5), "gps");
+reg(addAt(drone, cyl(0.15, 0.15, 0.03, 16, mat.gps), 0.15, 0.94, -0.5), "gps");
+
+// ── Orbit controls ────────────────────────────────────────────────────────────
+let isDragging = false, hasMoved = false;
+let prevMouse = { x: 0, y: 0 };
+let theta = 0.5, phi = 1.05, radius = 9;
+let targetTheta = theta, targetPhi = phi, targetRadius = radius;
+const MIN_PHI = 0.15, MAX_PHI = Math.PI * 0.55;
+
+const canvas = renderer.domElement;
+
+canvas.addEventListener("mousedown", e => {
+    isDragging = true; hasMoved = false;
+    prevMouse = { x: e.clientX, y: e.clientY };
+});
+canvas.addEventListener("mousemove", e => {
+    if (isDragging) {
+        const dx = e.clientX - prevMouse.x, dy = e.clientY - prevMouse.y;
+        if (Math.abs(dx) + Math.abs(dy) > 2) hasMoved = true;
+        targetTheta -= dx * 0.007;
+        targetPhi = Math.max(MIN_PHI, Math.min(MAX_PHI, targetPhi + dy * 0.007));
+        prevMouse = { x: e.clientX, y: e.clientY };
+    } else {
+        scheduleHover(e);
+    }
+});
+canvas.addEventListener("mouseup",  () => { isDragging = false; });
+canvas.addEventListener("click",    e => { if (!hasMoved) handleClick(e); });
+canvas.addEventListener("wheel",    e => {
+    targetRadius = Math.max(4, Math.min(18, targetRadius + e.deltaY * 0.012));
+}, { passive: true });
+
+let lastTouch = null;
+canvas.addEventListener("touchstart", e => {
+    isDragging = true; hasMoved = false;
+    lastTouch = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+});
+canvas.addEventListener("touchmove", e => {
+    if (!isDragging || !lastTouch) return;
+    const dx = e.touches[0].clientX - lastTouch.x, dy = e.touches[0].clientY - lastTouch.y;
+    if (Math.abs(dx) + Math.abs(dy) > 3) hasMoved = true;
+    targetTheta -= dx * 0.007;
+    targetPhi = Math.max(MIN_PHI, Math.min(MAX_PHI, targetPhi + dy * 0.007));
+    lastTouch = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    e.preventDefault();
+}, { passive: false });
+canvas.addEventListener("touchend", e => {
+    if (!hasMoved && e.changedTouches.length > 0) {
+        const t = e.changedTouches[0];
+        handleClick({ clientX: t.clientX, clientY: t.clientY });
+    }
+    isDragging = false;
+});
+
+// ── Raycaster ─────────────────────────────────────────────────────────────────
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2(); // reused — no per-event allocation
+let hoveredMeshes = [];
+let hoveredKey = null;          // skip redundant material swaps when part hasn't changed
+const lbl = document.getElementById("label");
+
+// Debounce hover checks to at most once per rAF frame
+let _pendingHover = null;
+function scheduleHover(e) {
+    _pendingHover = e;
+}
+
+function screenToNDC(clientX, clientY) {
+    mouse.x = (clientX / window.innerWidth) * 2 - 1;
+    mouse.y = -(clientY / window.innerHeight) * 2 + 1;
+}
+
+function checkHover(e) {
+    screenToNDC(e.clientX, e.clientY);
+    raycaster.setFromCamera(mouse, camera);
+    const hits = raycaster.intersectObjects(clickables, false);
+
+    const newKey = hits.length > 0 ? hits[0].object.userData.partKey : null;
+    if (newKey === hoveredKey) {
+        // Same part as last frame — just update tooltip position
+        if (newKey) {
+            lbl.style.left = e.clientX + 14 + "px";
+            lbl.style.top  = e.clientY - 10 + "px";
+        }
+        return;
+    }
+
+    // Restore previous highlight
+    hoveredMeshes.forEach(m => { if (originalMats.has(m)) m.material = originalMats.get(m); });
+    hoveredMeshes = [];
+    hoveredKey = null;
+
+    if (newKey && PARTS[newKey]) {
+        canvas.style.cursor = "pointer";
+        clickables.forEach(m => {
+            if (m.userData.partKey === newKey) {
+                m.material = mat.hover;
+                hoveredMeshes.push(m);
+            }
+        });
+        lbl.style.display = "block";
+        lbl.style.left = e.clientX + 14 + "px";
+        lbl.style.top  = e.clientY - 10 + "px";
+        lbl.textContent = PARTS[newKey].label;
+        hoveredKey = newKey;
+        return;
+    }
+    canvas.style.cursor = "default";
+    lbl.style.display = "none";
+}
+
+function handleClick(e) {
+    screenToNDC(e.clientX, e.clientY);
+    raycaster.setFromCamera(mouse, camera);
+    const hits = raycaster.intersectObjects(clickables, false);
+    if (hits.length > 0) {
+        const key = hits[0].object.userData.partKey;
+        if (key && PARTS[key]) showPopup(key);
+    }
+}
+
+function showPopup(key) {
+    const p = PARTS[key];
+    document.getElementById("popup-icon").textContent  = p.icon;
+    document.getElementById("popup-title").textContent = p.label;
+    document.getElementById("popup-desc").textContent  = p.desc;
+    document.getElementById("popup").classList.add("show");
+    document.getElementById("overlay").classList.add("show");
+}
+function closePopup() {
+    document.getElementById("popup").classList.remove("show");
+    document.getElementById("overlay").classList.remove("show");
+}
+document.getElementById("popup-close").onclick = closePopup;
+document.getElementById("overlay").onclick = closePopup;
+
+// ── Animation loop ────────────────────────────────────────────────────────────
+const clock = new THREE.Clock();
+const PROP_SPEED = 12; // rad/s
+
+function animate() {
+    requestAnimationFrame(animate);
+
+    // Process pending hover (at most once per frame — debounced)
+    if (_pendingHover) { checkHover(_pendingHover); _pendingHover = null; }
+
+    // Use elapsed time for prop spin to avoid float drift over long sessions
+    const t = clock.getElapsedTime();
+    propGroups.forEach(pg => { pg.rotation.y = t * PROP_SPEED * pg.userData.spinDir; });
+
+    theta  += (targetTheta  - theta)  * 0.09;
+    phi    += (targetPhi    - phi)    * 0.09;
+    radius += (targetRadius - radius) * 0.09;
+
+    const sinPhi = Math.sin(phi);
+    camera.position.set(
+        radius * sinPhi * Math.sin(theta),
+        radius * Math.cos(phi),
+        radius * sinPhi * Math.cos(theta),
+    );
+    camera.lookAt(0, 0, 0);
+    renderer.render(scene, camera);
+}
+
+window.addEventListener("resize", () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+animate();
+</script>
+</body>
+</html>

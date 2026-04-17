@@ -45,7 +45,7 @@
         </div>
 
         <main>
-            <div class="demo-box">
+            <div class="demo-box" id="demoBox">
                 <iframe src="dronemodel.html" title="Hexacopter Demo"></iframe>
             </div>
         </main>
@@ -54,5 +54,16 @@
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
         <script src="js/main.js"></script>
+        <script>
+            const demoBox = document.getElementById('demoBox');
+
+            demoBox.addEventListener('mouseenter', () => {
+                document.body.style.overflow = 'hidden';
+            });
+
+            demoBox.addEventListener('mouseleave', () => {
+                document.body.style.overflow = '';
+            });
+        </script>
     </body>
 </html>

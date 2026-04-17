@@ -1,527 +1,1219 @@
 <!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Hexacopter Interactive Demo</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: #0c0e14; font-family: system-ui, sans-serif; overflow: hidden; }
-        canvas { display: block; }
-        #hint {
-            position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%);
-            background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.55);
-            font-size: 13px; padding: 8px 20px; border-radius: 20px;
-            pointer-events: none; backdrop-filter: blur(8px);
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-        #popup {
-            position: fixed; display: none; top: 50%; left: 50%;
-            transform: translate(-50%,-50%); background: #13151f;
-            border: 1px solid rgba(255,255,255,0.13); border-radius: 18px;
-            padding: 28px 32px; max-width: 360px; width: 92%; color: #fff;
-            z-index: 100; box-shadow: 0 32px 80px rgba(0,0,0,0.7);
-        }
-        #popup.show { display: block; }
-        #popup-icon  { font-size: 30px; margin-bottom: 10px; display: block; }
-        #popup-title { font-size: 19px; font-weight: 600; margin-bottom: 10px; color: #7dd3fc; }
-        #popup-desc  { font-size: 14px; line-height: 1.7; color: rgba(255,255,255,0.68); }
-        #popup-close {
-            margin-top: 20px; background: #0ea5e9; color: #fff; border: none;
-            border-radius: 8px; padding: 9px 22px; font-size: 14px; cursor: pointer; font-weight: 500;
-        }
-        #popup-close:hover { background: #38bdf8; }
-        #overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; z-index: 99; }
-        #overlay.show { display: block; }
-        #label {
-            position: fixed; pointer-events: none; background: rgba(14,165,233,0.92);
-            color: #fff; font-size: 12px; padding: 5px 11px; border-radius: 6px;
-            display: none; z-index: 50; white-space: nowrap;
-        }
-    </style>
-</head>
-<body>
-<div id="hint">🖱 Drag to rotate &nbsp;·&nbsp; Scroll to zoom &nbsp;·&nbsp; Click a part to learn more</div>
-<div id="label"></div>
-<div id="overlay"></div>
-<div id="popup">
-    <span id="popup-icon"></span>
-    <div id="popup-title"></div>
-    <div id="popup-desc"></div>
-    <button id="popup-close">Close</button>
-</div>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script>
-const PARTS = {
-    body:         { label:"Central Hub",                       desc:"The TaroX Six carbon fiber hexacopter frame forms the structural and electronic heart of the build. Its hexagonal geometry distributes stress evenly across all six arm attachment points, making it significantly more rigid than a quad frame under load. The central hub sandwiches the Pixhawk 4 flight controller, power distribution board, and all ESC connections between its upper and lower carbon fiber plates." },
-    attach:       { label:"Attachment Plate",                  desc:"The upper carbon fiber plate of the TaroX Six frame sandwiches all electronics between itself and the bottom plate. Provides mounting points for the Pixhawk 4 GPS mast, telemetry radio antenna, and payload brackets. The woven carbon fiber construction gives it an excellent strength-to-weight ratio — stronger than aluminium at a fraction of the weight." },
-    arm:          { label:"Carbon Fiber Arm",                  desc:"The TaroX Six's hollow carbon fiber tube arms radiate out at 60° intervals from the central hub. The hollow core serves double duty: structural rigidity and a conduit for T-Motor Navigator Series wiring, keeping connections clean and protected. Arms are intentionally designed as the first point of failure in a crash — cheaper to replace than the central hub or motors." },
-    motor:        { label:"T-Motor Navigator Series 340KV",    desc:"The Navigator Series T-Motor brushless motors rated at 340KV generate the thrust to lift the aircraft. The low 340KV winding is optimised for large-diameter, slow-spinning propellers — trading RPM for torque, which is far more efficient for a heavy-lift hex platform. Alternating motors spin clockwise and counter-clockwise so each opposing pair cancels out torque. A key advantage of hex over quad: the drone can continue flying even if one Navigator motor fails, providing critical redundancy." },
-    prop:         { label:"T-Motor Carbon Propeller",          desc:"T-Motor's carbon fiber reinforced propellers are matched to the 340KV Navigator Series motors, optimised for the large blade diameter and slow RPM that maximise efficiency on a heavy-lift platform. Alternating props carry mirrored pitch — clockwise and counter-clockwise variants — so all six generate upward thrust regardless of spin direction. Carbon fiber blades are stiffer than plastic, reducing flex at high RPM and improving efficiency, but they shatter on impact rather than flexing." },
-    battery:      { label:"TATTU 6S LiPo 3700mAh",             desc:"A TATTU 6S (22.2V) 3700mAh Lithium Polymer battery pack provides the power the six Navigator Series motors require. Mounted centrally on the bottom plate of the TaroX Six frame to keep the centre of gravity low and stable. LiPo batteries must be stored at a storage charge (~3.8V/cell) and never fully discharged to avoid permanent capacity loss. The 6S voltage is well matched to the FLAME 70A ESCs, keeping current draw per cell within safe limits." },
-    gps:          { label:"Pixhawk 4 GPS Module",              desc:"The Pixhawk 4's dedicated GPS/compass module combines a u-blox GNSS receiver with an integrated magnetometer, mounted on a raised mast to minimize electromagnetic interference from the Navigator Series motors and FLAME ESC power wiring below. Enables position hold, return-to-home, waypoint navigation, and geofencing via ArduCopter or PX4 firmware on the Pixhawk 4. The mast height is critical — too close to the frame and compass interference causes erratic yaw behaviour." },
-    fc:           { label:"Pixhawk 4 Flight Controller",       desc:"The Pixhawk 4 is the brain of the drone — a professional-grade open-source flight controller featuring an STM32F765 processor, triple-redundant IMU (ICM-20689, ICM-20602, BMI055), and a barometer. Running PX4 or ArduCopter firmware, it processes sensor data at up to 1kHz to make precise throttle adjustments across all six FLAME ESCs, keeping the aircraft stable and executing flight commands. Its dedicated I/O coprocessor offloads PWM/DSHOT output, freeing the main processor for navigation and the MAVLink link to the Raspberry Pi 5 companion computer." },
-    esc:          { label:"FLAME 70A 4-6S ESC",                desc:"Each of the six Navigator Series motors is driven by a dedicated FLAME 70A ESC, rated for 4–6S LiPo — perfectly matched to the TATTU 6S pack. The FLAME takes a PWM or DSHOT signal from the Pixhawk 4 and switches the motor's three phase windings at high frequency to precisely control RPM. At 70A continuous, each ESC has comfortable headroom above the Navigator Series motors' peak current draw, reducing heat stress. BLHeli_32-based firmware support enables bidirectional DSHOT for real-time RPM telemetry fed back to the Pixhawk 4 for tighter motor control loops." },
-    mainreceiver: { label:"Flight Radio Receiver",             desc:"The flight radio receiver picks up control signals from the pilot's ground transmitter and forwards them to the Pixhawk 4 flight controller via SBUS or CRSF. Two antennas are mounted at an angle to each other to ensure reliable signal reception regardless of the drone's orientation — if one antenna is in a null zone, the other compensates. The flight radio channel is kept entirely separate from the telemetry radio link to prevent interference between the two systems." },
-    rcreceiver:   { label:"Flight Radio Unit",                 desc:"The flight radio unit is the physical RC receiver mounted to the TaroX Six frame, with two wire antennas extending outward at roughly 90° to each other. This spatial diversity is deliberate — when the drone banks or pitches, at least one antenna maintains a favorable angle toward the pilot's transmitter, preventing signal dropout. The unit connects to the Pixhawk 4 via SBUS or CRSF, delivering up to 16 channels of control data with sub-millisecond latency." },
-    motherboard:  { label:"Power Distribution Board",          desc:"The power distribution board sits between the TaroX Six's top and bottom hub plates, routing TATTU 6S battery power to each of the six FLAME 70A ESCs and supplying regulated 5V and 12V rails for the Pixhawk 4, radios, Raspberry Pi 5, and accessories. Current sensing and voltage monitoring data is fed to the Pixhawk 4, giving live battery telemetry to the pilot via the telemetry radio link and optionally via OSD." },
-    remoteid:     { label:"Remote ID Module",                  desc:"The Remote ID module broadcasts the drone's identity, position, altitude, velocity, and operator location in real time over Wi-Fi or Bluetooth, independent of the Pixhawk 4 flight controller. This ensures the broadcast continues even during an FC anomaly. In many countries — including the US under FAA 14 CFR Part 89 — Remote ID is a legal requirement for all drones above 0.55 lbs operating in national airspace. The module operates on its own power rail and antenna, running autonomously." },
-    rid:          { label:"FAA Remote ID",                     desc:"Under FAA 14 CFR Part 89, all drones above 0.55 lbs (250g) operating in US airspace must broadcast Standard Remote ID. This module transmits the drone's ID, position, altitude, velocity, and the operator's location via Wi-Fi NAN or Bluetooth 4.0/5.0. It operates as a standalone unit independent of the Pixhawk 4 flight controller, ensuring continuous broadcast even during an FC failure. Non-compliance can result in grounding by law enforcement or ATC; the FAA has been actively enforcing the rule since the September 2023 deadline." },
-    rpi:          { label:"Raspberry Pi 5",                    desc:"A Raspberry Pi 5 single-board computer acts as the companion computer alongside the Pixhawk 4 flight controller. While the Pixhawk handles low-level stabilisation at high loop rates, the Pi 5's quad-core Cortex-A76 processor runs higher-level tasks — computer vision, object detection, onboard logging, MAVLink telemetry forwarding, modem management, or autonomous mission logic via DroneKit or MAVSDK. It communicates with the Pixhawk 4 over a UART or USB serial link using the MAVLink protocol. The Pi 5's significant performance uplift over the Pi 4 makes it well suited for real-time image processing workloads without the weight penalty of a more powerful embedded computer." },
-    dropmech:     { label:"Drop Mechanism",                    desc:"A servo-actuated payload release system mounted to the underside of the TaroX Six central hub, allowing the drone to deliver or drop a payload at a precise GPS-triggered or pilot-commanded location via a dedicated Pixhawk 4 output channel. The mechanism typically consists of a carbon fiber or 3D-printed cradle and a small servo that rotates a retaining pin or gate on command. A sudden payload release changes the aircraft's mass distribution and can cause a brief pitch or roll disturbance — this must be accounted for in the Pixhawk 4 configuration and tuned accordingly." },
-    land:         { label:"Landing Gear",                      desc:"Carbon fiber landing legs extend below the TaroX Six central hub, providing ground clearance for the TATTU 6S battery pack and drop mechanism while absorbing landing loads. Each leg is a hollow CF tube pressed into a 3D-printed or machined clamp that bolts to the underside of the frame. The leg angle is tuned to keep the centre of gravity stable on uneven terrain while staying clear of the payload envelope below the aircraft." },
-};
-
-// ── Renderer / Scene / Camera ─────────────────────────────────────────────────
-const renderer = new THREE.WebGLRenderer({ antialias: true });
-// Cap at 1.5× — negligible visual difference vs 2×, ~44% fewer fragment ops on high-DPI screens
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
-renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.shadowMap.enabled = true;
-renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-renderer.outputEncoding = THREE.sRGBEncoding;
-document.body.appendChild(renderer.domElement);
-
-const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x0c0e14);
-scene.fog = new THREE.Fog(0x0c0e14, 20, 40);
-
-const camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.1, 100);
-camera.position.set(0, 4, 9);
-camera.lookAt(0, 0, 0);
-
-// ── Lighting ──────────────────────────────────────────────────────────────────
-scene.add(new THREE.AmbientLight(0xffffff, 0.3));
-const sun = new THREE.DirectionalLight(0xffffff, 1.2);
-sun.position.set(6, 10, 7); sun.castShadow = true; scene.add(sun);
-const fill = new THREE.DirectionalLight(0x4488ff, 0.4);
-fill.position.set(-6, 2, -4); scene.add(fill);
-const rim = new THREE.PointLight(0x7dd3fc, 0.7, 22);
-rim.position.set(0, 6, -4); scene.add(rim);
-const under = new THREE.PointLight(0x0ea5e9, 0.3, 10);
-under.position.set(0, -3, 0); scene.add(under);
-const grid = new THREE.GridHelper(40, 40, 0x1a2030, 0x141820);
-grid.position.y = -2.5; scene.add(grid);
-
-// ── Carbon fibre texture ──────────────────────────────────────────────────────
-function makeCarbonTexture(size) {
-    const c = document.createElement("canvas");
-    c.width = c.height = size;
-    const ctx = c.getContext("2d");
-    ctx.fillStyle = "#111318"; ctx.fillRect(0, 0, size, size);
-    const s = 8;
-    for (let row = 0; row < size / s; row++) {
-        for (let col = 0; col < size / s; col++) {
-            const x = col * s, y = row * s, offset = (row % 2) * s / 2;
-            ctx.fillStyle = "rgba(255,255,255,0.07)";
-            ctx.fillRect(x + (offset % s), y, s / 2 - 1, s - 1);
-            ctx.fillStyle = "rgba(255,255,255,0.03)";
-            ctx.fillRect(x + ((offset + s / 2) % s), y, s / 2 - 1, s - 1);
-            ctx.fillStyle = "rgba(0,0,0,0.5)";
-            ctx.fillRect(x, y + s - 1, s, 1);
-            ctx.fillRect(x + s - 1, y, 1, s);
-        }
-    }
-    const tex = new THREE.CanvasTexture(c);
-    tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
-    tex.repeat.set(4, 4);
-    return tex;
-}
-const cfTex = makeCarbonTexture(128);
-
-// ── Materials ─────────────────────────────────────────────────────────────────
-const mat = {
-    cf:           new THREE.MeshStandardMaterial({ map: cfTex, color: 0x1a1c24, roughness: 0.35, metalness: 0.55 }),
-    cfArm:        new THREE.MeshStandardMaterial({ map: cfTex, color: 0x14161e, roughness: 0.4,  metalness: 0.6  }),
-    motor:        new THREE.MeshStandardMaterial({ color: 0x202028, roughness: 0.25, metalness: 0.85 }),
-    motorBell:    new THREE.MeshStandardMaterial({ color: 0x2a2a35, roughness: 0.15, metalness: 0.95 }),
-    motorAccent:  new THREE.MeshStandardMaterial({ color: 0x0ea5e9, roughness: 0.1,  metalness: 0.5  }),
-    prop:         new THREE.MeshStandardMaterial({ color: 0x0d0f15, roughness: 0.45, metalness: 0.3, side: THREE.DoubleSide }),
-    battery:      new THREE.MeshStandardMaterial({ color: 0x1c2a1c, roughness: 0.55, metalness: 0.25 }),
-    gps:          new THREE.MeshStandardMaterial({ color: 0xe8e8ee, roughness: 0.4,  metalness: 0.15 }),
-    gpsMast:      new THREE.MeshStandardMaterial({ color: 0x111318, roughness: 0.5,  metalness: 0.7  }),
-    fc:           new THREE.MeshStandardMaterial({ color: 0x1a2a1a, roughness: 0.5,  metalness: 0.3  }),
-    esc:          new THREE.MeshStandardMaterial({ color: 0x1a1a28, roughness: 0.4,  metalness: 0.4  }),
-    mainreceiver: new THREE.MeshStandardMaterial({ color: 0x1a1a1a, roughness: 0.5,  metalness: 0.3  }),
-    motherboard:  new THREE.MeshStandardMaterial({ color: 0x0d2b1a, roughness: 0.5,  metalness: 0.3  }),
-    landing:      new THREE.MeshStandardMaterial({ map: cfTex, color: 0x0f1015, roughness: 0.5, metalness: 0.65 }),
-    hover:        new THREE.MeshStandardMaterial({ color: 0x38bdf8, roughness: 0.2,  metalness: 0.6, emissive: 0x0ea5e9, emissiveIntensity: 0.35 }),
-};
-
-const clickables = [];
-const originalMats = new Map();
-
-function reg(mesh, partKey) {
-    mesh.castShadow = mesh.receiveShadow = true;
-    mesh.userData.partKey = partKey;
-    clickables.push(mesh);
-    originalMats.set(mesh, mesh.material);
-    return mesh;
-}
-
-// ── Geometry cache — share identical BufferGeometry instances ─────────────────
-const _geoCache = new Map();
-function cachedCylGeo(rT, rB, h, seg) {
-    const key = `cyl:${rT},${rB},${h},${seg}`;
-    if (!_geoCache.has(key)) _geoCache.set(key, new THREE.CylinderGeometry(rT, rB, h, seg));
-    return _geoCache.get(key);
-}
-function cachedBoxGeo(w, h, d) {
-    const key = `box:${w},${h},${d}`;
-    if (!_geoCache.has(key)) _geoCache.set(key, new THREE.BoxGeometry(w, h, d));
-    return _geoCache.get(key);
-}
-
-// ── Helpers ───────────────────────────────────────────────────────────────────
-function makeMesh(geo, material) { return new THREE.Mesh(geo, material); }
-
-function cyl(rT, rB, h, seg, material) {
-    return makeMesh(cachedCylGeo(rT, rB, h, seg), material);
-}
-
-function box(w, h, d, material) {
-    return makeMesh(cachedBoxGeo(w, h, d), material);
-}
-
-function torus(r, tube, seg, material) {
-    const key = `torus:${r},${tube},${seg}`;
-    if (!_geoCache.has(key)) {
-        const g = new THREE.TorusGeometry(r, tube, 8, seg);
-        _geoCache.set(key, g);
-    }
-    const m = makeMesh(_geoCache.get(key), material);
-    m.rotation.x = Math.PI / 2;
-    return m;
-}
-
-function addAt(parent, mesh, x, y, z) {
-    mesh.position.set(x, y, z);
-    parent.add(mesh);
-    return mesh;
-}
-
-// ── Blade shape ───────────────────────────────────────────────────────────────
-// Created once and shared across all prop groups
-const _bladeGeo = (() => {
-    const shape = new THREE.Shape();
-    shape.moveTo(0.04, 0);
-    shape.bezierCurveTo(0.08, 0.06, 0.55, 0.09, 0.78, 0.03);
-    shape.bezierCurveTo(0.55, -0.01, 0.08, -0.04, 0.04, 0);
-    return new THREE.ExtrudeGeometry(shape, { depth: 0.014, bevelEnabled: false });
-})();
-
-// ── Drone group ───────────────────────────────────────────────────────────────
-const drone = new THREE.Group();
-scene.add(drone);
-
-// ── Central hub ───────────────────────────────────────────────────────────────
-reg(addAt(drone, cyl(0.5, 0.5, 0.06, 6, mat.cf), 0, -0.3, 0), "attach");
-reg(addAt(drone, cyl(1.05, 1.05, 0.06, 6, mat.cf), 0, 0.2, 0), "body");
-reg(addAt(drone, cyl(1.05, 1.05, 0.06, 6, mat.cf), 0, 0.42, 0), "body");
-
-const STANDOFF_POSITIONS = [
-    [ 0.390, 0.675], [ 0.780, 0.000], [ 0.390,-0.675],
-    [-0.390,-0.675], [-0.780, 0.000], [-0.390, 0.675],
-];
-STANDOFF_POSITIONS.forEach(([x, z]) =>
-    reg(addAt(drone, cyl(0.028, 0.028, 0.22, 8, mat.motor), x, 0.3, z), "body"));
-
-const ATTACH_POSITIONS = [
-    [ 0.390, 0.2], [ 0.390,-0.2],
-    [-0.390,-0.2], [-0.390, 0.2],
-];
-ATTACH_POSITIONS.forEach(([x, z]) =>
-    reg(addAt(drone, cyl(0.028, 0.028, 0.47, 8, mat.motor), x, -0.07, z), "attach"));
-
-reg(addAt(drone, box(0.25, 0.04, 0.45, mat.fc), 0, 0.5, 0), "fc");
-reg(addAt(drone, box(0.2, 0.1, 0.4, mat.fc), 0.5, 0.5, 0), "rpi");
-reg(addAt(drone, box(0.52, 0.22, 1.1, mat.battery), 0, -0.14, 0), "battery");
-reg(addAt(drone, box(0.9, 0.22, 0.9, mat.mainreceiver), 0, -0.44, 0), "dropmech");
-reg(addAt(drone, box(0.2, 0.1, 0.4, mat.mainreceiver), 0.15, 0.51, 0.6), "mainreceiver");
-
-const receiverantenna1 = reg(addAt(drone, cyl(0.025, 0.008, 0.50, 8, mat.mainreceiver), 0.2, 0.7, 0.85), "mainreceiver");
-receiverantenna1.rotation.x = -2.5;
-const receiverantenna2 = reg(addAt(drone, cyl(0.025, 0.008, 0.50, 8, mat.mainreceiver), 0.1, 0.7, 0.85), "mainreceiver");
-receiverantenna2.rotation.x = -2.5;
-
-reg(addAt(drone, box(0.2, 0.05, 0.1, mat.mainreceiver), -0.25, 0.48, 0.6), "remoteid");
-const remoteIDantenna = reg(addAt(drone, cyl(0.025, 0.008, 0.25, 8, mat.mainreceiver), -0.32, 0.56, 0.6), "remoteid");
-remoteIDantenna.rotation.z = -3;
-
-reg(addAt(drone, box(0.1, 0.05, 0.1, mat.mainreceiver), -0.3, 0.48, -0.4), "rcreceiver");
-
-const wireCurve = new THREE.CatmullRomCurve3([
-    new THREE.Vector3(0, 0, 0),
-    new THREE.Vector3(-0.08, 0.04, -0.03),
-    new THREE.Vector3(-0.1, 0.09, -0.08),
-    new THREE.Vector3(0.07, 0.13, -0.04),
-    new THREE.Vector3(0.07, 0.15, 0.04)
-]);
-const wireGeometry = new THREE.TubeGeometry(wireCurve, 20, 0.008, 6, false);
-reg(addAt(drone, new THREE.Mesh(wireGeometry, mat.mainreceiver), -0.3, 0.48, -0.4), "rcreceiver");
-
-const RID = reg(addAt(drone, box(0.1, 0.05, 0.1, mat.mainreceiver), -0.65, 0.48, 0.6), "rid");
-RID.rotation.y = 1;
-
-reg(addAt(drone, box(0.6, 0.04, 0.6, mat.motherboard), 0, 0.25, 0), "motherboard");
-
-// Landing Gear
-const leg1 = reg(addAt(drone, cyl(0.055, 0.055, 1.8, 8, mat.cfArm), 0.7, -0.7, 0), "land");
-
-const leg2 = reg(addAt(drone, cyl(0.055, 0.055, 1.8, 8, mat.cfArm), -0.7, -0.7, 0), "land");
-
-const leg3 = reg(addAt(drone, cyl(0.055, 0.055, 1.8, 8, mat.cfArm), 0.85, -1.6, 0), "land");
-leg3.rotation.x = 3.14/2
-
-const leg4 = reg(addAt(drone, cyl(0.055, 0.055, 1.8, 8, mat.cfArm), -0.85, -1.6, 0), "land");
-leg4.rotation.x = 3.14/2
-
-leg1.rotation.z = 3.14/20
-leg2.rotation.z = -3.14/20
-
-
-// ── Arms ──────────────────────────────────────────────────────────────────────
-const MOTOR_XZ = [
-    [ 0.000,  2.730], [ 2.290,  1.500], [ 2.320, -1.410],
-    [ 0.000, -2.730], [-2.250, -1.380], [-2.300,  1.350],
-];
-const ESC_POS = [
-    [ 0.000,  1.200], [ 1.000,  0.650], [ 1.000, -0.650],
-    [ 0.000, -1.200], [-1.000, -0.650], [-1.000,  0.650],
-];
-const ESC_BOX_ROT_Y  = [0, 0.985, -0.985, 0, 0.985, -0.985];
-const ARM_ROT_Y      = [190.050, 2.54, 3.7, 190.050, 40.28, 0.5];
-const ESC_ROT_Y      = [0, 1.047, 2.094, Math.PI, 4.189, 5.236];
-const SPIN           = [1, -1, 1, -1, 1, -1];
-
-// Build arm geometry once, reuse across all six arms
-const _armGeo = new THREE.CylinderGeometry(0.055, 0.055, 1.55, 8);
-_armGeo.applyMatrix4(new THREE.Matrix4().makeRotationZ(Math.PI / 2));
-
-// Midpoint XZ for the arm connector blocks (reused formula)
-const propGroups = [];
-
-for (let i = 0; i < 6; i++) {
-    const [mx, mz] = MOTOR_XZ[i];
-    const Y = 0.3;
-
-    // Arm tube — each arm needs its own Mesh (distinct rotation/position), but shares geometry
-    const arm = reg(makeMesh(_armGeo, mat.cfArm), "arm");
-    arm.rotation.y = ARM_ROT_Y[i];
-    arm.position.set(mx * 0.665, Y, mz * 0.665);
-    drone.add(arm);
-
-    // Connector block
-    const midX = mx * 0.35, midZ = mz * 0.35;
-    const conn = reg(box(0.18, 0.2, 0.09, mat.cfArm), "arm");
-    conn.rotation.y = ESC_ROT_Y[i];
-    addAt(drone, conn, midX, Y, midZ);
-
-    // ESC box
-    const esc = reg(addAt(drone, box(0.15, 0.1, 0.15, mat.esc), ESC_POS[i][0], 0.2, ESC_POS[i][1]), "esc");
-    esc.rotation.y = ESC_BOX_ROT_Y[i];
-
-    // Motor mount, base, bell, accent ring
-    reg(addAt(drone, cyl(0.18, 0.18, 0.05, 16, mat.cf), mx, Y, mz), "motor");
-    reg(addAt(drone, cyl(0.135, 0.14, 0.1, 16, mat.motor), mx, Y, mz), "motor");
-    reg(addAt(drone, cyl(0.15, 0.135, 0.12, 16, mat.motorBell), mx, Y + 0.1, mz), "motor");
-    const ring = reg(torus(0.135, 0.012, 24, mat.motorAccent), "motor");
-    ring.position.set(mx, Y + 0.1, mz);
-    drone.add(ring);
-
-    // Prop group
-    const pg = new THREE.Group();
-    pg.position.set(mx, Y + 0.2, mz);
-    pg.userData.spinDir = SPIN[i];
-    drone.add(pg);
-    propGroups.push(pg);
-
-    reg(addAt(pg, cyl(0.015, 0.015, 0.08, 8, mat.motor), 0, 0, 0), "prop");
-    reg(makeMesh(cachedCylGeo(0.04, 0.04, 0.04, 12), mat.prop), "prop");
-    pg.add(makeMesh(cachedCylGeo(0.04, 0.04, 0.04, 12), mat.prop));
-
-    // Two blades share the same geometry
-    for (const rotZ of [0, Math.PI]) {
-        const blade = reg(makeMesh(_bladeGeo, mat.prop), "prop");
-        blade.rotation.x = -Math.PI / 2;
-        blade.rotation.z = rotZ;
-        pg.add(blade);
-    }
-}
-
-// ── GPS mast ──────────────────────────────────────────────────────────────────
-reg(addAt(drone, cyl(0.018, 0.018, 0.6, 8, mat.gpsMast), 0.15, 0.7, -0.5), "gps");
-reg(addAt(drone, cyl(0.15, 0.15, 0.03, 16, mat.gps), 0.15, 0.94, -0.5), "gps");
-
-// ── Orbit controls ────────────────────────────────────────────────────────────
-let isDragging = false, hasMoved = false;
-let prevMouse = { x: 0, y: 0 };
-let theta = 0.5, phi = 1.05, radius = 9;
-let targetTheta = theta, targetPhi = phi, targetRadius = radius;
-const MIN_PHI = 0.15, MAX_PHI = Math.PI * 0.55;
-
-const canvas = renderer.domElement;
-
-canvas.addEventListener("mousedown", e => {
-    isDragging = true; hasMoved = false;
-    prevMouse = { x: e.clientX, y: e.clientY };
-});
-canvas.addEventListener("mousemove", e => {
-    if (isDragging) {
-        const dx = e.clientX - prevMouse.x, dy = e.clientY - prevMouse.y;
-        if (Math.abs(dx) + Math.abs(dy) > 2) hasMoved = true;
-        targetTheta -= dx * 0.007;
-        targetPhi = Math.max(MIN_PHI, Math.min(MAX_PHI, targetPhi + dy * 0.007));
-        prevMouse = { x: e.clientX, y: e.clientY };
-    } else {
-        scheduleHover(e);
-    }
-});
-canvas.addEventListener("mouseup",  () => { isDragging = false; });
-canvas.addEventListener("click",    e => { if (!hasMoved) handleClick(e); });
-canvas.addEventListener("wheel",    e => {
-    targetRadius = Math.max(4, Math.min(18, targetRadius + e.deltaY * 0.012));
-}, { passive: true });
-
-let lastTouch = null;
-canvas.addEventListener("touchstart", e => {
-    isDragging = true; hasMoved = false;
-    lastTouch = { x: e.touches[0].clientX, y: e.touches[0].clientY };
-});
-canvas.addEventListener("touchmove", e => {
-    if (!isDragging || !lastTouch) return;
-    const dx = e.touches[0].clientX - lastTouch.x, dy = e.touches[0].clientY - lastTouch.y;
-    if (Math.abs(dx) + Math.abs(dy) > 3) hasMoved = true;
-    targetTheta -= dx * 0.007;
-    targetPhi = Math.max(MIN_PHI, Math.min(MAX_PHI, targetPhi + dy * 0.007));
-    lastTouch = { x: e.touches[0].clientX, y: e.touches[0].clientY };
-    e.preventDefault();
-}, { passive: false });
-canvas.addEventListener("touchend", e => {
-    if (!hasMoved && e.changedTouches.length > 0) {
-        const t = e.changedTouches[0];
-        handleClick({ clientX: t.clientX, clientY: t.clientY });
-    }
-    isDragging = false;
-});
-
-// ── Raycaster ─────────────────────────────────────────────────────────────────
-const raycaster = new THREE.Raycaster();
-const mouse = new THREE.Vector2(); // reused — no per-event allocation
-let hoveredMeshes = [];
-let hoveredKey = null;          // skip redundant material swaps when part hasn't changed
-const lbl = document.getElementById("label");
-
-// Debounce hover checks to at most once per rAF frame
-let _pendingHover = null;
-function scheduleHover(e) {
-    _pendingHover = e;
-}
-
-function screenToNDC(clientX, clientY) {
-    mouse.x = (clientX / window.innerWidth) * 2 - 1;
-    mouse.y = -(clientY / window.innerHeight) * 2 + 1;
-}
-
-function checkHover(e) {
-    screenToNDC(e.clientX, e.clientY);
-    raycaster.setFromCamera(mouse, camera);
-    const hits = raycaster.intersectObjects(clickables, false);
-
-    const newKey = hits.length > 0 ? hits[0].object.userData.partKey : null;
-    if (newKey === hoveredKey) {
-        // Same part as last frame — just update tooltip position
-        if (newKey) {
-            lbl.style.left = e.clientX + 14 + "px";
-            lbl.style.top  = e.clientY - 10 + "px";
-        }
-        return;
-    }
-
-    // Restore previous highlight
-    hoveredMeshes.forEach(m => { if (originalMats.has(m)) m.material = originalMats.get(m); });
-    hoveredMeshes = [];
-    hoveredKey = null;
-
-    if (newKey && PARTS[newKey]) {
-        canvas.style.cursor = "pointer";
-        clickables.forEach(m => {
-            if (m.userData.partKey === newKey) {
-                m.material = mat.hover;
-                hoveredMeshes.push(m);
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Hexacopter Interactive Demo</title>
+        <style>
+            /* ── Global reset ─────────────────────────────────────────────────────── */
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
             }
-        });
-        lbl.style.display = "block";
-        lbl.style.left = e.clientX + 14 + "px";
-        lbl.style.top  = e.clientY - 10 + "px";
-        lbl.textContent = PARTS[newKey].label;
-        hoveredKey = newKey;
-        return;
-    }
-    canvas.style.cursor = "default";
-    lbl.style.display = "none";
-}
+            body {
+                background: #0c0e14;
+                font-family: system-ui, sans-serif;
+                overflow: hidden;
+            }
+            canvas {
+                display: block;
+            }
 
-function handleClick(e) {
-    screenToNDC(e.clientX, e.clientY);
-    raycaster.setFromCamera(mouse, camera);
-    const hits = raycaster.intersectObjects(clickables, false);
-    if (hits.length > 0) {
-        const key = hits[0].object.userData.partKey;
-        if (key && PARTS[key]) showPopup(key);
-    }
-}
+            /* ── On-screen hint bar (bottom-center, non-interactive) ─────────────── */
+            #hint {
+                position: fixed;
+                bottom: 24px;
+                left: 50%;
+                transform: translateX(-50%);
+                background: rgba(255, 255, 255, 0.07);
+                color: rgba(255, 255, 255, 0.55);
+                font-size: 13px;
+                padding: 8px 20px;
+                border-radius: 20px;
+                pointer-events: none;
+                backdrop-filter: blur(8px);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+            }
 
-function showPopup(key) {
-    const p = PARTS[key];
-    document.getElementById("popup-title").textContent = p.label;
-    document.getElementById("popup-desc").textContent  = p.desc;
-    document.getElementById("popup").classList.add("show");
-    document.getElementById("overlay").classList.add("show");
-}
-function closePopup() {
-    document.getElementById("popup").classList.remove("show");
-    document.getElementById("overlay").classList.remove("show");
-}
-document.getElementById("popup-close").onclick = closePopup;
-document.getElementById("overlay").onclick = closePopup;
+            /* ── Info popup (shown when a part is clicked) ───────────────────────── */
+            #popup {
+                position: fixed;
+                display: none;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: #13151f;
+                border: 1px solid rgba(255, 255, 255, 0.13);
+                border-radius: 18px;
+                padding: 28px 32px;
+                max-width: 360px;
+                width: 92%;
+                color: #fff;
+                z-index: 100;
+                box-shadow: 0 32px 80px rgba(0, 0, 0, 0.7);
+            }
+            #popup.show {
+                display: block;
+            }
+            #popup-icon {
+                font-size: 30px;
+                margin-bottom: 10px;
+                display: block;
+            }
+            #popup-title {
+                font-size: 19px;
+                font-weight: 600;
+                margin-bottom: 10px;
+                color: #7dd3fc;
+            }
+            #popup-desc {
+                font-size: 14px;
+                line-height: 1.7;
+                color: rgba(255, 255, 255, 0.68);
+            }
+            #popup-close {
+                margin-top: 20px;
+                background: #0ea5e9;
+                color: #fff;
+                border: none;
+                border-radius: 8px;
+                padding: 9px 22px;
+                font-size: 14px;
+                cursor: pointer;
+                font-weight: 500;
+            }
+            #popup-close:hover {
+                background: #38bdf8;
+            }
 
-// ── Animation loop ────────────────────────────────────────────────────────────
-const clock = new THREE.Clock();
-const PROP_SPEED = 12; // rad/s
+            /* ── Semi-transparent overlay behind popup ───────────────────────────── */
+            #overlay {
+                position: fixed;
+                inset: 0;
+                background: rgba(0, 0, 0, 0.5);
+                display: none;
+                z-index: 99;
+            }
+            #overlay.show {
+                display: block;
+            }
 
-function animate() {
-    requestAnimationFrame(animate);
+            /* ── Floating tooltip that follows the cursor on hover ───────────────── */
+            #label {
+                position: fixed;
+                pointer-events: none;
+                background: rgba(14, 165, 233, 0.92);
+                color: #fff;
+                font-size: 12px;
+                padding: 5px 11px;
+                border-radius: 6px;
+                display: none;
+                z-index: 50;
+                white-space: nowrap;
+            }
+        </style>
+    </head>
+    <body>
+        <!-- ── UI overlay elements (drawn on top of the Three.js canvas) ──────────── -->
+        <div id="hint">
+            🖱 Drag to rotate &nbsp;·&nbsp; Scroll to zoom &nbsp;·&nbsp; Click a
+            part to learn more
+        </div>
+        <div id="label"></div>
+        <!-- cursor tooltip -->
+        <div id="overlay"></div>
+        <!-- click-to-dismiss backdrop for the popup -->
 
-    // Process pending hover (at most once per frame — debounced)
-    if (_pendingHover) { checkHover(_pendingHover); _pendingHover = null; }
+        <!-- ── Part info popup ───────────────────────────────────────────────────── -->
+        <div id="popup">
+            <span id="popup-icon"></span>
+            <div id="popup-title"></div>
+            <div id="popup-desc"></div>
+            <button id="popup-close">Close</button>
+        </div>
 
-    // Use elapsed time for prop spin to avoid float drift over long sessions
-    const t = clock.getElapsedTime();
-    propGroups.forEach(pg => { pg.rotation.y = t * PROP_SPEED * pg.userData.spinDir; });
+        <!-- ── Three.js (r128) loaded from CDN ───────────────────────────────────── -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
-    theta  += (targetTheta  - theta)  * 0.09;
-    phi    += (targetPhi    - phi)    * 0.09;
-    radius += (targetRadius - radius) * 0.09;
+        <script>
+            // ══════════════════════════════════════════════════════════════════════════════
+            //  PART CATALOGUE
+            //  Each key maps to the label shown in the tooltip and the descriptive text
+            //  shown in the popup when that part is clicked.
+            // ══════════════════════════════════════════════════════════════════════════════
+            const PARTS = {
+                body: {
+                    label: "Central Hub",
+                    desc: "The TaroX Six carbon fiber hexacopter frame forms the structural and electronic heart of the build. Its hexagonal geometry distributes stress evenly across all six arm attachment points, making it significantly more rigid than a quad frame under load. The central hub sandwiches the Pixhawk 4 flight controller, power distribution board, and all ESC connections between its upper and lower carbon fiber plates.",
+                },
+                attach: {
+                    label: "Attachment Plate",
+                    desc: "The upper carbon fiber plate of the TaroX Six frame sandwiches all electronics between itself and the bottom plate. Provides mounting points for the Pixhawk 4 GPS mast, telemetry radio antenna, and payload brackets. The woven carbon fiber construction gives it an excellent strength-to-weight ratio — stronger than aluminium at a fraction of the weight.",
+                },
+                arm: {
+                    label: "Carbon Fiber Arm",
+                    desc: "The TaroX Six's hollow carbon fiber tube arms radiate out at 60° intervals from the central hub. The hollow core serves double duty: structural rigidity and a conduit for T-Motor Navigator Series wiring, keeping connections clean and protected. Arms are intentionally designed as the first point of failure in a crash — cheaper to replace than the central hub or motors.",
+                },
+                motor: {
+                    label: "T-Motor Navigator Series 340KV",
+                    desc: "The Navigator Series T-Motor brushless motors rated at 340KV generate the thrust to lift the aircraft. The low 340KV winding is optimised for large-diameter, slow-spinning propellers — trading RPM for torque, which is far more efficient for a heavy-lift hex platform. Alternating motors spin clockwise and counter-clockwise so each opposing pair cancels out torque. A key advantage of hex over quad: the drone can continue flying even if one Navigator motor fails, providing critical redundancy.",
+                },
+                prop: {
+                    label: "T-Motor Carbon Propeller",
+                    desc: "T-Motor's carbon fiber reinforced propellers are matched to the 340KV Navigator Series motors, optimised for the large blade diameter and slow RPM that maximise efficiency on a heavy-lift platform. Alternating props carry mirrored pitch — clockwise and counter-clockwise variants — so all six generate upward thrust regardless of spin direction. Carbon fiber blades are stiffer than plastic, reducing flex at high RPM and improving efficiency, but they shatter on impact rather than flexing.",
+                },
+                battery: {
+                    label: "TATTU 6S LiPo 3700mAh",
+                    desc: "A TATTU 6S (22.2V) 3700mAh Lithium Polymer battery pack provides the power the six Navigator Series motors require. Mounted centrally on the bottom plate of the TaroX Six frame to keep the centre of gravity low and stable. LiPo batteries must be stored at a storage charge (~3.8V/cell) and never fully discharged to avoid permanent capacity loss. The 6S voltage is well matched to the FLAME 70A ESCs, keeping current draw per cell within safe limits.",
+                },
+                gps: {
+                    label: "Pixhawk 4 GPS Module",
+                    desc: "The Pixhawk 4's dedicated GPS/compass module combines a u-blox GNSS receiver with an integrated magnetometer, mounted on a raised mast to minimize electromagnetic interference from the Navigator Series motors and FLAME ESC power wiring below. Enables position hold, return-to-home, waypoint navigation, and geofencing via ArduCopter or PX4 firmware on the Pixhawk 4. The mast height is critical — too close to the frame and compass interference causes erratic yaw behaviour.",
+                },
+                fc: {
+                    label: "Pixhawk 4 Flight Controller",
+                    desc: "The Pixhawk 4 is the brain of the drone — a professional-grade open-source flight controller featuring an STM32F765 processor, triple-redundant IMU (ICM-20689, ICM-20602, BMI055), and a barometer. Running PX4 or ArduCopter firmware, it processes sensor data at up to 1kHz to make precise throttle adjustments across all six FLAME ESCs, keeping the aircraft stable and executing flight commands. Its dedicated I/O coprocessor offloads PWM/DSHOT output, freeing the main processor for navigation and the MAVLink link to the Raspberry Pi 5 companion computer.",
+                },
+                esc: {
+                    label: "FLAME 70A 4-6S ESC",
+                    desc: "Each of the six Navigator Series motors is driven by a dedicated FLAME 70A ESC, rated for 4–6S LiPo — perfectly matched to the TATTU 6S pack. The FLAME takes a PWM or DSHOT signal from the Pixhawk 4 and switches the motor's three phase windings at high frequency to precisely control RPM. At 70A continuous, each ESC has comfortable headroom above the Navigator Series motors' peak current draw, reducing heat stress. BLHeli_32-based firmware support enables bidirectional DSHOT for real-time RPM telemetry fed back to the Pixhawk 4 for tighter motor control loops.",
+                },
+                mainreceiver: {
+                    label: "Flight Radio Receiver",
+                    desc: "The flight radio receiver picks up control signals from the pilot's ground transmitter and forwards them to the Pixhawk 4 flight controller via SBUS or CRSF. Two antennas are mounted at an angle to each other to ensure reliable signal reception regardless of the drone's orientation — if one antenna is in a null zone, the other compensates. The flight radio channel is kept entirely separate from the telemetry radio link to prevent interference between the two systems.",
+                },
+                rcreceiver: {
+                    label: "Flight Radio Unit",
+                    desc: "The flight radio unit is the physical RC receiver mounted to the TaroX Six frame, with two wire antennas extending outward at roughly 90° to each other. This spatial diversity is deliberate — when the drone banks or pitches, at least one antenna maintains a favorable angle toward the pilot's transmitter, preventing signal dropout. The unit connects to the Pixhawk 4 via SBUS or CRSF, delivering up to 16 channels of control data with sub-millisecond latency.",
+                },
+                motherboard: {
+                    label: "Power Distribution Board",
+                    desc: "The power distribution board sits between the TaroX Six's top and bottom hub plates, routing TATTU 6S battery power to each of the six FLAME 70A ESCs and supplying regulated 5V and 12V rails for the Pixhawk 4, radios, Raspberry Pi 5, and accessories. Current sensing and voltage monitoring data is fed to the Pixhawk 4, giving live battery telemetry to the pilot via the telemetry radio link and optionally via OSD.",
+                },
+                remoteid: {
+                    label: "Remote ID Module",
+                    desc: "The Remote ID module broadcasts the drone's identity, position, altitude, velocity, and operator location in real time over Wi-Fi or Bluetooth, independent of the Pixhawk 4 flight controller. This ensures the broadcast continues even during an FC anomaly. In many countries — including the US under FAA 14 CFR Part 89 — Remote ID is a legal requirement for all drones above 0.55 lbs operating in national airspace. The module operates on its own power rail and antenna, running autonomously.",
+                },
+                rid: {
+                    label: "FAA Remote ID",
+                    desc: "Under FAA 14 CFR Part 89, all drones above 0.55 lbs (250g) operating in US airspace must broadcast Standard Remote ID. This module transmits the drone's ID, position, altitude, velocity, and the operator's location via Wi-Fi NAN or Bluetooth 4.0/5.0. It operates as a standalone unit independent of the Pixhawk 4 flight controller, ensuring continuous broadcast even during an FC failure. Non-compliance can result in grounding by law enforcement or ATC; the FAA has been actively enforcing the rule since the September 2023 deadline.",
+                },
+                rpi: {
+                    label: "Raspberry Pi 5",
+                    desc: "A Raspberry Pi 5 single-board computer acts as the companion computer alongside the Pixhawk 4 flight controller. While the Pixhawk handles low-level stabilisation at high loop rates, the Pi 5's quad-core Cortex-A76 processor runs higher-level tasks — computer vision, object detection, onboard logging, MAVLink telemetry forwarding, modem management, or autonomous mission logic via DroneKit or MAVSDK. It communicates with the Pixhawk 4 over a UART or USB serial link using the MAVLink protocol. The Pi 5's significant performance uplift over the Pi 4 makes it well suited for real-time image processing workloads without the weight penalty of a more powerful embedded computer.",
+                },
+                dropmech: {
+                    label: "Drop Mechanism",
+                    desc: "A servo-actuated payload release system mounted to the underside of the TaroX Six central hub, allowing the drone to deliver or drop a payload at a precise GPS-triggered or pilot-commanded location via a dedicated Pixhawk 4 output channel. The mechanism typically consists of a carbon fiber or 3D-printed cradle and a small servo that rotates a retaining pin or gate on command. A sudden payload release changes the aircraft's mass distribution and can cause a brief pitch or roll disturbance — this must be accounted for in the Pixhawk 4 configuration and tuned accordingly.",
+                },
+                land: {
+                    label: "Landing Gear",
+                    desc: "Carbon fiber landing legs extend below the TaroX Six central hub, providing ground clearance for the TATTU 6S battery pack and drop mechanism while absorbing landing loads. Each leg is a hollow CF tube pressed into a 3D-printed or machined clamp that bolts to the underside of the frame. The leg angle is tuned to keep the centre of gravity stable on uneven terrain while staying clear of the payload envelope below the aircraft.",
+                },
+            };
 
-    const sinPhi = Math.sin(phi);
-    camera.position.set(
-        radius * sinPhi * Math.sin(theta),
-        radius * Math.cos(phi),
-        radius * sinPhi * Math.cos(theta),
-    );
-    camera.lookAt(0, 0, 0);
-    renderer.render(scene, camera);
-}
+            // ══════════════════════════════════════════════════════════════════════════════
+            //  RENDERER / SCENE / CAMERA
+            //  Sets up the core Three.js pipeline: WebGL renderer → scene graph → camera.
+            // ══════════════════════════════════════════════════════════════════════════════
+            const renderer = new THREE.WebGLRenderer({ antialias: true });
+            // Cap pixel ratio at 1.5× — barely visible vs native 2×, but ~44% fewer fragment
+            // shader invocations on high-DPI screens (big win on mobile GPUs).
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap; // soft-edged shadow maps
+            renderer.outputEncoding = THREE.sRGBEncoding; // correct gamma for the display
+            document.body.appendChild(renderer.domElement);
 
-window.addEventListener("resize", () => {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-});
+            const scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x0c0e14); // near-black background
+            // Fog hides the abrupt far-clip edge and adds depth to the scene
+            scene.fog = new THREE.Fog(0x0c0e14, 20, 40);
 
-animate();
-</script>
-</body>
+            // 42° FOV perspective camera; starts slightly above and behind the model
+            const camera = new THREE.PerspectiveCamera(
+                42,
+                window.innerWidth / window.innerHeight,
+                0.1,
+                100,
+            );
+            camera.position.set(0, 4, 9);
+            camera.lookAt(0, 0, 0);
+
+            // ══════════════════════════════════════════════════════════════════════════════
+            //  LIGHTING  — four-light rig giving a cinematic look
+            // ══════════════════════════════════════════════════════════════════════════════
+            // Ambient: soft global fill so the underside is never pitch-black
+            scene.add(new THREE.AmbientLight(0xffffff, 0.3));
+
+            // Key light (sun): bright, casts shadows from upper-right
+            const sun = new THREE.DirectionalLight(0xffffff, 1.2);
+            sun.position.set(6, 10, 7);
+            sun.castShadow = true;
+            scene.add(sun);
+
+            // Fill light: cool blue from the left to counteract the warm key
+            const fill = new THREE.DirectionalLight(0x4488ff, 0.4);
+            fill.position.set(-6, 2, -4);
+            scene.add(fill);
+
+            // Rim/back light: sky-blue point light behind the model for edge separation
+            const rim = new THREE.PointLight(0x7dd3fc, 0.7, 22);
+            rim.position.set(0, 6, -4);
+            scene.add(rim);
+
+            // Under light: very subtle blue from below, lifts the belly of the drone
+            const under = new THREE.PointLight(0x0ea5e9, 0.3, 10);
+            under.position.set(0, -3, 0);
+            scene.add(under);
+
+            // Reference grid on the "floor" so the drone doesn't appear to float in a void
+            const grid = new THREE.GridHelper(40, 40, 0x1a2030, 0x141820);
+            grid.position.y = -2.5;
+            scene.add(grid);
+
+            // ══════════════════════════════════════════════════════════════════════════════
+            //  CARBON FIBRE TEXTURE  — procedurally generated on a <canvas>
+            //  Simulates the interlocked-weave pattern of real carbon fibre.
+            // ══════════════════════════════════════════════════════════════════════════════
+            function makeCarbonTexture(size) {
+                const c = document.createElement("canvas");
+                c.width = c.height = size;
+                const ctx = c.getContext("2d");
+
+                // Dark base colour
+                ctx.fillStyle = "#111318";
+                ctx.fillRect(0, 0, size, size);
+
+                const s = 8; // cell size in pixels
+                for (let row = 0; row < size / s; row++) {
+                    for (let col = 0; col < size / s; col++) {
+                        const x = col * s,
+                            y = row * s;
+                        // Alternate horizontal offset every row to create the weave offset
+                        const offset = ((row % 2) * s) / 2;
+
+                        // Bright half-cell (highlight face of the fibre bundle)
+                        ctx.fillStyle = "rgba(255,255,255,0.07)";
+                        ctx.fillRect(x + (offset % s), y, s / 2 - 1, s - 1);
+
+                        // Dimmer half-cell (shadow face of the adjacent bundle)
+                        ctx.fillStyle = "rgba(255,255,255,0.03)";
+                        ctx.fillRect(
+                            x + ((offset + s / 2) % s),
+                            y,
+                            s / 2 - 1,
+                            s - 1,
+                        );
+
+                        // Dark lines between rows and columns simulate the resin gaps
+                        ctx.fillStyle = "rgba(0,0,0,0.5)";
+                        ctx.fillRect(x, y + s - 1, s, 1);
+                        ctx.fillRect(x + s - 1, y, 1, s);
+                    }
+                }
+
+                const tex = new THREE.CanvasTexture(c);
+                // Tile the pattern four times across each UV face
+                tex.wrapS = tex.wrapT = THREE.RepeatWrapping;
+                tex.repeat.set(4, 4);
+                return tex;
+            }
+            const cfTex = makeCarbonTexture(128); // 128×128 px atlas — enough detail at viewing distance
+
+            // ══════════════════════════════════════════════════════════════════════════════
+            //  MATERIALS  — one shared material per surface type
+            //  Sharing materials avoids redundant GPU state changes.
+            // ══════════════════════════════════════════════════════════════════════════════
+            const mat = {
+                cf: new THREE.MeshStandardMaterial({
+                    map: cfTex,
+                    color: 0x1a1c24,
+                    roughness: 0.35,
+                    metalness: 0.55,
+                }), // main hub plates
+                cfArm: new THREE.MeshStandardMaterial({
+                    map: cfTex,
+                    color: 0x14161e,
+                    roughness: 0.4,
+                    metalness: 0.6,
+                }), // arms & landing legs
+                motor: new THREE.MeshStandardMaterial({
+                    color: 0x202028,
+                    roughness: 0.25,
+                    metalness: 0.85,
+                }), // motor base / stator
+                motorBell: new THREE.MeshStandardMaterial({
+                    color: 0x2a2a35,
+                    roughness: 0.15,
+                    metalness: 0.95,
+                }), // spinning motor bell (very shiny)
+                motorAccent: new THREE.MeshStandardMaterial({
+                    color: 0x0ea5e9,
+                    roughness: 0.1,
+                    metalness: 0.5,
+                }), // blue accent ring
+                prop: new THREE.MeshStandardMaterial({
+                    color: 0x0d0f15,
+                    roughness: 0.45,
+                    metalness: 0.3,
+                    side: THREE.DoubleSide,
+                }), // prop blades (double-sided so thin faces render)
+                battery: new THREE.MeshStandardMaterial({
+                    color: 0x1c2a1c,
+                    roughness: 0.55,
+                    metalness: 0.25,
+                }), // green-black LiPo pack
+                gps: new THREE.MeshStandardMaterial({
+                    color: 0xe8e8ee,
+                    roughness: 0.4,
+                    metalness: 0.15,
+                }), // white GPS puck
+                gpsMast: new THREE.MeshStandardMaterial({
+                    color: 0x111318,
+                    roughness: 0.5,
+                    metalness: 0.7,
+                }), // black mast tube
+                fc: new THREE.MeshStandardMaterial({
+                    color: 0x1a2a1a,
+                    roughness: 0.5,
+                    metalness: 0.3,
+                }), // flight controller PCB
+                esc: new THREE.MeshStandardMaterial({
+                    color: 0x1a1a28,
+                    roughness: 0.4,
+                    metalness: 0.4,
+                }), // ESC boards
+                mainreceiver: new THREE.MeshStandardMaterial({
+                    color: 0x1a1a1a,
+                    roughness: 0.5,
+                    metalness: 0.3,
+                }), // RC receiver body
+                motherboard: new THREE.MeshStandardMaterial({
+                    color: 0x0d2b1a,
+                    roughness: 0.5,
+                    metalness: 0.3,
+                }), // power distribution board
+                landing: new THREE.MeshStandardMaterial({
+                    map: cfTex,
+                    color: 0x0f1015,
+                    roughness: 0.5,
+                    metalness: 0.65,
+                }), // CF landing legs
+                // "hover" material — applied to all meshes sharing the hovered part key,
+                // then restored to their original material on mouse-out
+                hover: new THREE.MeshStandardMaterial({
+                    color: 0x38bdf8,
+                    roughness: 0.2,
+                    metalness: 0.6,
+                    emissive: 0x0ea5e9,
+                    emissiveIntensity: 0.35,
+                }),
+            };
+
+            // ── Interaction bookkeeping ───────────────────────────────────────────────────
+            const clickables = []; // every mesh that can be hovered / clicked
+            const originalMats = new Map(); // mesh → its default material (for un-highlighting)
+
+            /**
+             * reg(mesh, partKey)
+             * Registers a mesh so it participates in hover highlighting and click detection.
+             * Stores the original material so hover can be undone.
+             * Returns the mesh so calls can be chained inline.
+             */
+            function reg(mesh, partKey) {
+                mesh.castShadow = mesh.receiveShadow = true;
+                mesh.userData.partKey = partKey;
+                clickables.push(mesh);
+                originalMats.set(mesh, mesh.material);
+                return mesh;
+            }
+
+            // ══════════════════════════════════════════════════════════════════════════════
+            //  GEOMETRY CACHE
+            //  Identical BufferGeometry instances (same rT/rB/h/seg) are shared across
+            //  all meshes that use them.  Avoids duplicating vertex data on the GPU.
+            // ══════════════════════════════════════════════════════════════════════════════
+            const _geoCache = new Map();
+
+            /** Returns a cached CylinderGeometry, creating it once if needed. */
+            function cachedCylGeo(rT, rB, h, seg) {
+                const key = `cyl:${rT},${rB},${h},${seg}`;
+                if (!_geoCache.has(key))
+                    _geoCache.set(
+                        key,
+                        new THREE.CylinderGeometry(rT, rB, h, seg),
+                    );
+                return _geoCache.get(key);
+            }
+
+            /** Returns a cached BoxGeometry, creating it once if needed. */
+            function cachedBoxGeo(w, h, d) {
+                const key = `box:${w},${h},${d}`;
+                if (!_geoCache.has(key))
+                    _geoCache.set(key, new THREE.BoxGeometry(w, h, d));
+                return _geoCache.get(key);
+            }
+
+            // ══════════════════════════════════════════════════════════════════════════════
+            //  MESH FACTORY HELPERS
+            // ══════════════════════════════════════════════════════════════════════════════
+
+            /** Generic Mesh constructor shorthand. */
+            function makeMesh(geo, material) {
+                return new THREE.Mesh(geo, material);
+            }
+
+            /** Create a cylinder mesh using the geometry cache. */
+            function cyl(rT, rB, h, seg, material) {
+                return makeMesh(cachedCylGeo(rT, rB, h, seg), material);
+            }
+
+            /** Create a box mesh using the geometry cache. */
+            function box(w, h, d, material) {
+                return makeMesh(cachedBoxGeo(w, h, d), material);
+            }
+
+            /**
+             * torus(r, tube, seg, material)
+             * Creates a torus lying flat in the XZ plane (rotated 90° around X so it faces up).
+             * Used for the coloured accent rings on each motor.
+             */
+            function torus(r, tube, seg, material) {
+                const key = `torus:${r},${tube},${seg}`;
+                if (!_geoCache.has(key)) {
+                    const g = new THREE.TorusGeometry(r, tube, 8, seg);
+                    _geoCache.set(key, g);
+                }
+                const m = makeMesh(_geoCache.get(key), material);
+                m.rotation.x = Math.PI / 2; // lay the torus flat (default is vertical)
+                return m;
+            }
+
+            /**
+             * addAt(parent, mesh, x, y, z)
+             * Positions a mesh in world-space then adds it to parent.
+             * Returns the mesh so reg() can wrap the whole expression.
+             */
+            function addAt(parent, mesh, x, y, z) {
+                mesh.position.set(x, y, z);
+                parent.add(mesh);
+                return mesh;
+            }
+
+            // ══════════════════════════════════════════════════════════════════════════════
+            //  BLADE SHAPE — shared ExtrudeGeometry for all 12 propeller blades
+            //  (6 motors × 2 blades each).  Created once and reused to save memory.
+            // ══════════════════════════════════════════════════════════════════════════════
+            const _bladeGeo = (() => {
+                // A tapered aerofoil silhouette drawn with a cubic bezier on a 2D Shape
+                const shape = new THREE.Shape();
+                shape.moveTo(0.04, 0); // blade root (near hub)
+                shape.bezierCurveTo(0.08, 0.06, 0.55, 0.09, 0.78, 0.03); // upper camber line
+                shape.bezierCurveTo(0.55, -0.01, 0.08, -0.04, 0.04, 0); // lower camber line back to root
+                // Extrude a thin slab (0.014 units) — no bevel, keeps edges sharp
+                return new THREE.ExtrudeGeometry(shape, {
+                    depth: 0.014,
+                    bevelEnabled: false,
+                });
+            })();
+
+            // ══════════════════════════════════════════════════════════════════════════════
+            //  DRONE ROOT GROUP — all parts are children (or descendants) of this group,
+            //  so the whole model can be transformed as a unit if needed.
+            // ══════════════════════════════════════════════════════════════════════════════
+            const drone = new THREE.Group();
+            scene.add(drone);
+
+            // ══════════════════════════════════════════════════════════════════════════════
+            //  CENTRAL HUB  — hexagonal top and bottom plates, standoff pillars,
+            //                 attachment bolts, and the electronics stack inside.
+            // ══════════════════════════════════════════════════════════════════════════════
+
+            // Bottom attachment plate (small hexagon, beneath the hub)
+            reg(
+                addAt(drone, cyl(0.5, 0.5, 0.06, 6, mat.cf), 0, -0.3, 0),
+                "attach",
+            );
+
+            // Upper and lower main hub plates (larger hexagon — two discs sandwiching the electronics)
+            reg(
+                addAt(drone, cyl(1.05, 1.05, 0.06, 6, mat.cf), 0, 0.2, 0),
+                "body",
+            );
+            reg(
+                addAt(drone, cyl(1.05, 1.05, 0.06, 6, mat.cf), 0, 0.42, 0),
+                "body",
+            );
+
+            // Six standoff pillars that hold the hub plates apart and mount the arm clamps
+            const STANDOFF_POSITIONS = [
+                [0.39, 0.675],
+                [0.78, 0.0],
+                [0.39, -0.675],
+                [-0.39, -0.675],
+                [-0.78, 0.0],
+                [-0.39, 0.675],
+            ];
+            STANDOFF_POSITIONS.forEach(([x, z]) =>
+                reg(
+                    addAt(
+                        drone,
+                        cyl(0.028, 0.028, 0.22, 8, mat.motor),
+                        x,
+                        0.3,
+                        z,
+                    ),
+                    "body",
+                ),
+            );
+
+            // Four through-bolts that clamp the attachment plate to the main hub plates
+            const ATTACH_POSITIONS = [
+                [0.39, 0.2],
+                [0.39, -0.2],
+                [-0.39, -0.2],
+                [-0.39, 0.2],
+            ];
+            ATTACH_POSITIONS.forEach(([x, z]) =>
+                reg(
+                    addAt(
+                        drone,
+                        cyl(0.028, 0.028, 0.47, 8, mat.motor),
+                        x,
+                        -0.07,
+                        z,
+                    ),
+                    "attach",
+                ),
+            );
+
+            // ── Electronics stack (visible between the hub plates) ────────────────────────
+            // Flight controller PCB (Pixhawk 4)
+            reg(addAt(drone, box(0.25, 0.04, 0.45, mat.fc), 0, 0.5, 0), "fc");
+            // Companion computer (Raspberry Pi 5)
+            reg(addAt(drone, box(0.2, 0.1, 0.4, mat.fc), 0.5, 0.5, 0), "rpi");
+            // Battery pack — large block mounted centrally below the hub for CG stability
+            reg(
+                addAt(drone, box(0.52, 0.22, 1.1, mat.battery), 0, -0.14, 0),
+                "battery",
+            );
+            // Drop mechanism tray (underside, below battery)
+            reg(
+                addAt(
+                    drone,
+                    box(0.9, 0.22, 0.9, mat.mainreceiver),
+                    0,
+                    -0.44,
+                    0,
+                ),
+                "dropmech",
+            );
+            // Main RC receiver body
+            reg(
+                addAt(
+                    drone,
+                    box(0.2, 0.1, 0.4, mat.mainreceiver),
+                    0.15,
+                    0.51,
+                    0.6,
+                ),
+                "mainreceiver",
+            );
+
+            // RC receiver antennas — two thin tapered cylinders angled upward for spatial diversity
+            const receiverantenna1 = reg(
+                addAt(
+                    drone,
+                    cyl(0.025, 0.008, 0.5, 8, mat.mainreceiver),
+                    0.2,
+                    0.7,
+                    0.85,
+                ),
+                "mainreceiver",
+            );
+            receiverantenna1.rotation.x = -2.5; // tilt forward
+            const receiverantenna2 = reg(
+                addAt(
+                    drone,
+                    cyl(0.025, 0.008, 0.5, 8, mat.mainreceiver),
+                    0.1,
+                    0.7,
+                    0.85,
+                ),
+                "mainreceiver",
+            );
+            receiverantenna2.rotation.x = -2.5;
+
+            // Remote ID module body + its broadcast antenna
+            reg(
+                addAt(
+                    drone,
+                    box(0.2, 0.05, 0.1, mat.mainreceiver),
+                    -0.25,
+                    0.48,
+                    0.6,
+                ),
+                "remoteid",
+            );
+            const remoteIDantenna = reg(
+                addAt(
+                    drone,
+                    cyl(0.025, 0.008, 0.25, 8, mat.mainreceiver),
+                    -0.32,
+                    0.56,
+                    0.6,
+                ),
+                "remoteid",
+            );
+            remoteIDantenna.rotation.z = -3; // lean the antenna slightly outward
+
+            // Second Remote ID unit (FAA-required module, rotated at an angle)
+            reg(
+                addAt(
+                    drone,
+                    box(0.1, 0.05, 0.1, mat.mainreceiver),
+                    -0.3,
+                    0.48,
+                    -0.4,
+                ),
+                "rcreceiver",
+            );
+
+            // ── Wiring loom between RC receiver and flight controller ─────────────────────
+            // A CatmullRom spline extruded into a tube represents a small wire bundle
+            const wireCurve = new THREE.CatmullRomCurve3([
+                new THREE.Vector3(0, 0, 0),
+                new THREE.Vector3(-0.08, 0.04, -0.03),
+                new THREE.Vector3(-0.1, 0.09, -0.08),
+                new THREE.Vector3(0.07, 0.13, -0.04),
+                new THREE.Vector3(0.07, 0.15, 0.04),
+            ]);
+            const wireGeometry = new THREE.TubeGeometry(
+                wireCurve,
+                20,
+                0.008,
+                6,
+                false,
+            );
+            reg(
+                addAt(
+                    drone,
+                    new THREE.Mesh(wireGeometry, mat.mainreceiver),
+                    -0.3,
+                    0.48,
+                    -0.4,
+                ),
+                "rcreceiver",
+            );
+
+            // Second Remote ID transmitter (different position / rotation to look distinct)
+            const RID = reg(
+                addAt(
+                    drone,
+                    box(0.1, 0.05, 0.1, mat.mainreceiver),
+                    -0.65,
+                    0.48,
+                    0.6,
+                ),
+                "rid",
+            );
+            RID.rotation.y = 1;
+
+            // Power distribution board — flat plate sandwiched in the hub
+            reg(
+                addAt(drone, box(0.6, 0.04, 0.6, mat.motherboard), 0, 0.25, 0),
+                "motherboard",
+            );
+
+            // ── Landing gear ─────────────────────────────────────────────────────────────
+            // Two vertical legs (port and starboard), toe'd outward slightly
+            const leg1 = reg(
+                addAt(
+                    drone,
+                    cyl(0.055, 0.055, 1.8, 8, mat.cfArm),
+                    0.7,
+                    -0.7,
+                    0,
+                ),
+                "land",
+            );
+            const leg2 = reg(
+                addAt(
+                    drone,
+                    cyl(0.055, 0.055, 1.8, 8, mat.cfArm),
+                    -0.7,
+                    -0.7,
+                    0,
+                ),
+                "land",
+            );
+
+            // Two horizontal skids connecting the feet
+            const leg3 = reg(
+                addAt(
+                    drone,
+                    cyl(0.055, 0.055, 1.8, 8, mat.cfArm),
+                    0.85,
+                    -1.6,
+                    0,
+                ),
+                "land",
+            );
+            leg3.rotation.x = 3.14 / 2; // horizontal — runs fore-aft
+            const leg4 = reg(
+                addAt(
+                    drone,
+                    cyl(0.055, 0.055, 1.8, 8, mat.cfArm),
+                    -0.85,
+                    -1.6,
+                    0,
+                ),
+                "land",
+            );
+            leg4.rotation.x = 3.14 / 2;
+
+            // Splay the vertical legs slightly outward for a stable footprint
+            leg1.rotation.z = 3.14 / 20;
+            leg2.rotation.z = -3.14 / 20;
+
+            // ══════════════════════════════════════════════════════════════════════════════
+            //  ARMS  — six carbon-fibre booms radiating from the hub at 60° intervals,
+            //          each carrying an ESC, a motor assembly, and a propeller group.
+            // ══════════════════════════════════════════════════════════════════════════════
+
+            // World-space XZ positions of each motor centre (Y is set per-part below)
+            const MOTOR_XZ = [
+                [0.0, 2.73],
+                [2.29, 1.5],
+                [2.32, -1.41],
+                [0.0, -2.73],
+                [-2.25, -1.38],
+                [-2.3, 1.35],
+            ];
+
+            // ESC board positions (roughly midway along each arm)
+            const ESC_POS = [
+                [0.0, 1.2],
+                [1.0, 0.65],
+                [1.0, -0.65],
+                [0.0, -1.2],
+                [-1.0, -0.65],
+                [-1.0, 0.65],
+            ];
+
+            // Y-rotation for each ESC box so it aligns with its arm direction
+            const ESC_BOX_ROT_Y = [0, 0.985, -0.985, 0, 0.985, -0.985];
+            // Y-rotation for each arm tube (arm geometry is pre-rotated along Z; this steers it)
+            const ARM_ROT_Y = [190.05, 2.54, 3.7, 190.05, 40.28, 0.5];
+            // Y-rotation for the connector block at the hub-end of each arm
+            const ESC_ROT_Y = [0, 1.047, 2.094, Math.PI, 4.189, 5.236];
+            // Motor spin direction: +1 = CW, -1 = CCW (alternating to cancel torque)
+            const SPIN = [1, -1, 1, -1, 1, -1];
+
+            // ── Arm tube geometry (shared across all six arms) ────────────────────────────
+            // Created once then applied matrix transform so the cylinder runs horizontally
+            const _armGeo = new THREE.CylinderGeometry(0.055, 0.055, 1.55, 8);
+            _armGeo.applyMatrix4(
+                new THREE.Matrix4().makeRotationZ(Math.PI / 2),
+            ); // lie it flat along X
+
+            const propGroups = []; // collect for animation in the render loop
+
+            for (let i = 0; i < 6; i++) {
+                const [mx, mz] = MOTOR_XZ[i];
+                const Y = 0.3; // common hub-level Y for all arm-mounted parts
+
+                // ── Arm tube ────────────────────────────────────────────────────────────
+                // Each arm needs its own Mesh (unique rotation & position) but shares _armGeo
+                const arm = reg(makeMesh(_armGeo, mat.cfArm), "arm");
+                arm.rotation.y = ARM_ROT_Y[i]; // steer arm toward its motor
+                arm.position.set(mx * 0.665, Y, mz * 0.665); // centred at ~⅔ of the motor distance
+                drone.add(arm);
+
+                // ── Hub-end connector block ──────────────────────────────────────────────
+                // A small rectangular block where the arm meets the central hub plates
+                const midX = mx * 0.35,
+                    midZ = mz * 0.35;
+                const conn = reg(box(0.18, 0.2, 0.09, mat.cfArm), "arm");
+                conn.rotation.y = ESC_ROT_Y[i];
+                addAt(drone, conn, midX, Y, midZ);
+
+                // ── ESC board ────────────────────────────────────────────────────────────
+                // Mounted roughly halfway along the arm, rotated to face the hub
+                const esc = reg(
+                    addAt(
+                        drone,
+                        box(0.15, 0.1, 0.15, mat.esc),
+                        ESC_POS[i][0],
+                        0.2,
+                        ESC_POS[i][1],
+                    ),
+                    "esc",
+                );
+                esc.rotation.y = ESC_BOX_ROT_Y[i];
+
+                // ── Motor assembly (three-part: mount plate → stator can → spinning bell) ─
+                reg(
+                    addAt(drone, cyl(0.18, 0.18, 0.05, 16, mat.cf), mx, Y, mz),
+                    "motor",
+                ); // mount plate
+                reg(
+                    addAt(
+                        drone,
+                        cyl(0.135, 0.14, 0.1, 16, mat.motor),
+                        mx,
+                        Y,
+                        mz,
+                    ),
+                    "motor",
+                ); // stator can
+                reg(
+                    addAt(
+                        drone,
+                        cyl(0.15, 0.135, 0.12, 16, mat.motorBell),
+                        mx,
+                        Y + 0.1,
+                        mz,
+                    ),
+                    "motor",
+                ); // rotating bell
+
+                // Accent torus ring at bell height (adds the visible blue stripe)
+                const ring = reg(
+                    torus(0.135, 0.012, 24, mat.motorAccent),
+                    "motor",
+                );
+                ring.position.set(mx, Y + 0.1, mz);
+                drone.add(ring);
+
+                // ── Propeller group ──────────────────────────────────────────────────────
+                // This Group is rotated each frame for the spinning animation.
+                // All blade meshes are children so they spin together.
+                const pg = new THREE.Group();
+                pg.position.set(mx, Y + 0.2, mz);
+                pg.userData.spinDir = SPIN[i]; // stored so the animation loop knows which way to spin
+                drone.add(pg);
+                propGroups.push(pg);
+
+                // Prop hub (small cylinder at the centre of the spinner)
+                reg(
+                    addAt(pg, cyl(0.015, 0.015, 0.08, 8, mat.motor), 0, 0, 0),
+                    "prop",
+                );
+                // Spinner dome (larger disc over the hub bolt)
+                reg(
+                    makeMesh(cachedCylGeo(0.04, 0.04, 0.04, 12), mat.prop),
+                    "prop",
+                );
+                pg.add(makeMesh(cachedCylGeo(0.04, 0.04, 0.04, 12), mat.prop));
+
+                // Two blades: rotZ = 0° and 180° so they are opposite each other
+                for (const rotZ of [0, Math.PI]) {
+                    const blade = reg(makeMesh(_bladeGeo, mat.prop), "prop");
+                    blade.rotation.x = -Math.PI / 2; // lie the extruded shape flat in XZ
+                    blade.rotation.z = rotZ; // second blade is 180° opposite
+                    pg.add(blade);
+                }
+            }
+
+            // ══════════════════════════════════════════════════════════════════════════════
+            //  GPS MAST — raised post so the magnetometer is far from motor interference
+            // ══════════════════════════════════════════════════════════════════════════════
+            reg(
+                addAt(
+                    drone,
+                    cyl(0.018, 0.018, 0.6, 8, mat.gpsMast),
+                    0.15,
+                    0.7,
+                    -0.5,
+                ),
+                "gps",
+            ); // mast tube
+            reg(
+                addAt(
+                    drone,
+                    cyl(0.15, 0.15, 0.03, 16, mat.gps),
+                    0.15,
+                    0.94,
+                    -0.5,
+                ),
+                "gps",
+            ); // GPS puck (flat disc on top)
+
+            // ══════════════════════════════════════════════════════════════════════════════
+            //  ORBIT CONTROLS  — mouse/touch drag to orbit, scroll/pinch to zoom
+            //
+            //  The camera stays on a sphere of radius `radius`, at angles theta (azimuth)
+            //  and phi (elevation).  All three values have a "target" counterpart that is
+            //  lerped toward each frame, giving smooth inertia.
+            // ══════════════════════════════════════════════════════════════════════════════
+            let isDragging = false; // true while a mouse/touch button is held
+            let hasMoved = false; // distinguishes a click (no movement) from a drag
+            let prevMouse = { x: 0, y: 0 };
+
+            // Current orbital angles and distance
+            let theta = 0.5,
+                phi = 1.05,
+                radius = 9;
+            // Target values — the camera lerps toward these each frame
+            let targetTheta = theta,
+                targetPhi = phi,
+                targetRadius = radius;
+
+            const MIN_PHI = 0.15; // prevent going below the grid (looking up)
+            const MAX_PHI = Math.PI * 0.55; // prevent flipping over the top
+
+            const canvas = renderer.domElement;
+
+            // ── Mouse drag ────────────────────────────────────────────────────────────────
+            canvas.addEventListener("mousedown", (e) => {
+                isDragging = true;
+                hasMoved = false;
+                prevMouse = { x: e.clientX, y: e.clientY };
+            });
+
+            canvas.addEventListener("mousemove", (e) => {
+                if (isDragging) {
+                    const dx = e.clientX - prevMouse.x,
+                        dy = e.clientY - prevMouse.y;
+                    // Any movement > 2px is classified as a drag (not a click)
+                    if (Math.abs(dx) + Math.abs(dy) > 2) hasMoved = true;
+                    targetTheta -= dx * 0.007; // horizontal drag → azimuth rotation
+                    targetPhi = Math.max(
+                        MIN_PHI,
+                        Math.min(MAX_PHI, targetPhi + dy * 0.007),
+                    );
+                    prevMouse = { x: e.clientX, y: e.clientY };
+                } else {
+                    // Not dragging — queue a hover check for the next animation frame
+                    scheduleHover(e);
+                }
+            });
+
+            canvas.addEventListener("mouseup", () => {
+                isDragging = false;
+            });
+            canvas.addEventListener("click", (e) => {
+                if (!hasMoved) handleClick(e);
+            }); // suppress drag-clicks
+            canvas.addEventListener(
+                "wheel",
+                (e) => {
+                    targetRadius = Math.max(
+                        4,
+                        Math.min(18, targetRadius + e.deltaY * 0.012),
+                    ); // zoom
+                },
+                { passive: true },
+            );
+
+            // ── Touch drag & tap ──────────────────────────────────────────────────────────
+            let lastTouch = null;
+
+            canvas.addEventListener("touchstart", (e) => {
+                isDragging = true;
+                hasMoved = false;
+                lastTouch = {
+                    x: e.touches[0].clientX,
+                    y: e.touches[0].clientY,
+                };
+            });
+
+            canvas.addEventListener(
+                "touchmove",
+                (e) => {
+                    if (!isDragging || !lastTouch) return;
+                    const dx = e.touches[0].clientX - lastTouch.x,
+                        dy = e.touches[0].clientY - lastTouch.y;
+                    if (Math.abs(dx) + Math.abs(dy) > 3) hasMoved = true;
+                    targetTheta -= dx * 0.007;
+                    targetPhi = Math.max(
+                        MIN_PHI,
+                        Math.min(MAX_PHI, targetPhi + dy * 0.007),
+                    );
+                    lastTouch = {
+                        x: e.touches[0].clientX,
+                        y: e.touches[0].clientY,
+                    };
+                    e.preventDefault(); // prevent page scroll while orbiting
+                },
+                { passive: false },
+            );
+
+            canvas.addEventListener("touchend", (e) => {
+                // A touch with negligible movement = tap = treat as a click
+                if (!hasMoved && e.changedTouches.length > 0) {
+                    const t = e.changedTouches[0];
+                    handleClick({ clientX: t.clientX, clientY: t.clientY });
+                }
+                isDragging = false;
+            });
+
+            // ══════════════════════════════════════════════════════════════════════════════
+            //  RAYCASTER — converts 2D screen coordinates to 3D intersections
+            // ══════════════════════════════════════════════════════════════════════════════
+            const raycaster = new THREE.Raycaster();
+            const mouse = new THREE.Vector2(); // reused — avoids a new allocation per event
+
+            let hoveredMeshes = []; // meshes currently showing the hover material
+            let hoveredKey = null; // partKey of the currently-hovered part (or null)
+            const lbl = document.getElementById("label");
+
+            // Pending hover event — processed at most once per requestAnimationFrame to avoid
+            // running a full raycast on every raw mousemove event (~60+ per second).
+            let _pendingHover = null;
+            function scheduleHover(e) {
+                _pendingHover = e;
+            }
+
+            /** Converts clientX/Y to Three.js Normalised Device Coordinates (−1..+1). */
+            function screenToNDC(clientX, clientY) {
+                mouse.x = (clientX / window.innerWidth) * 2 - 1;
+                mouse.y = -(clientY / window.innerHeight) * 2 + 1;
+            }
+
+            /**
+             * checkHover(e)
+             * Fires a raycast, then:
+             *   • If the hit part is the same as last frame, only updates the tooltip position.
+             *   • If it changed, restores old highlight and applies the hover material to the
+             *     new part's meshes.
+             *   • If no hit, restores materials and hides the tooltip.
+             */
+            function checkHover(e) {
+                screenToNDC(e.clientX, e.clientY);
+                raycaster.setFromCamera(mouse, camera);
+                const hits = raycaster.intersectObjects(clickables, false);
+
+                const newKey =
+                    hits.length > 0 ? hits[0].object.userData.partKey : null;
+
+                // Optimisation: skip expensive material swap when still hovering the same part
+                if (newKey === hoveredKey) {
+                    if (newKey) {
+                        // Just slide the tooltip to follow the cursor
+                        lbl.style.left = e.clientX + 14 + "px";
+                        lbl.style.top = e.clientY - 10 + "px";
+                    }
+                    return;
+                }
+
+                // Restore the previous highlighted meshes to their original materials
+                hoveredMeshes.forEach((m) => {
+                    if (originalMats.has(m)) m.material = originalMats.get(m);
+                });
+                hoveredMeshes = [];
+                hoveredKey = null;
+
+                if (newKey && PARTS[newKey]) {
+                    canvas.style.cursor = "pointer";
+                    // Apply hover material to every mesh sharing this part key
+                    clickables.forEach((m) => {
+                        if (m.userData.partKey === newKey) {
+                            m.material = mat.hover;
+                            hoveredMeshes.push(m);
+                        }
+                    });
+                    lbl.style.display = "block";
+                    lbl.style.left = e.clientX + 14 + "px";
+                    lbl.style.top = e.clientY - 10 + "px";
+                    lbl.textContent = PARTS[newKey].label;
+                    hoveredKey = newKey;
+                    return;
+                }
+
+                // Cursor is over empty space — reset
+                canvas.style.cursor = "default";
+                lbl.style.display = "none";
+            }
+
+            /**
+             * handleClick(e)
+             * Runs a raycast at the click position and opens the info popup
+             * if a registered part was hit.
+             */
+            function handleClick(e) {
+                screenToNDC(e.clientX, e.clientY);
+                raycaster.setFromCamera(mouse, camera);
+                const hits = raycaster.intersectObjects(clickables, false);
+                if (hits.length > 0) {
+                    const key = hits[0].object.userData.partKey;
+                    if (key && PARTS[key]) showPopup(key);
+                }
+            }
+
+            /** Populates and shows the info popup for a given part key. */
+            function showPopup(key) {
+                const p = PARTS[key];
+                document.getElementById("popup-title").textContent = p.label;
+                document.getElementById("popup-desc").textContent = p.desc;
+                document.getElementById("popup").classList.add("show");
+                document.getElementById("overlay").classList.add("show");
+            }
+
+            /** Hides the info popup and its backdrop. */
+            function closePopup() {
+                document.getElementById("popup").classList.remove("show");
+                document.getElementById("overlay").classList.remove("show");
+            }
+
+            document.getElementById("popup-close").onclick = closePopup;
+            document.getElementById("overlay").onclick = closePopup; // clicking outside also closes
+
+            // ══════════════════════════════════════════════════════════════════════════════
+            //  ANIMATION LOOP
+            // ══════════════════════════════════════════════════════════════════════════════
+            const clock = new THREE.Clock();
+            const PROP_SPEED = 12; // propeller rotation speed in radians per second
+
+            function animate() {
+                requestAnimationFrame(animate);
+
+                // ── Hover check (deferred to once per frame) ───────────────────────────
+                if (_pendingHover) {
+                    checkHover(_pendingHover);
+                    _pendingHover = null;
+                }
+
+                // ── Propeller spin ─────────────────────────────────────────────────────
+                // Using getElapsedTime() instead of accumulated delta avoids float drift
+                // that would accumulate over a long session.
+                const t = clock.getElapsedTime();
+                propGroups.forEach((pg) => {
+                    // spinDir is +1 or -1 so opposing props turn in opposite directions
+                    pg.rotation.y = t * PROP_SPEED * pg.userData.spinDir;
+                });
+
+                // ── Smooth camera orbit (exponential lerp toward target values) ────────
+                // Factor 0.09 gives a spring-like feel — quick initial response, gentle finish
+                theta += (targetTheta - theta) * 0.09;
+                phi += (targetPhi - phi) * 0.09;
+                radius += (targetRadius - radius) * 0.09;
+
+                // Convert spherical coordinates (theta, phi, radius) back to Cartesian XYZ
+                const sinPhi = Math.sin(phi);
+                camera.position.set(
+                    radius * sinPhi * Math.sin(theta), // X
+                    radius * Math.cos(phi), // Y (height)
+                    radius * sinPhi * Math.cos(theta), // Z
+                );
+                camera.lookAt(0, 0, 0); // always look at the drone centre
+
+                renderer.render(scene, camera);
+            }
+
+            // ── Responsive canvas — update aspect ratio and renderer size on window resize
+            window.addEventListener("resize", () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+
+            // Kick off the render loop
+            animate();
+        </script>
+    </body>
 </html>

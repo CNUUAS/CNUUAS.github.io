@@ -1,0 +1,9 @@
+{
+  "name": "cnuuas-website",
+  "version": "1.0.0",
+  "description": "Official website for the Christopher Newport University Unmanned Aircraft Systems (UAS) club.",
+  "private": true,
+  "dependencies": {
+    "@egjs/view360": "^4.0.0-beta.7"
+  }
+}

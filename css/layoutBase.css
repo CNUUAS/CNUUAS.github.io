@@ -1,0 +1,21 @@
+/* Shared base layout rules for team.html and fullTeam.html */
+:root {
+    --navbar-height: 56px;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    padding-top: var(--navbar-height);
+    overflow-x: hidden;
+}
+
+/* Account for fixed navbar */
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}

@@ -1,0 +1,8 @@
+[
+    {
+        "date": "2026-01-01",
+        "tag": "Example",
+        "title": "EXAMPLE ENTRY — replace with a real milestone",
+        "description": "This is placeholder content showing the expected format for data/build-log.json. Replace this entry (and add more) with real drone development milestones — subsystem changes, test flights, competition prep, etc. Delete this example once real entries exist."
+    }
+]

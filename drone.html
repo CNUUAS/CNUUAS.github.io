@@ -60,12 +60,21 @@
             <div class="demo-box" id="demoBox">
                 <iframe src="dronemodel.html" title="Hexacopter Demo"></iframe>
             </div>
+
+            <!-- Development Timeline: populated from data/build-log.json.
+                 To add a real entry, edit that file — see the example
+                 entry in it for the expected format. -->
+            <section style="width: 100%; max-width: 700px; margin-top: 3rem;">
+                <h2 class="display-6 mb-4 text-center">Development Timeline</h2>
+                <div id="build-log"></div>
+            </section>
         </main>
 
         <div id="footer-placeholder"></div>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
         <script src="js/main.js"></script>
+        <script src="js/buildLog.js"></script>
         <script>
             const demoBox = document.getElementById("demoBox");
 

@@ -7,8 +7,11 @@ import { groupBySectionEnabled } from "./configurations.js";
 // this is the info to create the sections
 import { sectionConfig } from "./configurations.js";
 
-// Check if the device width meets desktop size (>= 500px)
-const isDesktop = window.matchMedia("(min-width: 500px)").matches;
+// Tracks whether the device width meets desktop size (>= 500px);
+// re-render() runs again whenever this crosses, so resizing or
+// rotating a device after load switches layouts instead of sticking
+// with whatever was true at page-load time.
+const desktopQuery = window.matchMedia("(min-width: 500px)");
 
 // Turns a member's name into a stable, unique id fragment
 function slugify(name) {
@@ -113,29 +116,39 @@ function groupBySection(members) {
     return grouped;
 }
 
-// Check if there are any team members
-if (!teamMembers || teamMembers.length === 0) {
-    const message = document.createElement("div");
-    message.className = "no-team-message";
-    message.innerHTML = `
-        <p>No team members to display at this time.</p>
-        <p>Check back soon!</p>
-    `;
+// (Re)builds whichever layout — desktop grid or mobile carousel —
+// matches the current viewport. Safe to call repeatedly: it clears
+// both containers first, so switching layouts on resize doesn't
+// leave stale cards behind.
+function render() {
+    const isDesktop = desktopQuery.matches;
+    document.getElementById("desktop-team-grid").innerHTML = "";
+    document.getElementById("team-cards").innerHTML = "";
 
-    if (isDesktop) {
-        document.getElementById("desktop-team-grid").appendChild(message);
-    } else {
-        const cardsContainer = document.getElementById("team-cards");
-        const slide = document.createElement("div");
-        slide.className = "carousel-item active";
-        slide.appendChild(message);
-        cardsContainer.appendChild(slide);
+    if (!teamMembers || teamMembers.length === 0) {
+        const message = document.createElement("div");
+        message.className = "no-team-message";
+        message.innerHTML = `
+            <p>No team members to display at this time.</p>
+            <p>Check back soon!</p>
+        `;
+
+        if (isDesktop) {
+            document.getElementById("desktop-team-grid").appendChild(message);
+        } else {
+            const cardsContainer = document.getElementById("team-cards");
+            const slide = document.createElement("div");
+            slide.className = "carousel-item active";
+            slide.appendChild(message);
+            cardsContainer.appendChild(slide);
+        }
+
+        document.getElementById("viewButton").style.display = "none";
+        document.querySelector(".carousel-control-prev").style.display = "none";
+        document.querySelector(".carousel-control-next").style.display = "none";
+        return;
     }
 
-    document.getElementById("viewButton").style.display = "none";
-    document.querySelector(".carousel-control-prev").style.display = "none";
-    document.querySelector(".carousel-control-next").style.display = "none";
-} else {
     if (isDesktop) {
         const desktopGrid = document.getElementById("desktop-team-grid");
 
@@ -181,7 +194,14 @@ if (!teamMembers || teamMembers.length === 0) {
         document.querySelector(".carousel-control-next").style.display = "flex";
     }
 
-    document.getElementById("viewButton").addEventListener("click", () => {
-        window.location.href = "fullTeam.html";
-    });
+    document.getElementById("viewButton").style.display = "";
 }
+
+render();
+desktopQuery.addEventListener("change", render);
+
+// Attached once (not inside render()) so resize-triggered re-renders
+// don't stack up duplicate listeners on the same persistent button
+document.getElementById("viewButton").addEventListener("click", () => {
+    window.location.href = "fullTeam.html";
+});

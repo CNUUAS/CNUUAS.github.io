@@ -41,7 +41,7 @@ function createCard(member) {
     trigger.setAttribute("aria-controls", popupId);
     trigger.innerHTML = `
         <div class="image-wrapper">
-            <img src="${member.img}" alt="${member.name}">
+            <img src="${member.img}" alt="${member.name}" loading="lazy">
         </div>
         <div class="gradient-divider"></div>
         <div class="text-section">${member.name}</div>

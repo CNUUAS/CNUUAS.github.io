@@ -12,7 +12,7 @@ function createCard(member) {
 
     // Set the HTML content of the card using the member’s data
     card.innerHTML = `
-        <img src="${member.img}" alt="${member.name}">
+        <img src="${member.img}" alt="${member.name}" loading="lazy">
         <div class="text-wrapper">
             <div class="text-section">Name: ${member.name}</div>
             <div class="text-section2">Major: ${member.major}</div>

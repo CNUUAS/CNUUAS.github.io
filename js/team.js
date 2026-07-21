@@ -10,12 +10,33 @@ import { sectionConfig } from "./configurations.js";
 // Check if the device width meets desktop size (>= 500px)
 const isDesktop = window.matchMedia("(min-width: 500px)").matches;
 
+// Turns a member's name into a stable, unique id fragment
+function slugify(name) {
+    return name
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/(^-|-$)/g, "");
+}
+
 // Creates a team member card element and its popup
-function createCard(member, index) {
-    const card = document.createElement("button");
+function createCard(member) {
+    // Wrapper anchors the trigger button and its popup as siblings —
+    // a <button> can't validly contain block content or another
+    // interactive element, so the popup can't live inside it.
+    const card = document.createElement("div");
     card.className = "team-card";
 
-    card.innerHTML = `
+    // Derived from the name (not a loop index) so it stays unique even
+    // when members are split across multiple per-section forEach loops
+    const popupId = `popup-${slugify(member.name)}`;
+
+    const trigger = document.createElement("button");
+    trigger.type = "button";
+    trigger.className = "team-card-btn";
+    trigger.setAttribute("aria-haspopup", "dialog");
+    trigger.setAttribute("aria-expanded", "false");
+    trigger.setAttribute("aria-controls", popupId);
+    trigger.innerHTML = `
         <div class="image-wrapper">
             <img src="${member.img}" alt="${member.name}">
         </div>
@@ -26,18 +47,43 @@ function createCard(member, index) {
 
     const popup = document.createElement("div");
     popup.className = "pop-up";
-    popup.id = `popup-${index}`;
+    popup.id = popupId;
+    popup.setAttribute("role", "dialog");
+    popup.setAttribute("aria-modal", "true");
+    popup.setAttribute("aria-label", `${member.name} bio`);
+    popup.hidden = true;
     popup.innerHTML = `
-        <span class="close-btn">&times;</span>
+        <button type="button" class="close-btn" aria-label="Close">&times;</button>
         <p>${member.popup}</p>
     `;
 
+    card.appendChild(trigger);
     card.appendChild(popup);
 
-    card.addEventListener("click", () => (popup.style.display = "block"));
-    popup.querySelector(".close-btn").addEventListener("click", (e) => {
+    const closeBtn = popup.querySelector(".close-btn");
+
+    function onKeydown(e) {
+        if (e.key === "Escape") closePopup();
+    }
+
+    function openPopup() {
+        popup.hidden = false;
+        trigger.setAttribute("aria-expanded", "true");
+        closeBtn.focus();
+        document.addEventListener("keydown", onKeydown);
+    }
+
+    function closePopup() {
+        popup.hidden = true;
+        trigger.setAttribute("aria-expanded", "false");
+        document.removeEventListener("keydown", onKeydown);
+        trigger.focus();
+    }
+
+    trigger.addEventListener("click", openPopup);
+    closeBtn.addEventListener("click", (e) => {
         e.stopPropagation();
-        popup.style.display = "none";
+        closePopup();
     });
 
     return { card, popup };
@@ -104,16 +150,16 @@ if (!teamMembers || teamMembers.length === 0) {
                     const sectionHeader = createSectionHeader(sectionKey);
                     desktopGrid.appendChild(sectionHeader);
 
-                    groupedMembers[sectionKey].forEach((member, index) => {
-                        const { card } = createCard(member, index);
+                    groupedMembers[sectionKey].forEach((member) => {
+                        const { card } = createCard(member);
                         desktopGrid.appendChild(card);
                     });
                 }
             });
         } else {
             // Ignore section, just display members in order
-            teamMembers.forEach((member, index) => {
-                const { card } = createCard(member, index);
+            teamMembers.forEach((member) => {
+                const { card } = createCard(member);
                 desktopGrid.appendChild(card);
             });
         }
@@ -126,7 +172,7 @@ if (!teamMembers || teamMembers.length === 0) {
         teamMembers.forEach((member, index) => {
             const slide = document.createElement("div");
             slide.className = `carousel-item ${index === 0 ? "active" : ""}`;
-            const { card } = createCard(member, index);
+            const { card } = createCard(member);
             slide.appendChild(card);
             cardsContainer.appendChild(slide);
         });

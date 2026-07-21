@@ -27,6 +27,7 @@
     
     <!-- EXTERNAL CSS - Move styles to external file for consistency -->
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/accessibility.css">
 </head>
 
     <!-- EVA ON-CAMPUS TODO: 
@@ -36,7 +37,8 @@
     -->
 
 <body data-bs-spy="scroll" data-bs-target="#nav" data-bs-offset="70">
-    
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+
     <!-- ========================================
          NAVIGATION BAR - Loaded from component
          To edit navbar: go to components/navbar.html
@@ -44,7 +46,7 @@
     <div id="navbar-placeholder"></div>
 
     <!-- Main Content -->
-    <main>
+    <main id="main-content">
         <!-- ==========================================================
             360 VIEW HERO SECTION - Mobile Friendly
          ===========================================================-->
@@ -87,8 +89,9 @@
                         <div class="row mt-5 align-items-center">
                             <!-- Left Column: UAS Logo -->
                             <div class="col-lg-5 mb-4 mb-lg-0 text-center">
-                                <img src="assets/logos/uas-logo-small.png" 
-                                    alt="UAS Logo" 
+                                <img src="assets/logos/uas-logo-small.png"
+                                    alt="UAS Logo"
+                                    width="289" height="292"
                                     class="img-fluid rounded">
                             </div>
                             
@@ -199,6 +202,8 @@
                 <div class="col-md-6 order-1 order-md-2">
                     <img src="assets/homepage/club-photo-2026-med-6.jpg"
                         alt="UAS-club-photo"
+                        width="1152" height="720"
+                        loading="lazy"
                         class="img-fluid rounded shadow">
                 </div>
             </div>

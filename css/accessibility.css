@@ -1,0 +1,25 @@
+/* Shared accessibility primitives, loaded on every page */
+
+/* Focus visible for keyboard navigation */
+:focus-visible {
+    outline: 3px solid #0d6efd;
+    outline-offset: 2px;
+}
+
+/* Skip to content link */
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: #0d6efd;
+    color: #ffffff;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    border-radius: 0 0 0.25rem 0;
+    z-index: 1070;
+    transition: top 0.15s ease-in-out;
+}
+
+.skip-link:focus {
+    top: 0;
+}

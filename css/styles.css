@@ -102,11 +102,6 @@ body {
     box-shadow: var(--shadow-sm);
 }
 
-/* Fix Jeremy's LI for drone components page */
-li {
-    display: block;
-}
-
 /* ==========================================
    HERO SECTION WITH 360 VIEWER
    ========================================== */
@@ -497,30 +492,8 @@ img {
 /* ==========================================
    ACCESSIBILITY IMPROVEMENTS
    ========================================== */
-
-/* Focus visible for keyboard navigation */
-:focus-visible {
-    outline: 3px solid var(--primary-color);
-    outline-offset: 2px;
-}
-
-/* Skip to content link (if you add one) */
-.skip-link {
-    position: absolute;
-    top: -40px;
-    left: 0;
-    background: var(--primary-color);
-    color: var(--text-light);
-    padding: var(--space-sm) var(--space-md);
-    text-decoration: none;
-    border-radius: 0 0 var(--radius-sm) 0;
-    z-index: var(--z-tooltip);
-    transition: top var(--transition-fast);
-}
-
-.skip-link:focus {
-    top: 0;
-}
+/* :focus-visible and .skip-link now live in css/accessibility.css,
+   loaded on every page (this file only loads on index.html) */
 
 /* ==========================================
    LOADING STATES (Optional)

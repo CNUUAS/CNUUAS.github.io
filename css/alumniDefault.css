@@ -24,7 +24,9 @@ main {
 }
 
 .year-badge {
-    background: #667eea;
+    /* Darkened from #667eea: white-on-#667eea is 3.66:1, below the
+       WCAG AA 4.5:1 minimum for normal text. This shade is 5.05:1. */
+    background: #5566cc;
     color: white;
     padding: 5px 15px;
     border-radius: 20px;

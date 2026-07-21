@@ -2,8 +2,8 @@
 
 import { teamMembers } from "./teamMembers.js";
 
-// Check if the device width meets desktop size (>= 500px)
-const isDesktop = window.matchMedia("(min-width: 500px)").matches;
+// Matches the (max-width: 499px) breakpoint used by css/teamMobile.css
+const desktopQuery = window.matchMedia("(min-width: 500px)");
 
 // Creates a team member card element and its popup
 function createCard(member, index) {
@@ -45,35 +45,41 @@ function createCard(member, index) {
     return { card, popup };
 }
 
-// -------- Desktop layout --------
-if (isDesktop) {
-    // Grab grid container for desktop view
-    const desktopGrid = document.getElementById("desktop-team-grid");
+const desktopGrid = document.getElementById("desktop-team-grid");
+const cardsContainer = document.getElementById("team-cards");
 
-    // Create and append all cards directly into the grid
-    teamMembers.forEach((member, index) => {
-        const { card } = createCard(member, index);
-        desktopGrid.appendChild(card);
-    });
+// Renders cards into the layout matching the current viewport width.
+// Re-run on every breakpoint crossing so resizing/rotating updates the layout
+// instead of being stuck with whatever matched at page load.
+function renderTeamCards(isDesktop) {
+    desktopGrid.innerHTML = "";
+    cardsContainer.innerHTML = "";
 
-    // -------- Mobile / Carousel layout --------
-} else {
-    // Get Bootstrap carousel inner container
-    const cardsContainer = document.getElementById("team-cards");
+    if (isDesktop) {
+        // -------- Desktop layout --------
+        teamMembers.forEach((member, index) => {
+            const { card } = createCard(member, index);
+            desktopGrid.appendChild(card);
+        });
+    } else {
+        // -------- Mobile / Carousel layout --------
+        teamMembers.forEach((member, index) => {
+            // Create a carousel slide per member
+            const slide = document.createElement("div");
+            slide.className = `carousel-item ${index === 0 ? "active" : ""}`;
 
-    teamMembers.forEach((member, index) => {
-        // Create a carousel slide per member
-        const slide = document.createElement("div");
-        slide.className = `carousel-item ${index === 0 ? "active" : ""}`;
+            // Create the team card for this slide
+            const { card } = createCard(member, index);
 
-        // Create the team card for this slide
-        const { card } = createCard(member, index);
-
-        // Add the card to the slide, then slide to carousel
-        slide.appendChild(card);
-        cardsContainer.appendChild(slide);
-    });
+            // Add the card to the slide, then slide to carousel
+            slide.appendChild(card);
+            cardsContainer.appendChild(slide);
+        });
+    }
 }
+
+renderTeamCards(desktopQuery.matches);
+desktopQuery.addEventListener("change", (e) => renderTeamCards(e.matches));
 
 // “View All” button takes user to full team page
 document.getElementById("viewButton").addEventListener("click", () => {

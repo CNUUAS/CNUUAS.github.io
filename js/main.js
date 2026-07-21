@@ -19,6 +19,11 @@ async function loadComponent(elementId, filePath) {
         }
     } catch (error) {
         console.error(`Error loading component from ${filePath}:`, error);
+        // Leave a visible trace instead of a silently blank navbar/footer
+        const el = document.getElementById(elementId);
+        if (el) {
+            el.innerHTML = `<p class="text-center text-muted small py-2">Failed to load ${filePath}</p>`;
+        }
     }
 }
 

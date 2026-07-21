@@ -1,8 +1,12 @@
 /* Shared accessibility primitives, loaded on every page */
 
+:root {
+    --focus-ring: #0d6efd;
+}
+
 /* Focus visible for keyboard navigation */
 :focus-visible {
-    outline: 3px solid #0d6efd;
+    outline: 3px solid var(--focus-ring);
     outline-offset: 2px;
 }
 
@@ -11,7 +15,7 @@
     position: absolute;
     top: -40px;
     left: 0;
-    background: #0d6efd;
+    background: var(--focus-ring);
     color: #ffffff;
     padding: 0.5rem 1rem;
     text-decoration: none;

@@ -42,7 +42,7 @@ main {
 }
 
 .stats-section {
-    background-color: #f8f9fa;
+    background-color: var(--bg-subtle);
     padding: 40px 0;
     margin: 50px 0;
 }
@@ -59,6 +59,6 @@ main {
 }
 
 .stat-label {
-    color: #666;
+    color: var(--text-muted);
     font-size: 1.1rem;
 }

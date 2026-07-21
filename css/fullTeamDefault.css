@@ -1,7 +1,7 @@
 /* ---------------- Body ---------------- */
 
 .mainContent {
-    background: #ffffff;
+    background: var(--card-bg);
     min-height: 100vh;
     padding-top: 2vh;
     padding-bottom: 8vh;
@@ -12,7 +12,7 @@
 
 #team {
     margin: 0;
-    color: #2d3748;
+    color: var(--surface-dark);
     font-size: clamp(50px, 5vw, 500px);
     font-weight: 700;
     letter-spacing: 2px;
@@ -39,8 +39,8 @@
     display: flex;
     align-items: center;
     gap: 1.5rem;
-    background: #ffffff;
-    border: 2px solid #e2e8f0;
+    background: var(--card-bg);
+    border: 2px solid var(--card-border);
     border-radius: 1.2rem;
     text-align: left;
     padding: 1.5rem;
@@ -53,7 +53,7 @@
 .team-card:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
-    border-color: #cbd5e0;
+    border-color: var(--card-border-hover);
 }
 
 /* Image on the left */
@@ -62,13 +62,13 @@
     height: 120px;
     object-fit: cover;
     border-radius: 50%;
-    border: 3px solid #e2e8f0;
+    border: 3px solid var(--card-border);
     flex-shrink: 0;
     transition: all 0.3s ease;
 }
 
 .team-card:hover img {
-    border-color: #cbd5e0;
+    border-color: var(--card-border-hover);
     transform: rotate(5deg) scale(1.05);
 }
 
@@ -83,7 +83,7 @@
 .text-section,
 .text-section2,
 .text-section3 {
-    color: #2d3748;
+    color: var(--surface-dark);
     font-size: clamp(0.85rem, 1vw, 1rem);
     line-height: 1.6;
 }
@@ -91,17 +91,17 @@
 .text-section {
     font-weight: 700;
     font-size: clamp(1rem, 1.2vw, 1.2rem);
-    color: #1a202c;
+    color: var(--surface-dark-hover);
 }
 
 .text-section2 {
     font-weight: 500;
-    color: #4a5568;
+    color: var(--text-body);
 }
 
 .text-section3 {
     font-weight: 500;
-    color: #4a5568;
+    color: var(--text-body);
     font-size: clamp(0.8rem, 0.95vw, 0.95rem);
 }
 
@@ -115,7 +115,7 @@
 }
 
 .backButton {
-    background: #2d3748;
+    background: var(--surface-dark);
     border-radius: 50px;
     color: white;
     padding: 14px 40px;
@@ -132,7 +132,7 @@
 .backButton:hover {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    background: #1a202c;
+    background: var(--surface-dark-hover);
 }
 
 .backButton:active {

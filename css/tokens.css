@@ -1,0 +1,17 @@
+/* Shared color tokens for team.html, fullTeam.html, alumni.html, and
+   sponsers.html. These four pages already agree on the same navy/
+   slate palette — these values are extracted verbatim from what was
+   previously repeated hex literals in teamDefault.css,
+   fullTeamDefault.css, alumniDefault.css, and sponsor.css, so no
+   rendered color changes. (index.html/styles.css uses a separate,
+   Bootstrap-blue token system and isn't part of this.) */
+:root {
+    --surface-dark: #2d3748;
+    --surface-dark-hover: #1a202c;
+    --card-bg: #ffffff;
+    --card-border: #e2e8f0;
+    --card-border-hover: #cbd5e0;
+    --text-body: #4a5568;
+    --text-muted: #666666;
+    --bg-subtle: #f8f9fa;
+}
